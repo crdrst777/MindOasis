@@ -1,3 +1,6 @@
+import { authService } from "./fbase";
+console.log(authService.currentUser);
+
 function App() {
   return (
     <>
