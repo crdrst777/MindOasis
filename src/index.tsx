@@ -8,18 +8,18 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import firebaseApp from "./fbase";
 
-console.log(firebaseApp);
+console.log("firebaseApp", firebaseApp);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        <App />
-      </ThemeProvider>
-    </Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Provider store={store}>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <App />
+    </ThemeProvider>
+  </Provider>
+  // </React.StrictMode>
 );

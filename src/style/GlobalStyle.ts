@@ -11,7 +11,7 @@ body {
   font-family: "Pretendard", serif;
   color: black;
   line-height: 1.2;
-  background-color: black;
+  background-color: white;
 }
 a {
   text-decoration: none;
@@ -22,10 +22,10 @@ a {
 }
 button{
   cursor: pointer;
-  border: none; 
+  /* border: none; 
   padding: 0; 
   margin: 0;
-  background-color: transparent;
+  background-color: transparent; */
 }
 li {
   list-style: none;
