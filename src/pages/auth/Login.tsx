@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../../fbase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+} from "firebase/auth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,12 +15,12 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
+    setEmail(e.currentTarget.value);
   };
   console.log(email);
 
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+    setPassword(e.currentTarget.value);
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -38,6 +43,20 @@ const Login = () => {
     navigate("/signup");
   };
 
+  const onSocialClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const name = e.currentTarget.name;
+    let provider;
+    if (name === "google") {
+      provider = new GoogleAuthProvider();
+    } else if (name === "github") {
+      provider = new GithubAuthProvider();
+    }
+    if (provider) {
+      const data = await signInWithPopup(authService, provider);
+      console.log("signInWithPopupData", data);
+    }
+  };
+
   return (
     <>
       <form onSubmit={onSubmit}>
@@ -58,9 +77,15 @@ const Login = () => {
         <input type="submit" value="로그인" />
       </form>
       <div>
-        <button>Continue with Google</button>
-        <button onClick={goToSignUp}>회원가입</button>
+        <button name="google" onClick={onSocialClick}>
+          Continue with Google
+        </button>
+        <button name="github" onClick={onSocialClick}>
+          Continue with Github
+        </button>
+        {error}
       </div>
+      <button onClick={goToSignUp}>회원가입</button>
     </>
   );
 };

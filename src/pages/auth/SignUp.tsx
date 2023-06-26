@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { authService } from "../../fbase";
-import {
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-  GithubAuthProvider,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -13,11 +8,11 @@ const SignUp = () => {
   const [error, setError] = useState("");
 
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
+    setEmail(e.currentTarget.value);
   };
 
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+    setPassword(e.currentTarget.value);
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,20 +28,6 @@ const SignUp = () => {
     } catch (error: any) {
       // } catch (error: firebaseApp.FirebaseError) {
       setError(error.code);
-    }
-  };
-
-  const onSocialClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const name = e.currentTarget.name;
-    let provider;
-    if (name === "google") {
-      provider = new GoogleAuthProvider();
-    } else if (name === "github") {
-      provider = new GithubAuthProvider();
-    }
-    if (provider) {
-      const data = await signInWithPopup(authService, provider);
-      console.log("signInWithPopupData", data);
     }
   };
 
@@ -69,15 +50,6 @@ const SignUp = () => {
         />
         <input type="submit" value="회원가입" />
       </form>
-      <div>
-        <button name="google" onClick={onSocialClick}>
-          Continue with Google
-        </button>
-        <button name="github" onClick={onSocialClick}>
-          Continue with Github
-        </button>
-        {error}
-      </div>
     </>
   );
 };

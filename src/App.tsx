@@ -1,10 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { authService } from "./fbase";
+import { useEffect, useState } from "react";
 import Home from "./pages/home/Home";
 import Login from "./pages/auth/Login";
 import MyPage from "./pages/myPage/MyPage";
-import { authService } from "./fbase";
-import { useEffect, useState } from "react";
 import SignUp from "./pages/auth/SignUp";
+import Nav from "./components/layout/Nav";
+import Content from "./pages/content/Content";
+import Footer from "./components/layout/Footer";
 
 function App() {
   const [init, setInit] = useState(false);
@@ -21,23 +24,28 @@ function App() {
   }, []);
 
   console.log("currentUser", authService.currentUser);
-
   console.log("isLoggedIn", isLoggedIn);
 
   return (
     <BrowserRouter>
       {init ? (
-        <Routes>
-          {isLoggedIn ? (
-            <>
-              <Route path="/" element={<Home />} />
-            </>
-          ) : (
-            <Route path="/" element={<Login />} />
-          )}
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/mypage" element={<MyPage />} />
-        </Routes>
+        <>
+          {isLoggedIn && <Nav />}
+          {/* isLoggedIn이 true면 <Nav/>가 나오도록 */}
+          <Routes>
+            {isLoggedIn ? (
+              <>
+                <Route path="/" element={<Home />} />
+                <Route path="/mypage" element={<MyPage />} />
+              </>
+            ) : (
+              <Route path="/" element={<Login />} />
+            )}
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/content" element={<Content />} />
+          </Routes>
+          {/* <Footer /> */}
+        </>
       ) : (
         "Initializing..."
       )}
