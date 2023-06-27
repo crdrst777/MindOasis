@@ -12,10 +12,13 @@ import Footer from "./components/layout/Footer";
 function App() {
   const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userObj, setUserObj] = useState<any | null>(null);
+
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(true);
+        setUserObj(user); // 새 유저가 로그인할때마다 userObj에 저장.
       } else {
         setIsLoggedIn(false);
       }
@@ -42,7 +45,7 @@ function App() {
               <Route path="/" element={<Login />} />
             )}
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/content" element={<Content />} />
+            <Route path="/content" element={<Content userObj={userObj} />} />
           </Routes>
           {/* <Footer /> */}
         </>

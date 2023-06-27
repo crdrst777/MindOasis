@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import firebaseApp from "./fbase";
 
-console.log("firebaseApp", firebaseApp);
+// console.log("firebaseApp", firebaseApp);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
