@@ -7,18 +7,13 @@ import {
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
+import PostList from "../../components/Post/PostList/PostList";
+import IPostType from "../../types/types";
 
 // interface ISnapshotData {
 //   data?: DocumentData;
 //   id: string;
 // }
-
-interface IPostData {
-  id?: string;
-  text?: string;
-  createdAt?: number;
-  creatorId?: string;
-}
 
 interface ContentProps {
   userObj: any | null;
@@ -26,7 +21,7 @@ interface ContentProps {
 
 const Content = ({ userObj }: ContentProps) => {
   const [text, setText] = useState("");
-  const [posts, setPosts] = useState<IPostData[]>([]);
+  const [posts, setPosts] = useState<IPostType[]>([]);
 
   // const getPosts = async () => {
   //   // const q = query(collection(dbService, "posts"));
@@ -48,7 +43,7 @@ const Content = ({ userObj }: ContentProps) => {
     );
     onSnapshot(q, (querySnapshot) => {
       // console.log("querySnapshot.docs", querySnapshot.docs);
-      const postsArr: IPostData[] = querySnapshot.docs.map((doc) => ({
+      const postsArr: IPostType[] = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
@@ -91,10 +86,8 @@ const Content = ({ userObj }: ContentProps) => {
         <input type="submit" value="submitTest" />
       </form>
       <div>
-        {/* {posts.map((post)=>(<div><h4>{post.text}</h4><div/>))} */}
-
         {posts.map((post) => (
-          <div key={post.id}>{post?.text}</div>
+          <PostList key={post.id} post={post} />
         ))}
       </div>
     </>
