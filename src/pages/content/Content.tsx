@@ -83,11 +83,15 @@ const Content = ({ userObj }: ContentProps) => {
     <>
       <form onSubmit={onSubmit}>
         <input value={text} onChange={onChange} type="text" maxLength={120} />
-        <input type="submit" value="submitTest" />
+        <input type="submit" value="Submit" />
       </form>
       <div>
         {posts.map((post) => (
-          <PostList key={post.id} post={post} />
+          <PostList
+            key={post.id}
+            post={post}
+            isOwner={post.creatorId === userObj.uid}
+          />
         ))}
       </div>
     </>
