@@ -21,6 +21,7 @@ function App() {
         setUserObj(user); // 새 유저가 로그인할때마다 userObj에 저장.
       } else {
         setIsLoggedIn(false);
+        // setUserObj(null);
       }
       setInit(true); // init이 false라면 router를 숨길거임. true일때 나타나게.
     });

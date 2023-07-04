@@ -10,7 +10,7 @@ interface PostListProps {
 
 const PostList = ({ post, isOwner }: PostListProps) => {
   const [editing, setEditing] = useState(false); // editing 모드인지 여부
-  const [newPost, setNewPost] = useState(post.text);
+  const [newPost, setNewPost] = useState(post.text); // input의 값
   const PostTextRef = doc(dbService, "posts", `${post.id}`);
 
   const onDeleteClick = async () => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { dbService } from "../../fbase";
 import {
   collection,
@@ -22,6 +22,8 @@ interface ContentProps {
 const Content = ({ userObj }: ContentProps) => {
   const [text, setText] = useState("");
   const [posts, setPosts] = useState<IPostType[]>([]);
+  const [attachment, setAttachment] = useState<any>();
+  const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
 
   // const getPosts = async () => {
   //   // const q = query(collection(dbService, "posts"));
@@ -71,7 +73,6 @@ const Content = ({ userObj }: ContentProps) => {
     } catch (error) {
       console.error("Error adding document: ", error);
     }
-
     setText("");
   };
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,11 +80,40 @@ const Content = ({ userObj }: ContentProps) => {
   };
   console.log(text);
 
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const theFile = e.currentTarget.files![0];
+    console.log(theFile);
+    const reader = new FileReader();
+    reader.onloadend = (finishedEvent) => {
+      console.log("finishedEvent", finishedEvent);
+      // console.log("result", reader.result);
+      setAttachment(reader.result);
+    }; // 파일을 다 읽으면 finishedEvent를 받는다.
+    reader.readAsDataURL(theFile); // 그 다음 데이터를 얻는다.
+  };
+  // const onClearAttachment = () => setAttachment(null);
+  const onClearAttachment = () => {
+    setAttachment(null);
+    fileInput.current!.value = "";
+  };
+
   return (
     <>
       <form onSubmit={onSubmit}>
-        <input value={text} onChange={onChange} type="text" maxLength={120} />
+        <input type="text" value={text} onChange={onChange} maxLength={120} />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={onFileChange}
+          ref={fileInput}
+        />
         <input type="submit" value="Submit" />
+        {attachment && (
+          <>
+            <img src={attachment} width="50px" height="50px" alt="preview" />
+            <button onClick={onClearAttachment}>Clear</button>
+          </>
+        )}
       </form>
       <div>
         {posts.map((post) => (
