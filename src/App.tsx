@@ -8,6 +8,7 @@ import SignUp from "./pages/auth/SignUp";
 import Nav from "./components/Layout/Nav";
 import Content from "./pages/content/Content";
 import Footer from "./components/Layout/Footer";
+import { updateProfile } from "firebase/auth";
 
 function App() {
   const [init, setInit] = useState(false);
@@ -15,10 +16,15 @@ function App() {
   const [userObj, setUserObj] = useState<any | null>(null);
 
   useEffect(() => {
-    authService.onAuthStateChanged((user) => {
+    authService.onAuthStateChanged(async (user) => {
       if (user) {
         setIsLoggedIn(true);
         setUserObj(user); // 새 유저가 로그인할때마다 userObj에 저장.
+        // Local Login을 했을때는 displayName이 null이고, Social Login을 했을때는 displayName이 존재함; 그래서 아래의 코드를 씀
+        if (user.displayName === null) {
+          const userName = user.email!.split("@")[0];
+          await updateProfile(user, { displayName: userName });
+        }
       } else {
         setIsLoggedIn(false);
         // setUserObj(null);
@@ -29,18 +35,19 @@ function App() {
 
   console.log("currentUser", authService.currentUser);
   console.log("isLoggedIn", isLoggedIn);
+  console.log("userObj", userObj);
 
   return (
     <BrowserRouter>
       {init ? (
         <>
-          {isLoggedIn && <Nav />}
+          {isLoggedIn && <Nav userObj={userObj} />}
           {/* isLoggedIn이 true면 <Nav/>가 나오도록 */}
           <Routes>
             {isLoggedIn ? (
               <>
                 <Route path="/" element={<Home />} />
-                <Route path="/mypage" element={<MyPage />} />
+                <Route path="/mypage" element={<MyPage userObj={userObj} />} />
               </>
             ) : (
               <Route path="/" element={<Login />} />
