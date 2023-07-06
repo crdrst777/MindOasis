@@ -7,7 +7,7 @@ import MyPage from "./pages/myPage/MyPage";
 import SignUp from "./pages/auth/SignUp";
 import Nav from "./components/Layout/Nav";
 import Content from "./pages/content/Content";
-import Footer from "./components/Layout/Footer";
+// import Footer from "./components/Layout/Footer";
 import { updateProfile } from "firebase/auth";
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
       if (user) {
         setIsLoggedIn(true);
         setUserObj(user); // 새 유저가 로그인할때마다 userObj에 저장.
-        // Local Login을 했을때는 displayName이 null이고, Social Login을 했을때는 displayName이 존재함; 그래서 아래의 코드를 씀
+        // 어째선지 Social Login을 했을때는 displayName이 존재하지만, Local Login을 했을때는 displayName이 null이다. 그래서 아래 코드를 쓴것임.
         if (user.displayName === null) {
           const userName = user.email!.split("@")[0];
           await updateProfile(user, { displayName: userName });
