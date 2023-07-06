@@ -3,4 +3,5 @@ export default interface IPostType {
   text?: string;
   createdAt?: number;
   creatorId?: string;
+  attachmentUrl?: string;
 }

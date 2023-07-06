@@ -1,7 +1,8 @@
-import { dbService } from "../../../fbase";
+import { dbService, storageService } from "../../../fbase";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import IPostType from "../../../types/types";
 import { useState } from "react";
+import { ref, deleteObject } from "firebase/storage";
 
 interface PostListProps {
   post: IPostType;
@@ -11,12 +12,17 @@ interface PostListProps {
 const PostList = ({ post, isOwner }: PostListProps) => {
   const [editing, setEditing] = useState(false); // editing 모드인지 여부
   const [newPost, setNewPost] = useState(post.text); // input의 값
-  const PostTextRef = doc(dbService, "posts", `${post.id}`);
+  const postTextRef = doc(dbService, "posts", `${post.id}`); // 파일을 가리키는 참조 생성
+  const postUrlRef = ref(storageService, post.attachmentUrl); // 파일을 가리키는 참조 생성
 
   const onDeleteClick = async () => {
     const ok = window.confirm("정말 이 게시물을 삭제하시겠습니까?");
     if (ok) {
-      await deleteDoc(PostTextRef);
+      await deleteDoc(postTextRef);
+      // 삭제하려는 트윗에 이미지 파일이 있는 경우 이미지 파일 스토리지에서 삭제
+      if (post.attachmentUrl) {
+        await deleteObject(postUrlRef);
+      }
     }
   };
 
@@ -30,7 +36,7 @@ const PostList = ({ post, isOwner }: PostListProps) => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await updateDoc(PostTextRef, {
+    await updateDoc(postTextRef, {
       text: newPost,
     });
     setEditing(false);
@@ -55,6 +61,15 @@ const PostList = ({ post, isOwner }: PostListProps) => {
       ) : (
         <>
           <div>{post?.text}</div>
+          {post.attachmentUrl && (
+            <img
+              src={post.attachmentUrl}
+              width="100px"
+              height="100px"
+              alt="image"
+            />
+          )}
+
           {/* 글 작성자에게만 삭제, 수정 버튼이 보이도록 함 */}
           {isOwner && (
             <>
