@@ -12,12 +12,10 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.currentTarget.value);
   };
-  console.log(email);
 
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.currentTarget.value);
@@ -31,11 +29,9 @@ const Login = () => {
         email,
         password
       );
-      console.log(data);
       console.log(data.user.email);
-    } catch (error) {
-      console.log("error", error);
-      // setError(error.message);
+    } catch (error: any) {
+      window.confirm(error.code);
     }
   };
 
@@ -83,7 +79,6 @@ const Login = () => {
         <button name="github" onClick={onSocialClick}>
           Continue with Github
         </button>
-        {error}
       </div>
       <button onClick={goToSignUp}>회원가입</button>
     </>

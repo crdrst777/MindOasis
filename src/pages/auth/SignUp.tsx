@@ -5,7 +5,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
 
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.currentTarget.value);
@@ -26,8 +26,8 @@ const SignUp = () => {
       console.log("data", data);
       console.log(data.user.email);
     } catch (error: any) {
-      // } catch (error: firebaseApp.FirebaseError) {
-      setError(error.code);
+      // } catch (error: FirebaseApp.FirebaseError) {
+      window.confirm(error.code);
     }
   };
 

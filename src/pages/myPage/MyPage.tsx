@@ -6,9 +6,10 @@ import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 
 interface MyPageProps {
   userObj: any | null;
+  refreshUser: () => any;
 }
 
-const MyPage = ({ userObj }: MyPageProps) => {
+const MyPage = ({ userObj, refreshUser }: MyPageProps) => {
   const navigate = useNavigate();
   const [newDisplayName, setNewDisplayName] = useState<string>(
     userObj.displayName
@@ -41,11 +42,11 @@ const MyPage = ({ userObj }: MyPageProps) => {
     e.preventDefault();
     // input창에 뭐라도 쓴 경우만 업데이트 해줌
     if (userObj.displayName !== newDisplayName) {
-      await updateProfile(userObj, {
+      await updateProfile(authService.currentUser!, {
         displayName: newDisplayName,
       });
+      refreshUser();
     }
-    console.log(userObj.displayName);
   };
 
   useEffect(() => {
