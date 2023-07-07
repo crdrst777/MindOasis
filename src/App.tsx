@@ -26,6 +26,7 @@ function App() {
         setUserObj({
           displayName: user.displayName,
           uid: user.uid,
+          photoURL: user.photoURL,
         });
 
         // 어째선지 Social Login을 했을때는 displayName이 존재하지만, Local Login을 했을때는 displayName이 null이다. 그래서 아래 코드를 씀.
@@ -48,6 +49,7 @@ function App() {
     setUserObj({
       displayName: user!.displayName,
       uid: user!.uid,
+      photoURL: user!.photoURL,
     });
     // setUserObj(Object.assign({}, user));
   };
