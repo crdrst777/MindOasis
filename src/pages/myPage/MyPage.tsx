@@ -5,6 +5,7 @@ import { updateProfile } from "firebase/auth";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
+import { styled } from "styled-components";
 
 interface MyPageProps {
   userObj: any | null;
@@ -97,8 +98,18 @@ const MyPage = ({ userObj, refreshUser }: MyPageProps) => {
     fileInput.current!.value = ""; // 사진을 선택했다가 clear를 눌렀을때, 선택된 파일명을 지워줌.
   };
 
+  const onDeleteClick = async () => {
+    await updateProfile(authService.currentUser!, {
+      displayName: newDisplayName,
+      photoURL: "",
+    });
+    refreshUser();
+  };
+
   return (
-    <>
+    <Container>
+      <button onClick={onDeleteClick}>Delete Avatar</button>
+
       <form onSubmit={onSubmit}>
         <input
           type="text"
@@ -122,8 +133,10 @@ const MyPage = ({ userObj, refreshUser }: MyPageProps) => {
       </form>
 
       <button onClick={onLogOutClick}>Log Out</button>
-    </>
+    </Container>
   );
 };
 
 export default MyPage;
+
+const Container = styled.div``;

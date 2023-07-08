@@ -5,7 +5,7 @@ import Home from "./pages/home/Home";
 import Login from "./pages/auth/Login";
 import MyPage from "./pages/myPage/MyPage";
 import SignUp from "./pages/auth/SignUp";
-import Nav from "./components/Layout/Nav";
+import Nav from "./components/Layout/Nav/Nav";
 import Content from "./pages/content/Content";
 // import Footer from "./components/Layout/Footer";
 import { updateProfile } from "firebase/auth";

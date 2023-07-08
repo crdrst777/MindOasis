@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import GlobalStyles from "./style/GlobalStyle";
 import { ThemeProvider } from "styled-components";
-import { theme } from "./style/Theme";
+import theme from "./style/Theme";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import firebaseApp from "./fbase";
