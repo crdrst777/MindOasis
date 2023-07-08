@@ -54,7 +54,6 @@ const MyPage = ({ userObj, refreshUser }: MyPageProps) => {
           console.log(err);
         });
     }
-
     // 업데이트 - input창에 뭐라도 쓴 경우
     if (userObj.displayName !== newDisplayName) {
       await updateProfile(authService.currentUser!, {
