@@ -20,7 +20,7 @@ const Nav = ({ userObj }: NavProps) => {
         </li>
         <li>
           <Link to="/mypage">
-            {userObj.displayName}
+            {userObj.displayName}'s My Page
             <AvatarContainer>
               {userObj.photoURL ? (
                 <img src={userObj.photoURL} alt="profile photo" />
@@ -49,7 +49,7 @@ const AvatarContainer = styled.div`
   img {
     width: 5rem;
     height: 5rem;
-    /* object-fit: cover; */
+    object-fit: cover;
     border-radius: 50%;
   }
 `;

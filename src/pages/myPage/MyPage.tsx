@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService, dbService, storageService } from "../../fbase";
+import { authService, storageService } from "../../fbase";
 import { updateProfile } from "firebase/auth";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { styled } from "styled-components";
+import MyPostList from "../../components/MyPage/MyPostList/MyPostList";
 
 interface MyPageProps {
   userObj: any | null;
@@ -23,20 +23,6 @@ const MyPage = ({ userObj, refreshUser }: MyPageProps) => {
   const onLogOutClick = async () => {
     await authService.signOut();
     navigate("/");
-  };
-
-  const getMyPosts = async () => {
-    // dbService의 컬렉션 중 "posts" Docs에서 userObj의 uid와 동일한 creatorID를 가진 모든 문서를 내림차순으로 가져오는 쿼리(요청) 생성
-    const q = query(
-      collection(dbService, "posts"),
-      where("creatorId", "==", userObj.uid), // where -> 필터링하는 방법을 알려줌
-      orderBy("createdAt", "desc")
-    );
-    // getDocs()메서드로 쿼리 결과 값 가져오기
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, "=>", doc.data());
-    });
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -77,10 +63,6 @@ const MyPage = ({ userObj, refreshUser }: MyPageProps) => {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewDisplayName(e.currentTarget.value);
   };
-
-  useEffect(() => {
-    getMyPosts();
-  }, []);
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const theFile = e.currentTarget.files![0];
@@ -133,6 +115,9 @@ const MyPage = ({ userObj, refreshUser }: MyPageProps) => {
       </form>
 
       <button onClick={onLogOutClick}>Log Out</button>
+
+      <Space />
+      <MyPostList userObj={userObj} />
     </Container>
   );
 };
@@ -140,3 +125,7 @@ const MyPage = ({ userObj, refreshUser }: MyPageProps) => {
 export default MyPage;
 
 const Container = styled.div``;
+
+const Space = styled.div`
+  height: 5rem;
+`;

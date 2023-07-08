@@ -10,6 +10,7 @@ import {
 import PostList from "../../components/Post/PostList/PostList";
 import IPostType from "../../types/types";
 import PostUpload from "../../components/Post/PostUpload/PostUpload";
+import { styled } from "styled-components";
 
 interface ContentProps {
   userObj: any | null;
@@ -53,8 +54,9 @@ const Content = ({ userObj }: ContentProps) => {
   console.log("posts", posts);
 
   return (
-    <>
+    <Container>
       <PostUpload userObj={userObj} />
+      <Space />
 
       <div>
         {posts.map((post) => (
@@ -65,8 +67,14 @@ const Content = ({ userObj }: ContentProps) => {
           />
         ))}
       </div>
-    </>
+    </Container>
   );
 };
 
 export default Content;
+
+const Container = styled.div``;
+
+const Space = styled.div`
+  height: 5rem;
+`;
