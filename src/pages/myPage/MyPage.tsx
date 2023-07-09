@@ -2,7 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService, storageService } from "../../fbase";
 import { updateProfile } from "firebase/auth";
-import { ref, uploadString, getDownloadURL } from "firebase/storage";
+import {
+  ref,
+  uploadString,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { styled } from "styled-components";
 import MyPostList from "../../components/MyPage/MyPostList/MyPostList";
@@ -19,40 +24,51 @@ const MyPage = ({ userObj, refreshUser }: MyPageProps) => {
   const [newDisplayName, setNewDisplayName] = useState<string>(
     userObj.displayName
   );
+  const photoURLRef = ref(storageService, authService!.currentUser!.photoURL!);
 
   const onLogOutClick = async () => {
     await authService.signOut();
     navigate("/");
   };
 
+  // 프로필 업데이트
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let photoUrl: string = "";
+    let photoURL: string = "";
 
+    // 파일 첨부시
     if (attachment) {
+      // 기존 프로필 사진이 있는 경우 기존의 것을 스토리지에서 지워준다.
+      if (userObj.photoURL !== null) {
+        try {
+          await deleteObject(photoURLRef);
+        } catch (error: any) {
+          console.log(error.code);
+        }
+      }
+
       const attachmentRef = ref(storageService, `${userObj.uid}/${uuidv4()}`); // 파일 경로 참조 생성
       await uploadString(attachmentRef, attachment, "data_url"); // 파일 업로드(이 경우는 url)
       await getDownloadURL(attachmentRef)
         .then((url) => {
-          console.log("url", url);
-          photoUrl = url;
+          photoURL = url;
         })
         .catch((err) => {
           console.log(err);
         });
     }
-    // 업데이트 - input창에 뭐라도 쓴 경우
+    // input창에 뭐라도 쓴 경우
     if (userObj.displayName !== newDisplayName) {
       await updateProfile(authService.currentUser!, {
         displayName: newDisplayName,
-        photoURL: photoUrl,
+        photoURL: photoURL,
       });
     }
-    // 업데이트 - input창이 비어있거나 그대로인(파일만 올린) 경우
+    // input창이 비어있거나 그대로인(파일만 올린) 경우
     if (newDisplayName === "" || newDisplayName === userObj.displayName) {
       await updateProfile(authService.currentUser!, {
         displayName: userObj.displayName,
-        photoURL: photoUrl,
+        photoURL: photoURL,
       });
     }
     refreshUser();
@@ -80,12 +96,20 @@ const MyPage = ({ userObj, refreshUser }: MyPageProps) => {
     fileInput.current!.value = ""; // 사진을 선택했다가 clear를 눌렀을때, 선택된 파일명을 지워줌.
   };
 
+  // 프로필 사진 삭제
   const onDeleteClick = async () => {
-    await updateProfile(authService.currentUser!, {
-      displayName: newDisplayName,
-      photoURL: "",
-    });
-    refreshUser();
+    if (userObj.photoURL) {
+      await updateProfile(authService.currentUser!, {
+        displayName: newDisplayName,
+        photoURL: "",
+      });
+      try {
+        await deleteObject(photoURLRef);
+      } catch (error: any) {
+        console.log(error.code);
+      }
+      refreshUser();
+    }
   };
 
   return (

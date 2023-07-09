@@ -14,6 +14,8 @@ function App() {
   const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userObj, setUserObj] = useState<any | null>(null);
+  // userObj는 파이어베이스에서 getFirestore.currentUser.[ 필요한키 ] 이렇게 가져올 수 있는 데이터이지만, userObj라는 변수를 만들어 속성에 넣고 여기저기서 전달받아 사용하는 이유는 소스를 통합하여 확장성 있게 사용하고 싶기 때문이다.
+  // userObj 하나만 변경해도 통합되어 변경되기 때문에 더 직관적으로 변경,저장하기 쉬워진다.
 
   useEffect(() => {
     authService.onAuthStateChanged(async (user) => {

@@ -15,11 +15,12 @@ const PostList = ({ post, isOwner }: PostListProps) => {
   const postTextRef = doc(dbService, "posts", `${post.id}`); // 파일을 가리키는 참조 생성
   const postUrlRef = ref(storageService, post.attachmentUrl); // 파일을 가리키는 참조 생성
 
+  // 게시물 삭제
   const onDeleteClick = async () => {
     const ok = window.confirm("정말 이 게시물을 삭제하시겠습니까?");
     if (ok) {
       await deleteDoc(postTextRef);
-      // 삭제하려는 트윗에 이미지 파일이 있는 경우 이미지 파일 스토리지에서 삭제
+      // 삭제하려는 게시물에 이미지 파일이 있는 경우 이미지 파일 스토리지에서 삭제
       if (post.attachmentUrl) {
         await deleteObject(postUrlRef);
       }
