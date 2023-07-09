@@ -22,7 +22,14 @@ const MyPostList = ({ userObj }: MyPostListProps) => {
     // getDocs()메서드로 쿼리 결과 값 가져오기
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      myPostArr.push((doc.id, "=>", doc.data()));
+      myPostArr.push(
+        (doc.id,
+        "=>",
+        {
+          id: doc.id,
+          ...doc.data(),
+        })
+      );
     });
     setMyPosts(myPostArr);
   };
