@@ -53,12 +53,14 @@ const margins = {
 };
 
 const colors = {
+  backgroundGray: "#f8f8f8",
+  borderGray: "#d3d3d3",
   green: "#41b979",
   red: "#ef6253",
   black: "#222222",
-  darkGray: "#4D4D4D",
   gray: "#8E8E8E",
   lightGray: "#f8f9fa",
+  darkGray: "#4D4D4D",
   disabled: "#ebebeb",
   white: "#ffffff",
   purple: "#342461",

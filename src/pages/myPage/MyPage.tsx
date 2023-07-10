@@ -113,43 +113,102 @@ const MyPage = ({ userObj, refreshUser }: MyPageProps) => {
   };
 
   return (
-    <Container>
-      <button onClick={onDeleteClick}>Delete Avatar</button>
+    <MyPageContainer>
+      <Container>
+        <SideBar>
+          <SideBarHeader></SideBarHeader>
+          <MenuContainer>
+            <li>회원정보 변경</li>
+            <li>비밀번호 변경</li>
+            <li>내 작성글</li>
+            <li>내 관심글</li>
+          </MenuContainer>
+        </SideBar>
 
-      <form onSubmit={onSubmit}>
-        <input
-          type="text"
-          value={newDisplayName}
-          onChange={onChange}
-          placeholder="Display name"
-        />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={onFileChange}
-          ref={fileInput}
-        />
-        <input type="submit" value="Update Profile" />
-        {attachment && (
-          <>
-            <img src={attachment} width="50px" height="50px" alt="preview" />
-            <button onClick={onClearAttachment}>Clear</button>
-          </>
-        )}
-      </form>
+        <MainContainer>
+          <button onClick={onDeleteClick}>Delete Avatar</button>
 
-      <button onClick={onLogOutClick}>Log Out</button>
+          <form onSubmit={onSubmit}>
+            <input
+              type="text"
+              value={newDisplayName}
+              onChange={onChange}
+              placeholder="Display name"
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={onFileChange}
+              ref={fileInput}
+            />
+            <input type="submit" value="Update Profile" />
+            {attachment && (
+              <>
+                <img
+                  src={attachment}
+                  width="50px"
+                  height="50px"
+                  alt="preview"
+                />
+                <button onClick={onClearAttachment}>Clear</button>
+              </>
+            )}
+          </form>
 
-      <Space />
-      <MyPostList userObj={userObj} />
-    </Container>
+          <button onClick={onLogOutClick}>Log Out</button>
+
+          <MyPostList userObj={userObj} />
+        </MainContainer>
+      </Container>
+    </MyPageContainer>
   );
 };
 
 export default MyPage;
 
-const Container = styled.div``;
+const MyPageContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: ${(props) => props.theme.colors.backgroundGray};
+`;
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 1100px;
+  height: 800px;
+  margin: auto;
+  padding: 6rem 0 6rem 0;
+`;
+const SideBar = styled.aside`
+  width: 280px;
+  /* height: 100%; */
+  border: 1px solid ${(props) => props.theme.colors.borderGray};
+  border-radius: 0.4rem;
+  padding: 3rem 2rem 3rem 2rem;
+  background-color: ${(props) => props.theme.colors.white};
+`;
 
-const Space = styled.div`
-  height: 5rem;
+const SideBarHeader = styled.header`
+  height: 15rem;
+  background-color: azure;
+`;
+
+const MenuContainer = styled.ul`
+  margin-top: 4rem;
+  /* background-color: azure; */
+
+  li {
+    margin-top: 2rem;
+    font-size: ${(props) => props.theme.fontSizes.lg};
+    /* font-weight: 400; */
+  }
+`;
+
+const MainContainer = styled.section`
+  width: 800px;
+  height: 100%;
+  border: 1px solid ${(props) => props.theme.colors.borderGray};
+  border-radius: 0.4rem;
+  background-color: ${(props) => props.theme.colors.white};
 `;
