@@ -8,55 +8,72 @@ interface NavProps {
 
 const Nav = ({ userObj }: NavProps) => {
   return (
-    <Container>
-      <MenuContainer>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/content">Content</Link>
-        </li>
-        <li>
-          <Link to="/mypage">
-            {/* <span>{userObj.displayName}'s My Page</span> */}
-            <AvatarContainer>
-              {userObj.photoURL ? (
-                <img src={userObj.photoURL} alt="profile photo" />
-              ) : (
-                <img src="null" alt="profile photo" />
-              )}
-            </AvatarContainer>
+    <NavContainer>
+      <Container>
+        <NavbarLogo>
+          <Link to="/">
+            {/* <img></img> */}
+            Mind Oasis
           </Link>
-        </li>
-      </MenuContainer>
-    </Container>
+        </NavbarLogo>
+        <NavbarMenu>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/content">Content</Link>
+          </li>
+          <li>
+            <Link to="/mypage">
+              {/* <span>{userObj.displayName}'s My Page</span> */}
+              <AvatarContainer>
+                {userObj.photoURL ? (
+                  <img src={userObj.photoURL} alt="profile photo" />
+                ) : (
+                  <img src="null" alt="profile photo" />
+                )}
+              </AvatarContainer>
+            </Link>
+          </li>
+        </NavbarMenu>
+      </Container>
+    </NavContainer>
   );
 };
 
 export default Nav;
 
+const NavContainer = styled.div`
+  /* width: 100vw; */
+`;
+
 const Container = styled.nav`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  margin: auto;
   height: 4rem;
-  padding: 0 6rem 0 6rem;
+  padding: 0 6rem;
   border-bottom: 1px solid ${(props) => props.theme.colors.borderGray};
 `;
 
-const MenuContainer = styled.ul`
+const NavbarLogo = styled.div`
+  font-size: ${(props) => props.theme.fontSizes.xl};
+  font-weight: 600;
+`;
+
+const NavbarMenu = styled.ul`
   display: flex;
   justify-content: space-between;
-  width: 25rem;
-  height: 100%;
+  height: inherit;
   /* background-color: red; */
 
   li {
     display: flex;
     align-items: center;
     font-weight: 400;
-    background-color: blue;
+    padding-left: 2rem;
+    /* background-color: blue; */
   }
 `;
 

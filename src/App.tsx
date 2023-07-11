@@ -3,7 +3,12 @@ import { authService } from "./fbase";
 import { useEffect, useState } from "react";
 import Home from "./pages/home/Home";
 import Login from "./pages/auth/Login";
-import MyPage from "./pages/myPage/MyPage";
+
+// import MyPageIndex from "./pages/myPage/MyPageIndex";
+import UpdateProfile from "./pages/myPage/UpdateProfile";
+import UpdatePassword from "./pages/myPage/UpdatePassword";
+import MyPosts from "./pages/myPage/MyPosts";
+import MyLikes from "./pages/myPage/MyLikes";
 import SignUp from "./pages/auth/SignUp";
 import Nav from "./components/Layout/Nav/Nav";
 import Content from "./pages/content/Content";
@@ -70,12 +75,30 @@ function App() {
             {isLoggedIn ? (
               <>
                 <Route path="/" element={<Home />} />
+
                 <Route
                   path="/mypage"
                   element={
-                    <MyPage userObj={userObj} refreshUser={refreshUser} />
+                    <UpdateProfile
+                      userObj={userObj}
+                      refreshUser={refreshUser}
+                    />
                   }
-                />
+                >
+                  <Route
+                    path="updateprofile"
+                    element={
+                      <UpdateProfile
+                        userObj={userObj}
+                        refreshUser={refreshUser}
+                      />
+                    }
+                  />
+
+                  <Route path="updatepassword" element={<UpdatePassword />} />
+                  <Route path="myposts" element={<MyPosts />} />
+                  <Route path="mylikes" element={<MyLikes />} />
+                </Route>
               </>
             ) : (
               <Route path="/" element={<Login />} />
