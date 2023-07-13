@@ -10,8 +10,8 @@ import {
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { styled } from "styled-components";
-import MyPostList from "../../components/MyPage/MyPostList/MyPostList";
-import { NavLink } from "react-router-dom";
+import MyPostList from "../../components/MyPage/MyPostList";
+import Sidebar from "../../components/MyPage/Sidebar";
 
 interface UpdateProfileProps {
   userObj: any | null;
@@ -116,24 +116,7 @@ const UpdateProfile = ({ userObj, refreshUser }: UpdateProfileProps) => {
   return (
     <MyPageContainer>
       <Container>
-        <Sidebar>
-          <SidebarHeader></SidebarHeader>
-          <SidebarMenu>
-            <li>
-              <StyledLink to="/mypage/updateprofile">회원정보 변경</StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/mypage/updatepassword">비밀번호 변경</StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/mypage/myposts">내 작성글</StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/mypage/mylikes">내 관심글</StyledLink>
-            </li>
-          </SidebarMenu>
-        </Sidebar>
-
+        <Sidebar />
         <MainContainer>
           <button onClick={onDeleteClick}>Delete Avatar</button>
 
@@ -165,8 +148,6 @@ const UpdateProfile = ({ userObj, refreshUser }: UpdateProfileProps) => {
           </form>
 
           <button onClick={onLogOutClick}>Log Out</button>
-
-          <MyPostList userObj={userObj} />
         </MainContainer>
       </Container>
     </MyPageContainer>
@@ -187,32 +168,6 @@ const Container = styled.div`
   margin: auto;
   padding: 6rem 0 6rem 0;
 `;
-const Sidebar = styled.aside`
-  width: 280px;
-  /* height: 100%; */
-  border: 1px solid ${(props) => props.theme.colors.borderGray};
-  border-radius: 0.4rem;
-  padding: 3rem 2rem 3rem 2rem;
-  background-color: ${(props) => props.theme.colors.white};
-`;
-
-const SidebarHeader = styled.header`
-  height: 15rem;
-  background-color: azure;
-`;
-
-const SidebarMenu = styled.ul`
-  margin-top: 4rem;
-  /* background-color: azure; */
-
-  li {
-    margin-top: 2rem;
-    font-size: ${(props) => props.theme.fontSizes.lg};
-    font-weight: 400;
-  }
-`;
-
-const StyledLink = styled(NavLink)``;
 
 const MainContainer = styled.section`
   width: 800px;

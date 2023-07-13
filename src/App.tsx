@@ -1,19 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { authService } from "./fbase";
 import { useEffect, useState } from "react";
-import Home from "./pages/home/Home";
-import Login from "./pages/auth/Login";
-
-// import MyPageIndex from "./pages/myPage/MyPageIndex";
-import UpdateProfile from "./pages/myPage/UpdateProfile";
-import UpdatePassword from "./pages/myPage/UpdatePassword";
-import MyPosts from "./pages/myPage/MyPosts";
-import MyLikes from "./pages/myPage/MyLikes";
-import SignUp from "./pages/auth/SignUp";
-import Nav from "./components/Layout/Nav/Nav";
-import Content from "./pages/content/Content";
 // import Footer from "./components/Layout/Footer";
 import { updateProfile } from "firebase/auth";
+import AppRouter from "./Router";
 
 function App() {
   const [init, setInit] = useState(false);
@@ -68,49 +58,15 @@ function App() {
   return (
     <BrowserRouter>
       {init ? (
-        <>
-          {isLoggedIn && <Nav userObj={userObj} />}
-          {/* isLoggedIn이 true면 <Nav/>가 나오도록 */}
-          <Routes>
-            {isLoggedIn ? (
-              <>
-                <Route path="/" element={<Home />} />
-
-                <Route
-                  path="/mypage"
-                  element={
-                    <UpdateProfile
-                      userObj={userObj}
-                      refreshUser={refreshUser}
-                    />
-                  }
-                >
-                  <Route
-                    path="updateprofile"
-                    element={
-                      <UpdateProfile
-                        userObj={userObj}
-                        refreshUser={refreshUser}
-                      />
-                    }
-                  />
-
-                  <Route path="updatepassword" element={<UpdatePassword />} />
-                  <Route path="myposts" element={<MyPosts />} />
-                  <Route path="mylikes" element={<MyLikes />} />
-                </Route>
-              </>
-            ) : (
-              <Route path="/" element={<Login />} />
-            )}
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/content" element={<Content userObj={userObj} />} />
-          </Routes>
-          {/* <Footer /> */}
-        </>
+        <AppRouter
+          isLoggedIn={Boolean(userObj)}
+          userObj={userObj}
+          refreshUser={refreshUser}
+        />
       ) : (
         "Initializing..."
       )}
+      {/* <Footer /> */}
     </BrowserRouter>
   );
 }

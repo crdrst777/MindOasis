@@ -24,7 +24,7 @@ const Nav = ({ userObj }: NavProps) => {
             <Link to="/content">Content</Link>
           </li>
           <li>
-            <Link to="/mypage">
+            <Link to="/mypage/updateprofile">
               {/* <span>{userObj.displayName}'s My Page</span> */}
               <AvatarContainer>
                 {userObj.photoURL ? (

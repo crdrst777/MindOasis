@@ -1,7 +1,9 @@
-import React from "react";
-
-const MyLikesPage = () => {
-  return <div>MyLikesPage</div>;
+const MyLikes = () => {
+  return (
+    <>
+      <div>MyLikes</div>
+    </>
+  );
 };
 
-export default MyLikesPage;
+export default MyLikes;
