@@ -18,10 +18,10 @@ const Nav = ({ userObj }: NavProps) => {
         </NavbarLogo>
         <NavbarMenu>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/content">목록</Link>
           </li>
           <li>
-            <Link to="/content">Content</Link>
+            <Link to="/post">새 글 쓰기</Link>
           </li>
           <li>
             <Link to="/mypage/updateprofile">

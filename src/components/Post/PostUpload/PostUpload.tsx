@@ -4,6 +4,7 @@ import { storageService } from "../../../fbase";
 import { v4 as uuidv4 } from "uuid";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
+import { styled } from "styled-components";
 
 interface PostUploadProps {
   userObj: any | null;
@@ -65,7 +66,7 @@ const PostUpload = ({ userObj }: PostUploadProps) => {
   };
 
   return (
-    <>
+    <Container>
       <form onSubmit={onSubmit}>
         <input type="text" value={text} onChange={onChange} maxLength={120} />
         <input
@@ -82,8 +83,14 @@ const PostUpload = ({ userObj }: PostUploadProps) => {
           </>
         )}
       </form>
-    </>
+    </Container>
   );
 };
 
 export default PostUpload;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 3rem;
+`;

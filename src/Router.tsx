@@ -7,7 +7,9 @@ import MyPosts from "./pages/myPage/MyPosts";
 import MyLikes from "./pages/myPage/MyLikes";
 import SignUp from "./pages/auth/SignUp";
 import Nav from "./components/Layout/Nav/Nav";
+import Footer from "./components/Layout/Footer";
 import Content from "./pages/content/Content";
+import Post from "./pages/post/Post";
 
 interface AppRouterProps {
   isLoggedIn: boolean;
@@ -23,25 +25,26 @@ const AppRouter = ({ isLoggedIn, userObj, refreshUser }: AppRouterProps) => {
       <Routes>
         {isLoggedIn ? (
           <>
-            <Route path="/" element={<Home />} />
-
             <Route
               path="/mypage/updateprofile"
               element={
                 <UpdateProfile userObj={userObj} refreshUser={refreshUser} />
               }
             />
-
             <Route path="/mypage/updatepassword" element={<UpdatePassword />} />
             <Route
               path="/mypage/myposts"
               element={<MyPosts userObj={userObj} />}
             />
             <Route path="/mypage/mylikes" element={<MyLikes />} />
+
+            <Route path="/post" element={<Post userObj={userObj} />} />
           </>
         ) : (
           <Route path="/" element={<Login />} />
         )}
+
+        <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/content" element={<Content userObj={userObj} />} />
       </Routes>

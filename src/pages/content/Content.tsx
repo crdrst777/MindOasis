@@ -1,15 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { dbService } from "../../fbase";
-import {
-  collection,
-  addDoc,
-  query,
-  orderBy,
-  onSnapshot,
-} from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import PostList from "../../components/Post/PostList/PostList";
 import IPostType from "../../types/types";
-import PostUpload from "../../components/Post/PostUpload/PostUpload";
 import { styled } from "styled-components";
 
 interface ContentProps {
@@ -55,9 +48,6 @@ const Content = ({ userObj }: ContentProps) => {
 
   return (
     <Container>
-      <PostUpload userObj={userObj} />
-      <Space />
-
       <div>
         {posts.map((post) => (
           <PostList
@@ -74,7 +64,3 @@ const Content = ({ userObj }: ContentProps) => {
 export default Content;
 
 const Container = styled.div``;
-
-const Space = styled.div`
-  height: 5rem;
-`;

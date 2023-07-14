@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { authService } from "./fbase";
 import { useEffect, useState } from "react";
-// import Footer from "./components/Layout/Footer";
 import { updateProfile } from "firebase/auth";
 import AppRouter from "./Router";
+import Footer from "./components/Layout/Footer";
 
 function App() {
   const [init, setInit] = useState(false);
@@ -66,7 +66,7 @@ function App() {
       ) : (
         "Initializing..."
       )}
-      {/* <Footer /> */}
+      <Footer />
     </BrowserRouter>
   );
 }
