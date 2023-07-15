@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import PostUpload from "../../components/Post/PostUpload/PostUpload";
-import Map from "../../components/Map/Map";
+import MapSection from "../../components/Map/SearchMap/MapSection";
 
 interface PostProps {
   userObj: any | null;
@@ -11,7 +11,7 @@ const Post = ({ userObj }: PostProps) => {
     <>
       <Container>
         <PostUpload userObj={userObj} />
-        <Map />
+        <MapSection />
       </Container>
     </>
   );

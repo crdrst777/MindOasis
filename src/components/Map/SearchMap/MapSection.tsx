@@ -1,21 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { styled } from "styled-components";
+import SearchMap from "./Map";
 
-const { kakao }: any = window;
-
-const Map = () => {
+const MapSection = () => {
   const [inputText, setInputText] = useState("");
   const [place, setPlace] = useState("");
-
-  useEffect(() => {
-    const container = document.getElementById("map");
-    const options = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667),
-      level: 3,
-    };
-    const map = new kakao.maps.Map(container, options);
-    console.log("loading kakaomap");
-  }, []);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,15 +28,12 @@ const Map = () => {
         />
         <SearchBtn type="submit">검색</SearchBtn>
       </SearchForm>
-
-      <BasicMap>
-        <div id="map"></div>
-      </BasicMap>
+      <SearchMap searchPlace={place} />
     </Container>
   );
 };
 
-export default Map;
+export default MapSection;
 
 const Container = styled.div`
   display: flex;
@@ -78,11 +64,4 @@ const SearchBtn = styled.button`
   right: 10rem;
   border: none;
   background-color: transparent;
-`;
-
-const BasicMap = styled.div`
-  #map {
-    width: 40rem;
-    height: 20rem;
-  }
 `;
