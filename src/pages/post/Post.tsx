@@ -10,7 +10,7 @@ const Post = ({ userObj }: PostProps) => {
   return (
     <>
       <Container>
-        <PostUpload userObj={userObj} />
+        {/* <PostUpload userObj={userObj} /> */}
         <MapSection />
       </Container>
     </>
