@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
+import { PlaceType, PaginaionType } from "../../../types/map";
 
 const { kakao }: any = window;
 
@@ -8,16 +9,17 @@ interface SearchMapProps {
 }
 
 const SearchMap = ({ searchPlace }: SearchMapProps) => {
-  const [mapLocation, setMapLocation] = useState({});
-  const [mapData, setMapData] = useState([33.450701, 126.570667]);
-  const [places, setPlaces] = useState<any[]>([]);
-  const markers = [];
+  const [places, setPlaces] = useState<PlaceType[]>([]);
+  const [placeName, setPlaceName] = useState<string>("");
+  const [placeAddr, setPlaceAddr] = useState<string>("");
+  const [pagination, setPagination] = useState<PaginaionType | null>(null);
+  const markers: any = [];
   let marker: any = null;
 
   useEffect(() => {
     const mapContainer = document.getElementById("myMap"); // 지도를 표시할 div
     const mapOption = {
-      center: new kakao.maps.LatLng(mapData[0], mapData[1]), // 지도의 중심좌표
+      center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
       level: 3, // 지도의 확대 레벨
     };
     const map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성
@@ -25,7 +27,7 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
     const ps = new kakao.maps.services.Places(); // 장소 검색 객체를 생성
     const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 }); // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성
 
-    // 검색 결과 목록과 마커를 표출하는 함수
+    // 검색하고 결과 목록과 마커를 표출하는 함수
     const placesSearchCB = (data: any, status: any, pagination: any) => {
       if (status === kakao.maps.services.Status.OK) {
         const bounds = new kakao.maps.LatLngBounds();
@@ -47,26 +49,63 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
               infowindow.close();
             });
           })(marker, data[i].place_name);
+
+          // 마커 클릭시 실행되는 함수 - 클릭한 마커의 장소정보를 저장
+          kakao.maps.event.addListener(marker, "click", function () {
+            setPlaceName(data[i].place_name);
+            setPlaceAddr(
+              data[i].road_address_name
+                ? data[i].road_address_name
+                : data[i].address_name
+            );
+          });
         }
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정
         map.setBounds(bounds);
-        console.log("data", data);
         setPlaces(data);
+        setPagination(pagination);
 
+        console.log("places", places);
+
+        // 지도 클릭시 마커를 생성하고 주소를 받아온다.
         if (data) {
-          // 클릭시 마커를 생성하고 좌표를 받아온다.
           const NewMarker = new kakao.maps.Marker();
-          NewMarker.setMap(map);
+
           // 지도에 클릭 이벤트를 등록
           kakao.maps.event.addListener(
             map,
             "click",
             function (mouseEvent: any) {
-              let latlng = mouseEvent.latLng; // 클릭한 위도, 경도 정보를 가져옴
-              NewMarker.setPosition(latlng); // 마커 위치를 클릭한 위치로 옮김
-              let message = `클릭한 위치의 위도는 ${latlng.getLat()}이고, 경도는 ${latlng.getLng()}입니다`;
-              console.log(message);
+              NewMarker.setPosition(mouseEvent.latLng); // 클릭한 위도 경도 정보를 가져오고, 마커 위치를 그 위치로 옮김
+              NewMarker.setMap(map);
+
+              const searchDetailAddrFromCoords = (
+                latlng: any,
+                callback: any
+              ) => {
+                // 좌표로 법정동 상세 주소 정보를 요청합니다
+                geocoder.coord2Address(
+                  latlng.getLng(),
+                  latlng.getLat(),
+                  callback
+                );
+              };
+
+              // 좌표로 법정동 상세 주소 정보를 요청
+              searchDetailAddrFromCoords(
+                mouseEvent.latLng,
+                function (result: any, status: any) {
+                  if (status === kakao.maps.services.Status.OK) {
+                    console.log("result", result[0]);
+                    setPlaceAddr(
+                      result[0].road_address
+                        ? result[0].road_address.address_name
+                        : result[0].address.address_name
+                    );
+                  }
+                }
+              );
             }
           );
         }
@@ -102,7 +141,6 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
       return marker;
     };
 
-    // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수
     // 인포윈도우에 장소명을 표시
     const displayInfowindow = (marker: any, title: string) => {
       infowindow.setContent(
@@ -110,50 +148,20 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
       );
       infowindow.open(map, marker);
     };
-
-    // 주소로 좌표를 검색합니다
-    // geocoder.addressSearch(
-    //   `${searchPlace}`,
-    //   function (result: any, status: any) {
-    //     // 정상적으로 검색이 완료됐으면
-    //     if (status === kakao.maps.services.Status.OK) {
-    //       const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-    //       console.log("coords", coords);
-    //       setMapLocation([coords["Ma"], coords["La"]]);
-
-    //       // 결과값으로 받은 위치를 마커로 표시합니다
-    //       const marker = new kakao.maps.Marker({
-    //         map: map,
-    //         position: coords,
-    //       });
-    //       // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-    //       map.setCenter(coords);
-    //       marker.setMap(map);
-
-    //       kakao.maps.event.addListener(
-    //         map,
-    //         "click",
-    //         function (mouseEvent: any) {
-    //           // 클릭한 위도, 경도 정보를 가져옵니다
-    //           const latlng = mouseEvent.latLng;
-
-    //           // 마커 위치를 클릭한 위치로 옮깁니다
-    //           marker.setPosition(latlng);
-    //           let message =
-    //             "클릭한 위치의 위도는 " + latlng.getLat() + " 이고, ";
-    //           message += "경도는 " + latlng.getLng() + " 입니다";
-    //           console.log(message);
-
-    //           setMapLocation([latlng.getLat(), latlng.getLng()]);
-    //         }
-    //       );
-    //     }
-    //   }
-    // );
   }, [searchPlace]);
+
+  const pageClickHandler = (idx: number) => () => {
+    if (pagination) {
+      pagination.gotoPage(idx);
+    }
+  };
 
   return (
     <Container>
+      <span>
+        {placeName} {placeAddr}
+      </span>
+
       <Map id="myMap" />
 
       <PlaceList>
@@ -170,7 +178,16 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
             </AddressName>
           </PlaceItem>
         ))}
-        <div id="pagination"></div>
+
+        <PaginationContainer>
+          {pagination &&
+            // 요소가 n개인 배열로부터 인덱스를 꺼내와 <Page/>에 넣어줌
+            Array.from(Array(pagination.last), (_, idx) => (
+              <Page key={idx} onClick={pageClickHandler(idx + 1)}>
+                {idx + 1}
+              </Page>
+            ))}
+        </PaginationContainer>
       </PlaceList>
     </Container>
   );
@@ -188,7 +205,7 @@ const Container = styled.div`
 const Map = styled.div`
   width: 40rem;
   height: 20rem;
-  margin-bottom: 1rem;
+  margin: 0.5rem 0 1rem 0;
 `;
 
 const PlaceList = styled.div`
@@ -205,3 +222,20 @@ const PlaceItem = styled.div`
 `;
 
 const AddressName = styled.div``;
+
+const PaginationContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // PaginationContainer 의 바로 아래 자식 요소들에만 적용.
+  // > 이걸 안하면 PaginationContainer의 모든 자식 요소에 적용
+  > * {
+    margin: 0 0.35rem;
+  }
+`;
+
+const Page = styled.span`
+  cursor: pointer;
+`;

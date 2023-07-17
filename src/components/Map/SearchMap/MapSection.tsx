@@ -56,6 +56,7 @@ const Search = styled.input`
   border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px;
   margin-right: 1rem;
+  font-size: 0.9rem;
 `;
 
 const SearchBtn = styled.button`
@@ -64,4 +65,5 @@ const SearchBtn = styled.button`
   right: 10rem;
   border: none;
   background-color: transparent;
+  font-size: 0.9rem;
 `;
