@@ -21,7 +21,7 @@ const Nav = ({ userObj }: NavProps) => {
             <Link to="/content">목록</Link>
           </li>
           <li>
-            <Link to="/post">새 글 쓰기</Link>
+            <Link to="/postupload">새 글 쓰기</Link>
           </li>
           <li>
             <Link to="/mypage/updateprofile">

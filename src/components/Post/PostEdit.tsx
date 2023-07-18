@@ -1,8 +1,9 @@
-import { dbService, storageService } from "../../../fbase";
+import { dbService, storageService } from "../../fbase";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
-import IPostType from "../../../types/types";
+import IPostType from "../../types/types";
 import { useState } from "react";
 import { ref, deleteObject } from "firebase/storage";
+import { styled } from "styled-components";
 
 interface PostListProps {
   post: IPostType;
@@ -44,7 +45,7 @@ const PostList = ({ post, isOwner }: PostListProps) => {
   };
 
   return (
-    <>
+    <Container>
       {editing ? (
         <>
           <form onSubmit={onSubmit}>
@@ -65,8 +66,8 @@ const PostList = ({ post, isOwner }: PostListProps) => {
           {post.attachmentUrl && (
             <img
               src={post.attachmentUrl}
-              width="100px"
-              height="100px"
+              width="200px"
+              height="200px"
               alt="image"
             />
           )}
@@ -80,8 +81,13 @@ const PostList = ({ post, isOwner }: PostListProps) => {
           )}
         </>
       )}
-    </>
+    </Container>
   );
 };
 
 export default PostList;
+
+const Container = styled.div`
+  display: inline-block;
+  padding: 0 3rem;
+`;

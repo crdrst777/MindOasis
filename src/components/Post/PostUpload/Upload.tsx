@@ -6,11 +6,11 @@ import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
 import { styled } from "styled-components";
 
-interface PostUploadProps {
+interface UploadProps {
   userObj: any | null;
 }
 
-const PostUpload = ({ userObj }: PostUploadProps) => {
+const Upload = ({ userObj }: UploadProps) => {
   const [text, setText] = useState("");
   const [attachment, setAttachment] = useState<any>("");
   // 사진 첨부 없이 텍스트만 트윗하고 싶을 때도 있으므로 기본 값을 ""로 해야한다. 트윗할 때 텍스트만 입력시 이미지 url ""로 비워두기 위함
@@ -87,7 +87,7 @@ const PostUpload = ({ userObj }: PostUploadProps) => {
   );
 };
 
-export default PostUpload;
+export default Upload;
 
 const Container = styled.div`
   display: flex;

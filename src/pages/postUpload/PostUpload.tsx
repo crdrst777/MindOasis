@@ -1,23 +1,23 @@
 import { styled } from "styled-components";
-import PostUpload from "../../components/Post/PostUpload/PostUpload";
+import Upload from "../../components/Post/PostUpload/Upload";
 import MapSection from "../../components/Map/SearchMap/MapSection";
 
-interface PostProps {
+interface PostUploadProps {
   userObj: any | null;
 }
 
-const Post = ({ userObj }: PostProps) => {
+const PostUpload = ({ userObj }: PostUploadProps) => {
   return (
     <>
       <Container>
-        {/* <PostUpload userObj={userObj} /> */}
+        <Upload userObj={userObj} />
         <MapSection />
       </Container>
     </>
   );
 };
 
-export default Post;
+export default PostUpload;
 
 const Container = styled.div`
   display: flex;

@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { dbService } from "../../fbase";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
-import PostList from "../../components/Post/PostList/PostList";
+import PostList from "../../components/Post/PostList";
 import IPostType from "../../types/types";
 import { styled } from "styled-components";
+import close from "../../assets/img/close-icon.png";
 
 interface ContentProps {
   userObj: any | null;
@@ -63,4 +64,8 @@ const Content = ({ userObj }: ContentProps) => {
 
 export default Content;
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 80%;
+  margin: auto;
+  padding: 5rem 0;
+`;
