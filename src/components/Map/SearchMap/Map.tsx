@@ -150,7 +150,7 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
     };
   }, [searchPlace]);
 
-  const onClickPageNum = (idx: number) => () => {
+  const onPageNumClick = (idx: number) => () => {
     if (pagination) {
       pagination.gotoPage(idx);
     }
@@ -183,7 +183,7 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
           {pagination &&
             // 요소가 n개인 배열로부터 인덱스를 꺼내와 <Page/>에 넣어줌
             Array.from(Array(pagination.last), (_, idx) => (
-              <Page key={idx} onClick={onClickPageNum(idx + 1)}>
+              <Page key={idx} onClick={onPageNumClick(idx + 1)}>
                 {idx + 1}
               </Page>
             ))}

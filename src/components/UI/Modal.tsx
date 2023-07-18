@@ -1,27 +1,58 @@
 import { styled } from "styled-components";
 import close from "../../assets/img/close-icon.png";
+import { useMatch, useNavigate } from "react-router-dom";
+import IPostType from "../../types/types";
+import { useEffect } from "react";
 
 interface ModalProps {
-  handleModal: () => void;
+  post: IPostType;
+  postId?: string;
+  isOwner: boolean;
 }
 
-const Modal = ({ handleModal }: ModalProps) => {
+const Modal = ({ post, postId, isOwner }: ModalProps) => {
+  const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
+  // const modalMatch = useMatch(`/content/detail/:id`);
+  // useMatch는 이 route 안에 있는지 다른 곳에 있는지 알려줌. -->  string | null
+
+  const closeModal = () => navigate(-1);
+
+  // Modal 배경 스크롤 막기
+  // useEffect(() => {
+  //   document.body.style.cssText = `
+  //     position: fixed;
+  //     top: -${window.scrollY}px;
+  //     overflow-y: scroll;
+  //     width: 100%;`;
+  //   return () => {
+  //     const scrollY = document.body.style.top;
+  //     document.body.style.cssText = "";
+  //     window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+  //   };
+  // }, []);
+
+  // Modal 배경 스크롤 막기
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
+
+  console.log("postId", postId);
+
   return (
     <>
       <Container>
-        <Background
-        // onClick={(e: React.MouseEvent) => {
-        //   e.preventDefault();npm
-        //   if (handleModal) {
-        //     handleModal();
-        //   }
-        // }}
-        ></Background>
+        <Overlay onClick={closeModal} />
+
         <ModalContainer>
           {/* <Header></Header> */}
 
-          <Close onClick={() => handleModal} />
-          <Content></Content>
+          <Close onClick={closeModal} />
+          <Content>
+            <div>{post.id}</div>
+          </Content>
         </ModalContainer>
       </Container>
     </>
@@ -34,7 +65,6 @@ const Container = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  z-index: 100;
   top: 0;
   left: 0;
   right: 0;
@@ -42,14 +72,16 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 98;
 `;
 
-const Background = styled.div`
+const Overlay = styled.div`
   position: fixed;
   width: 100%;
   height: 100%;
-  background-color: rgba(71, 71, 71, 0.15);
-  backdrop-filter: blur(5px);
+  background-color: rgba(43, 43, 43, 0.136);
+  z-index: 99;
+  /* backdrop-filter: blur(5px); */
   animation: modal-bg-show 0.5s;
   @keyframes modal-bg-show {
     from {
@@ -62,14 +94,18 @@ const Background = styled.div`
 `;
 
 const ModalContainer = styled.article`
-  position: absolute;
+  /* position: absolute; */
+  position: fixed;
   width: 60rem;
-  top: 5rem;
-  border-radius: 10px;
+  top: 2.3rem;
+  margin: auto 0;
+  border-radius: 0.4rem;
   padding: 1.5rem;
   background-color: white;
-  box-shadow: 0 0 30px rgba(30, 30, 30, 0.185);
-  min-height: 45rem;
+  height: 50rem;
+  overflow: scroll;
+  z-index: 100;
+
   /* animation: modal-show 0.4s; */
   /* 
   @media (max-width: 1120px) {
@@ -106,4 +142,6 @@ const Content = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  height: 130rem;
 `;

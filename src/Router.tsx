@@ -50,6 +50,10 @@ const AppRouter = ({ isLoggedIn, userObj, refreshUser }: AppRouterProps) => {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/content" element={<Content userObj={userObj} />} />
+        <Route
+          path="/content/detail/:id"
+          element={<Content userObj={userObj} />}
+        ></Route>
       </Routes>
     </>
   );

@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { dbService } from "../../fbase";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
-import PostList from "../../components/Post/PostList";
 import IPostType from "../../types/types";
 import { styled } from "styled-components";
-import close from "../../assets/img/close-icon.png";
+import SinglePost from "../../components/Post/SinglePost";
 
 interface ContentProps {
   userObj: any | null;
@@ -49,15 +48,15 @@ const Content = ({ userObj }: ContentProps) => {
 
   return (
     <Container>
-      <div>
+      <PostList>
         {posts.map((post) => (
-          <PostList
+          <SinglePost
             key={post.id}
             post={post}
             isOwner={post.creatorId === userObj.uid}
           />
         ))}
-      </div>
+      </PostList>
     </Container>
   );
 };
@@ -69,3 +68,5 @@ const Container = styled.div`
   margin: auto;
   padding: 5rem 0;
 `;
+
+const PostList = styled.section``;
