@@ -2,20 +2,19 @@ import { styled } from "styled-components";
 import close from "../../assets/img/close-icon.png";
 import { useMatch, useNavigate } from "react-router-dom";
 import IPostType from "../../types/types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface ModalProps {
-  post: IPostType;
   postId?: string;
-  isOwner: boolean;
 }
 
-const Modal = ({ post, postId, isOwner }: ModalProps) => {
+const Modal = ({ postId }: ModalProps) => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
-  // const modalMatch = useMatch(`/content/detail/:id`);
+  const modalMatch = useMatch(`/content/detail/:id`);
   // useMatch는 이 route 안에 있는지 다른 곳에 있는지 알려줌. -->  string | null
-
   const closeModal = () => navigate(-1);
+
+  const getPost = () => {};
 
   // Modal 배경 스크롤 막기
   // useEffect(() => {
@@ -33,13 +32,17 @@ const Modal = ({ post, postId, isOwner }: ModalProps) => {
 
   // Modal 배경 스크롤 막기
   useEffect(() => {
+    getPost();
+
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "unset";
     };
   }, []);
 
+  console.log("modal test");
   console.log("postId", postId);
+  // console.log("modalMatch", modalMatch);
 
   return (
     <>
@@ -50,9 +53,7 @@ const Modal = ({ post, postId, isOwner }: ModalProps) => {
           {/* <Header></Header> */}
 
           <Close onClick={closeModal} />
-          <Content>
-            <div>{post.id}</div>
-          </Content>
+          <Content>{postId}</Content>
         </ModalContainer>
       </Container>
     </>
@@ -79,9 +80,9 @@ const Overlay = styled.div`
   position: fixed;
   width: 100%;
   height: 100%;
-  background-color: rgba(43, 43, 43, 0.136);
+  background-color: rgba(16, 16, 16, 0.39);
   z-index: 99;
-  /* backdrop-filter: blur(5px); */
+  backdrop-filter: blur(2px);
   animation: modal-bg-show 0.5s;
   @keyframes modal-bg-show {
     from {
@@ -106,7 +107,7 @@ const ModalContainer = styled.article`
   overflow: scroll;
   z-index: 100;
 
-  /* animation: modal-show 0.4s; */
+  /* animation: modal-show 0.6s; */
   /* 
   @media (max-width: 1120px) {
     width: 50rem;
@@ -115,7 +116,7 @@ const ModalContainer = styled.article`
     width: 80%;
   } */
 
-  @keyframes modal-show {
+  /* @keyframes modal-show {
     from {
       opacity: 0;
       margin-top: -50px;
@@ -124,7 +125,7 @@ const ModalContainer = styled.article`
       opacity: 1;
       margin-top: 0;
     }
-  }
+  } */
 `;
 // const Header = styled.header``;
 

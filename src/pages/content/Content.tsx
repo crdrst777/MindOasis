@@ -3,13 +3,18 @@ import { dbService } from "../../fbase";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import IPostType from "../../types/types";
 import { styled } from "styled-components";
-import SinglePost from "../../components/Post/SinglePost";
+// import SinglePost from "../../components/Post/SinglePost";
+import { Navigate, PathMatch, useMatch, useNavigate } from "react-router-dom";
+import Modal from "../../components/UI/Modal";
 
 interface ContentProps {
   userObj: any | null;
 }
 
 const Content = ({ userObj }: ContentProps) => {
+  const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
+  const bigMatch: PathMatch<string> | null = useMatch(`content/detail/:id`);
+
   const [posts, setPosts] = useState<IPostType[]>([]);
 
   // const getPosts = async () => {
@@ -44,19 +49,29 @@ const Content = ({ userObj }: ContentProps) => {
     getPosts();
   }, []); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
 
-  console.log("posts", posts);
+  const onPostClick = (id: any) => {
+    navigate(`/content/detail/${id}`); // 이 url로 바꿔줌.
+  };
+
+  // console.log("posts", posts);
 
   return (
     <Container>
       <PostList>
         {posts.map((post) => (
-          <SinglePost
+          <SinglePostContainer
             key={post.id}
-            post={post}
-            isOwner={post.creatorId === userObj.uid}
-          />
+            onClick={() => onPostClick(post.id)}
+          >
+            {post.attachmentUrl && (
+              <PreviewImg src={post.attachmentUrl} alt="image" />
+            )}
+            <div>{post?.text}</div>
+          </SinglePostContainer>
         ))}
       </PostList>
+
+      {bigMatch ? <Modal postId={bigMatch?.params.id}></Modal> : null}
     </Container>
   );
 };
@@ -70,3 +85,14 @@ const Container = styled.div`
 `;
 
 const PostList = styled.section``;
+
+const SinglePostContainer = styled.div`
+  display: inline-block;
+  margin: 1.3rem;
+`;
+
+const PreviewImg = styled.img`
+  width: 17rem;
+  height: 17rem;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px;
+`;
