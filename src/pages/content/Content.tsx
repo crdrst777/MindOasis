@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { dbService } from "../../fbase";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import IPostType from "../../types/types";
 import { styled } from "styled-components";
 // import SinglePost from "../../components/Post/SinglePost";
-import { Navigate, PathMatch, useMatch, useNavigate } from "react-router-dom";
+import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import Modal from "../../components/UI/Modal";
 
 interface ContentProps {
@@ -12,10 +12,9 @@ interface ContentProps {
 }
 
 const Content = ({ userObj }: ContentProps) => {
+  const [posts, setPosts] = useState<IPostType[]>([]);
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
   const bigMatch: PathMatch<string> | null = useMatch(`content/detail/:id`);
-
-  const [posts, setPosts] = useState<IPostType[]>([]);
 
   // const getPosts = async () => {
   //   // const q = query(collection(dbService, "posts"));
@@ -53,7 +52,7 @@ const Content = ({ userObj }: ContentProps) => {
     navigate(`/content/detail/${id}`); // 이 url로 바꿔줌.
   };
 
-  // console.log("posts", posts);
+  console.log("posts", posts);
 
   return (
     <Container>
