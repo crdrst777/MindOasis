@@ -25,8 +25,8 @@ button{
   border: none; 
   padding: 0; 
   margin: 0;
-  background-color: transparent;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px;
+  /* background-color: transparent; */
+  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px; */
 }
 li {
   list-style: none;

@@ -208,15 +208,18 @@ const Container = styled.div`
 const Map = styled.div`
   width: 100%;
   height: 20rem;
-  margin: 0.5rem 0 1rem 0;
+  margin-bottom: 1rem;
 `;
 
 const PlaceList = styled.div`
   width: 100%;
   height: 15rem;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px;
+  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px; */
+  font-size: 1rem;
+  color: ${(props) => props.theme.colors.darkGray};
+  border-radius: 5px;
+  border: ${(props) => props.theme.borders.gray};
   overflow: scroll;
-  font-size: 0.9rem;
   padding: 0.5rem 1.5rem 1.5rem 1.5rem;
 `;
 

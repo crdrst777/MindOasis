@@ -93,5 +93,7 @@ const SinglePostContainer = styled.div`
 const PreviewImg = styled.img`
   width: 17rem;
   height: 17rem;
+  border-radius: 5px;
+  cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px;
 `;

@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { styled } from "styled-components";
+import search from "../../../assets/img/search-icon.png";
 import SearchMap from "./Map";
 
 const MapSection = () => {
   const [inputText, setInputText] = useState("");
   const [place, setPlace] = useState("");
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.MouseEvent<HTMLImageElement>) => {
     e.preventDefault();
     setPlace(inputText);
     setInputText("");
@@ -20,13 +21,14 @@ const MapSection = () => {
 
   return (
     <Container>
-      <SearchForm onSubmit={onSubmit}>
+      <SearchForm>
+        <SearchIcon onClick={onSubmit} />
         <Search
           placeholder="검색어를 입력하세요"
           onChange={onChange}
           value={inputText}
         />
-        <SearchBtn type="submit">검색</SearchBtn>
+        {/* <SearchBtn type="submit">검색</SearchBtn> */}
       </SearchForm>
       <SearchMap searchPlace={place} />
     </Container>
@@ -35,35 +37,31 @@ const MapSection = () => {
 
 export default MapSection;
 
-const Container = styled.section`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  margin: 5rem auto;
-  /* position: relative; */
-`;
+const Container = styled.div``;
 
-const SearchForm = styled.form`
+const SearchForm = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
   position: relative;
 `;
-const Search = styled.input`
-  border: none;
-  width: 60%;
-  padding: 20px 20px;
-  border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px;
-  margin-right: 1rem;
-  font-size: 0.9rem;
+
+const SearchIcon = styled.img.attrs({
+  src: search,
+})`
+  position: absolute;
+  width: 1.4rem;
+  top: 1.1rem;
+  left: 1rem;
+  /* cursor: pointer; */
 `;
 
-const SearchBtn = styled.button`
-  position: absolute;
-  top: 1.2rem;
-  right: 10rem;
-  background-color: transparent;
-  font-size: 0.9rem;
-  box-shadow: none;
+const Search = styled.input`
+  width: 45rem;
+  min-height: 3.5rem;
+  font-size: 1rem;
+  color: ${(props) => props.theme.colors.darkGray};
+  padding: 0 3.3rem;
+  border-radius: 5px;
+  border: ${(props) => props.theme.borders.gray};
 `;

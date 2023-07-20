@@ -15,8 +15,8 @@ const Modal = ({ postId }: ModalProps) => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
   const modalMatch = useMatch(`/content/detail/:id`);
   // useMatch는 이 route 안에 있는지 다른 곳에 있는지 알려줌. -->  string | null
-  const closeModal = () => navigate(-1);
   const docRef = doc(dbService, "posts", `${postId}`);
+  const closeModal = () => navigate(-1);
 
   const getPost = async () => {
     try {
@@ -53,7 +53,7 @@ const Modal = ({ postId }: ModalProps) => {
         <ModalContainer>
           {/* <Header></Header> */}
 
-          <Close onClick={closeModal} />
+          <CloseIcon onClick={closeModal} />
           <Content>{postId}</Content>
         </ModalContainer>
       </Container>
@@ -130,7 +130,7 @@ const ModalContainer = styled.article`
 `;
 // const Header = styled.header``;
 
-const Close = styled.img.attrs({
+const CloseIcon = styled.img.attrs({
   src: close,
 })`
   position: absolute;

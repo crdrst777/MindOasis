@@ -55,19 +55,23 @@ const margins = {
 const colors = {
   backgroundGray: "#f8f8f8",
   borderGray: "#d3d3d3",
-  green: "#41b979",
-  red: "#ef6253",
+
+  lightBlack: "#262626",
   black: "#222222",
-  gray: "#8E8E8E",
-  lightGray: "#f8f9fa",
-  // darkGray: "#4D4D4D",
-  darkGray: "#333333",
-  disabled: "#ebebeb",
   white: "#ffffff",
-  purple: "#342461",
-  violet: "#B143AF",
+
+  moreLightGray: "#e9ecef",
+  lightGray: "#f8f9fa",
+  gray: "#8E8E8E",
+  darkGray: "#333333",
+  // darkGray: "#4D4D4D",
+
+  disabled: "#ebebeb",
+  red: "#ef6253",
+  yellow: "#ffcd00",
+  green: "#41b979",
   mint: "#1EC997",
-  blue: "#3366FF",
+  blue: "#0080ff",
 };
 
 const borders = {
