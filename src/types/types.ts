@@ -1,6 +1,6 @@
 export default interface IPostType {
   id?: string;
-  text?: string;
+  title?: string;
   createdAt?: number;
   creatorId?: string;
   attachmentUrl?: string;

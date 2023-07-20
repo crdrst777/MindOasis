@@ -71,7 +71,9 @@ const NavbarMenu = styled.ul`
   li {
     display: flex;
     align-items: center;
-    font-weight: 400;
+    font-size: 1rem;
+    font-weight: 500;
+    color: ${(props) => props.theme.colors.darkGray};
     padding-left: 2rem;
     /* background-color: blue; */
   }

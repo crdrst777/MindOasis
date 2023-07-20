@@ -156,6 +156,8 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
     }
   };
 
+  console.log("placeAddr", placeAddr);
+
   return (
     <Container>
       <span>
@@ -200,16 +202,17 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   margin: auto;
+  width: 45rem;
 `;
 
 const Map = styled.div`
-  width: 40rem;
+  width: 100%;
   height: 20rem;
   margin: 0.5rem 0 1rem 0;
 `;
 
 const PlaceList = styled.div`
-  width: 40rem;
+  width: 100%;
   height: 15rem;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px;
   overflow: scroll;

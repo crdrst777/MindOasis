@@ -43,7 +43,7 @@ const MyPostList = ({ userObj }: MyPostListProps) => {
   return (
     <div>
       {myPosts.map((post) => (
-        <div key={post.id}>{post.text}</div>
+        <div key={post.id}>{post.title}</div>
       ))}
     </div>
   );

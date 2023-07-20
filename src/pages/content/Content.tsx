@@ -65,7 +65,7 @@ const Content = ({ userObj }: ContentProps) => {
             {post.attachmentUrl && (
               <PreviewImg src={post.attachmentUrl} alt="image" />
             )}
-            <div>{post?.text}</div>
+            <div>{post?.title}</div>
           </SinglePostContainer>
         ))}
       </PostList>

@@ -12,7 +12,7 @@ interface PostListProps {
 
 const PostList = ({ post, isOwner }: PostListProps) => {
   const [editing, setEditing] = useState(false); // editing 모드인지 여부
-  const [newPost, setNewPost] = useState(post.text); // input의 값
+  const [newPost, setNewPost] = useState(post.title); // input의 값
   const postTextRef = doc(dbService, "posts", `${post.id}`); // 파일을 가리키는 참조 생성
   const postUrlRef = ref(storageService, post.attachmentUrl); // 파일을 가리키는 참조 생성
 
@@ -62,7 +62,7 @@ const PostList = ({ post, isOwner }: PostListProps) => {
         </>
       ) : (
         <>
-          <div>{post?.text}</div>
+          <div>{post?.title}</div>
           {post.attachmentUrl && (
             <img
               src={post.attachmentUrl}

@@ -1,6 +1,5 @@
 import { styled } from "styled-components";
-import Upload from "../../components/Post/PostUpload/Upload";
-import MapSection from "../../components/Map/SearchMap/MapSection";
+import PostEditor from "../../components/Post/PostUpload/PostEditor";
 
 interface PostUploadProps {
   userObj: any | null;
@@ -10,8 +9,7 @@ const PostUpload = ({ userObj }: PostUploadProps) => {
   return (
     <>
       <Container>
-        <Upload userObj={userObj} />
-        <MapSection />
+        <PostEditor userObj={userObj} />
       </Container>
     </>
   );
@@ -22,7 +20,7 @@ export default PostUpload;
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  flex-direction: column;
-
-  margin: 3rem;
+  width: 45rem;
+  /* flex-direction: column; */
+  margin: 3rem auto;
 `;

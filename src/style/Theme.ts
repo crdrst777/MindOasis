@@ -60,7 +60,8 @@ const colors = {
   black: "#222222",
   gray: "#8E8E8E",
   lightGray: "#f8f9fa",
-  darkGray: "#4D4D4D",
+  // darkGray: "#4D4D4D",
+  darkGray: "#333333",
   disabled: "#ebebeb",
   white: "#ffffff",
   purple: "#342461",
@@ -71,7 +72,7 @@ const colors = {
 
 const borders = {
   gray: "1px solid #d3d3d3",
-  lightGray: "1px solid #ebebeb",
+  lightGray: "1px solid #e1e3e8",
 };
 
 // const flex = {

@@ -35,11 +35,11 @@ const MapSection = () => {
 
 export default MapSection;
 
-const Container = styled.div`
+const Container = styled.section`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  margin: auto;
+  margin: 5rem auto;
   /* position: relative; */
 `;
 
@@ -63,7 +63,7 @@ const SearchBtn = styled.button`
   position: absolute;
   top: 1.2rem;
   right: 10rem;
-  border: none;
   background-color: transparent;
   font-size: 0.9rem;
+  box-shadow: none;
 `;
