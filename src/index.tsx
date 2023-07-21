@@ -5,7 +5,7 @@ import GlobalStyles from "./style/GlobalStyle";
 import { ThemeProvider } from "styled-components";
 import theme from "./style/Theme";
 import { Provider } from "react-redux";
-import store from "./store/store";
+import store from "./store";
 import firebaseApp from "./fbase";
 
 // console.log("firebaseApp", firebaseApp);

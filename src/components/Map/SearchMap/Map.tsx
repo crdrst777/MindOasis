@@ -17,7 +17,6 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
   const [places, setPlaces] = useState<PlaceType[]>([]);
   // const [placeName, setPlaceName] = useState<string>("");
   // const [placeAddr, setPlaceAddr] = useState<string>("");
-
   const [placeInfo, setPlaceInfo] = useState<placeInfoType>({
     placeName: "",
     placeAddr: "",

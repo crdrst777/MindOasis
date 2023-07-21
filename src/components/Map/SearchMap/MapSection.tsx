@@ -2,10 +2,15 @@ import { useState } from "react";
 import { styled } from "styled-components";
 import search from "../../../assets/img/search-icon.png";
 import SearchMap from "./Map";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/index";
 
 const MapSection = () => {
   const [inputText, setInputText] = useState("");
   const [place, setPlace] = useState("");
+
+  const a = useSelector((state: RootState) => state.placeInfo);
+  console.log("a", a);
 
   // const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
   //   e.preventDefault();
