@@ -7,14 +7,20 @@ const MapSection = () => {
   const [inputText, setInputText] = useState("");
   const [place, setPlace] = useState("");
 
-  const onSubmit = (e: React.MouseEvent<HTMLImageElement>) => {
-    e.preventDefault();
-    setPlace(inputText);
-    setInputText("");
-  };
+  // const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   e.preventDefault();
+  //   setPlace(inputText);
+  //   setInputText("");
+  // };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputText(e.currentTarget.value);
+  };
+
+  const handleOnKeyPress = () => {
+    // e.preventDefault();
+    setPlace(inputText);
+    setInputText("");
   };
 
   console.log("place", place);
@@ -22,13 +28,14 @@ const MapSection = () => {
   return (
     <Container>
       <SearchForm>
-        <SearchIcon onClick={onSubmit} />
+        <SearchIcon />
         <Search
           placeholder="검색어를 입력하세요"
           onChange={onChange}
           value={inputText}
+          onKeyPress={handleOnKeyPress}
         />
-        {/* <SearchBtn type="submit">검색</SearchBtn> */}
+        {/* <SearchBtn onClick={onSubmit}>검색</SearchBtn> */}
       </SearchForm>
       <SearchMap searchPlace={place} />
     </Container>
@@ -65,3 +72,5 @@ const Search = styled.input`
   border-radius: 5px;
   border: ${(props) => props.theme.borders.gray};
 `;
+
+const SearchBtn = styled.button``;

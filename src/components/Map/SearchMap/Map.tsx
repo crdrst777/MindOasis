@@ -8,10 +8,21 @@ interface SearchMapProps {
   searchPlace: string;
 }
 
+interface placeInfoType {
+  placeName: string;
+  placeAddr: string;
+}
+
 const SearchMap = ({ searchPlace }: SearchMapProps) => {
   const [places, setPlaces] = useState<PlaceType[]>([]);
-  const [placeName, setPlaceName] = useState<string>("");
-  const [placeAddr, setPlaceAddr] = useState<string>("");
+  // const [placeName, setPlaceName] = useState<string>("");
+  // const [placeAddr, setPlaceAddr] = useState<string>("");
+
+  const [placeInfo, setPlaceInfo] = useState<placeInfoType>({
+    placeName: "",
+    placeAddr: "",
+  });
+
   const [pagination, setPagination] = useState<PaginaionType | null>(null);
   const markers: any = [];
   let marker: any = null;
@@ -52,12 +63,12 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
 
           // 마커 클릭시 실행되는 함수 - 클릭한 마커의 장소정보를 저장
           kakao.maps.event.addListener(marker, "click", function () {
-            setPlaceName(data[i].place_name);
-            setPlaceAddr(
-              data[i].road_address_name
+            setPlaceInfo({
+              placeName: data[i].place_name,
+              placeAddr: data[i].road_address_name
                 ? data[i].road_address_name
-                : data[i].address_name
-            );
+                : data[i].address_name,
+            });
           });
         }
 
@@ -98,11 +109,13 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
                 function (result: any, status: any) {
                   if (status === kakao.maps.services.Status.OK) {
                     console.log("result", result[0]);
-                    setPlaceAddr(
-                      result[0].road_address
+
+                    setPlaceInfo({
+                      placeName: "",
+                      placeAddr: result[0].road_address
                         ? result[0].road_address.address_name
-                        : result[0].address.address_name
-                    );
+                        : result[0].address.address_name,
+                    });
                   }
                 }
               );
@@ -156,12 +169,12 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
     }
   };
 
-  console.log("placeAddr", placeAddr);
+  console.log("placeInfo", placeInfo);
 
   return (
     <Container>
       <span>
-        {placeName} {placeAddr}
+        {placeInfo.placeName} {placeInfo.placeAddr}
       </span>
 
       <Map id="myMap" />
