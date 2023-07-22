@@ -12,12 +12,6 @@ const MapSection = () => {
   const a = useSelector((state: RootState) => state.placeInfo);
   console.log("a", a);
 
-  // const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   e.preventDefault();
-  //   setPlace(inputText);
-  //   setInputText("");
-  // };
-
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputText(e.currentTarget.value);
   };

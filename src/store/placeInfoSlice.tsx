@@ -1,23 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type initialState = {
-  placeName: string;
-  placeAddr: string;
+  placeInfo: {
+    placeName: string;
+    placeAddr: string;
+  };
 };
 
 const initialState: initialState = {
-  placeName: "오",
-  placeAddr: "에",
+  placeInfo: {
+    placeName: "",
+    placeAddr: "",
+  },
 };
 
 const placeInfoSlice = createSlice({
-  name: "placeInfoCounter",
+  name: "placeInfo",
   initialState,
   reducers: {
-    up: (state, action) => {
-      state.placeName = state.placeName + action.payload;
+    setPlaceInfo: (state, action) => {
+      state.placeInfo = action.payload;
     },
   },
 });
 
+export const { setPlaceInfo } = placeInfoSlice.actions;
 export default placeInfoSlice.reducer;

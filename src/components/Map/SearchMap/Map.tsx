@@ -1,26 +1,20 @@
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { PlaceType, PaginaionType } from "../../../types/map";
+import { useDispatch, useSelector } from "react-redux";
+import { setPlaceInfo } from "../../../store/placeInfoSlice";
+import { RootState } from "../../../store";
 
-const { kakao }: any = window;
+const { kakao }: any = window; // 카카오맵을 쓰기 위한 코드
 
 interface SearchMapProps {
   searchPlace: string;
 }
 
-interface placeInfoType {
-  placeName: string;
-  placeAddr: string;
-}
-
 const SearchMap = ({ searchPlace }: SearchMapProps) => {
+  const dispatch = useDispatch();
   const [places, setPlaces] = useState<PlaceType[]>([]);
-  // const [placeName, setPlaceName] = useState<string>("");
-  // const [placeAddr, setPlaceAddr] = useState<string>("");
-  const [placeInfo, setPlaceInfo] = useState<placeInfoType>({
-    placeName: "",
-    placeAddr: "",
-  });
+  const { placeInfo } = useSelector((state: RootState) => state.placeInfo);
 
   const [pagination, setPagination] = useState<PaginaionType | null>(null);
   const markers: any = [];
@@ -62,12 +56,14 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
 
           // 마커 클릭시 실행되는 함수 - 클릭한 마커의 장소정보를 저장
           kakao.maps.event.addListener(marker, "click", function () {
-            setPlaceInfo({
-              placeName: data[i].place_name,
-              placeAddr: data[i].road_address_name
-                ? data[i].road_address_name
-                : data[i].address_name,
-            });
+            dispatch(
+              setPlaceInfo({
+                placeName: data[i].place_name,
+                placeAddr: data[i].road_address_name
+                  ? data[i].road_address_name
+                  : data[i].address_name,
+              })
+            );
           });
         }
 
@@ -76,7 +72,7 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
         setPlaces(data);
         setPagination(pagination);
 
-        console.log("places", places);
+        // console.log("places", places);
 
         // 지도 클릭시 마커를 생성하고 주소를 받아온다.
         if (data) {
@@ -168,6 +164,7 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
     }
   };
 
+  // console.log("placeInfo", placeInfo);
   console.log("placeInfo", placeInfo);
 
   return (
@@ -177,7 +174,6 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
       </span>
 
       <Map id="myMap" />
-
       <PlaceList>
         {places.map((item, i) => (
           <PlaceItem key={i}>
