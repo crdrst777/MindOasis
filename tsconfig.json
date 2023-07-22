@@ -16,7 +16,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "types": ["kakao.maps.d.ts"], // 확실치 않음
-    "typeRoots": ["src/types"] // images.d.ts 파일을 위한 코드. 그래야 png파일 오류가 안남
+    "typeRoots": ["src/types"], // images.d.ts 파일을 위한 코드. 그래야 png파일 오류가 안남
+    "strictNullChecks": false // 안그러면 JSON.parse(localStorage.getItem("userObj") 할때 에러남
   },
   "include": ["src"]
 }

@@ -5,18 +5,21 @@ import { v4 as uuidv4 } from "uuid";
 import { dbService, storageService } from "../../../fbase";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { RootState } from "../../../store";
+import { useSelector } from "react-redux";
 
 interface PostEditorProps {
   userObj: any | null;
 }
 
 const PostEditor = ({ userObj }: PostEditorProps) => {
-  const [title, setTitle] = useState("");
-  const [attachment, setAttachment] = useState<any>("");
-  // 사진 첨부 없이 텍스트만 트윗하고 싶을 때도 있으므로 기본 값을 ""로 해야한다. 트윗할 때 텍스트만 입력시 이미지 url ""로 비워두기 위함
-  const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
   const navigate = useNavigate();
+  const [title, setTitle] = useState("");
+  const [text, setText] = useState("");
+  const [attachment, setAttachment] = useState<any>(""); // 사진 첨부 없이 텍스트만 업로드하고 싶을 때도 있으므로 기본 값을 ""로 해야한다. 업로드할 때 텍스트만 입력시 이미지 url ""로 비워두기 위함
+  const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
+  const { placeInfo } = useSelector((state: RootState) => state.placeInfo);
 
   // submit 할때마다 document를 생성
   const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -39,13 +42,14 @@ const PostEditor = ({ userObj }: PostEditorProps) => {
       createdAt: Date.now(),
       creatorId: userObj.uid,
       attachmentUrl,
+      placeInfo,
     };
 
     await addDoc(collection(dbService, "posts"), postObj);
     setTitle("");
     setAttachment(""); //파일 미리보기 img src 비워주기
     fileInput.current!.value = "";
-    // navigate(`/content`);
+    navigate(`/content`);
   };
 
   const onCancelClick = () => {

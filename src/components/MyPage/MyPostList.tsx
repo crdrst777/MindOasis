@@ -1,7 +1,7 @@
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import { useEffect, useState } from "react";
-import IPostType from "../../types/types";
+import { IPostType } from "../../types/types";
 
 interface MyPostListProps {
   userObj: any | null;

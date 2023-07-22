@@ -28,7 +28,8 @@ const AppRouter = ({ isLoggedIn, userObj, refreshUser }: AppRouterProps) => {
             <Route
               path="/mypage/updateprofile"
               element={
-                <UpdateProfile userObj={userObj} refreshUser={refreshUser} />
+                // <UpdateProfile userObj={userObj} refreshUser={refreshUser} />
+                <UpdateProfile refreshUser={refreshUser} />
               }
             />
             <Route path="/mypage/updatepassword" element={<UpdatePassword />} />
@@ -53,7 +54,7 @@ const AppRouter = ({ isLoggedIn, userObj, refreshUser }: AppRouterProps) => {
         <Route
           path="/content/detail/:id"
           element={<Content userObj={userObj} />}
-        ></Route>
+        />
       </Routes>
     </>
   );

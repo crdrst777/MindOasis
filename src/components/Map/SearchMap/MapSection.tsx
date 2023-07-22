@@ -9,8 +9,8 @@ const MapSection = () => {
   const [inputText, setInputText] = useState("");
   const [place, setPlace] = useState("");
 
-  const a = useSelector((state: RootState) => state.placeInfo);
-  console.log("a", a);
+  // const a = useSelector((state: RootState) => state.placeInfo);
+  // console.log("a", a);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputText(e.currentTarget.value);
@@ -22,7 +22,7 @@ const MapSection = () => {
     setInputText("");
   };
 
-  console.log("place", place);
+  console.log("MapSection");
 
   return (
     <Container>

@@ -1,6 +1,6 @@
 import { dbService, storageService } from "../../fbase";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
-import IPostType from "../../types/types";
+import { IPostType } from "../../types/types";
 import { useState } from "react";
 import { ref, deleteObject } from "firebase/storage";
 import { styled } from "styled-components";

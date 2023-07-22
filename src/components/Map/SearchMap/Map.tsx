@@ -165,7 +165,6 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
   };
 
   // console.log("placeInfo", placeInfo);
-  console.log("placeInfo", placeInfo);
 
   return (
     <Container>

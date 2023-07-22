@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { dbService } from "../../fbase";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
-import IPostType from "../../types/types";
+import { IPostType } from "../../types/types";
 import { styled } from "styled-components";
 // import SinglePost from "../../components/Post/SinglePost";
 import { PathMatch, useMatch, useNavigate } from "react-router-dom";

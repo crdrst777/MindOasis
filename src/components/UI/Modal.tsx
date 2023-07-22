@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import close from "../../assets/img/close-icon.png";
 import { useMatch, useNavigate } from "react-router-dom";
-import IPostType from "../../types/types";
+import { IPostType } from "../../types/types";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";

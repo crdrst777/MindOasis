@@ -10,16 +10,16 @@ import {
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { styled } from "styled-components";
-import MyPostList from "../../components/MyPage/MyPostList";
 import Sidebar from "../../components/MyPage/Sidebar";
 
 interface UpdateProfileProps {
-  userObj: any | null;
   refreshUser: () => any;
 }
 
-const UpdateProfile = ({ userObj, refreshUser }: UpdateProfileProps) => {
+const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
   const navigate = useNavigate();
+  const userObj = JSON.parse(localStorage.getItem("userObj"));
+
   const [attachment, setAttachment] = useState<any>("");
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
   const [newDisplayName, setNewDisplayName] = useState<string>(
