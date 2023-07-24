@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { styled } from "styled-components";
-import search from "../../../assets/img/search-icon.png";
-import SearchMap from "./Map";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../store/index";
+import search from "../../assets/img/search-icon.png";
+import SearchMap from "./SearchMap";
 
-const MapSection = () => {
+interface MapSectionProps {
+  selectedPlaceText: boolean;
+}
+
+const MapSection = ({ selectedPlaceText }: MapSectionProps) => {
   const [inputText, setInputText] = useState("");
   const [place, setPlace] = useState("");
-
-  // const a = useSelector((state: RootState) => state.placeInfo);
-  // console.log("a", a);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputText(e.currentTarget.value);
@@ -36,7 +35,7 @@ const MapSection = () => {
         />
         {/* <SearchBtn onClick={onSubmit}>검색</SearchBtn> */}
       </SearchForm>
-      <SearchMap searchPlace={place} />
+      <SearchMap searchPlace={place} selectedPlaceText={selectedPlaceText} />
     </Container>
   );
 };
@@ -48,7 +47,7 @@ const Container = styled.div``;
 const SearchForm = styled.div`
   display: flex;
   justify-content: center;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
   position: relative;
 `;
 

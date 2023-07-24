@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
-import { PlaceType, PaginaionType } from "../../../types/map";
+import { PlaceType, PaginaionType } from "../../types/map";
 import { useDispatch, useSelector } from "react-redux";
-import { setPlaceInfo } from "../../../store/placeInfoSlice";
-import { RootState } from "../../../store";
+import { setPlaceInfo } from "../../store/placeInfoSlice";
+import { RootState } from "../../store";
 
 const { kakao }: any = window; // 카카오맵을 쓰기 위한 코드
 
 interface SearchMapProps {
   searchPlace: string;
+  selectedPlaceText: boolean;
 }
 
-const SearchMap = ({ searchPlace }: SearchMapProps) => {
+const SearchMap = ({ searchPlace, selectedPlaceText }: SearchMapProps) => {
   const dispatch = useDispatch();
   const [places, setPlaces] = useState<PlaceType[]>([]);
   const { placeInfo } = useSelector((state: RootState) => state.placeInfo);
@@ -170,9 +171,14 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
 
   return (
     <Container>
-      <span>
-        {placeInfo.placeName} {placeInfo.placeAddr}
-      </span>
+      <SelectedPlaceText>
+        {selectedPlaceText ? (
+          <>
+            <PlaceName>{placeInfo.placeName}</PlaceName>
+            <PlaceAddr>{placeInfo.placeAddr}</PlaceAddr>
+          </>
+        ) : null}
+      </SelectedPlaceText>
 
       <Map id="myMap" />
       <PlaceList>
@@ -212,6 +218,21 @@ const Container = styled.div`
   flex-direction: column;
   margin: auto;
   width: 45rem;
+`;
+
+const SelectedPlaceText = styled.div`
+  display: flex;
+  justify-content: end;
+  font-size: 1.05rem;
+  font-weight: 400;
+  margin: 0.6rem 0 1.8rem 0;
+`;
+
+const PlaceName = styled.span`
+  color: ${(props) => props.theme.colors.darkGray};
+`;
+const PlaceAddr = styled.span`
+  color: ${(props) => props.theme.colors.blue};
 `;
 
 const Map = styled.div`

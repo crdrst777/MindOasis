@@ -1,4 +1,4 @@
-import MapSection from "../../Map/SearchMap/MapSection";
+import MapSection from "../../Map/MapSection";
 import { styled } from "styled-components";
 import { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -20,6 +20,7 @@ const PostEditor = () => {
   const [attachment, setAttachment] = useState<any>(""); // 사진 첨부 없이 텍스트만 업로드하고 싶을 때도 있으므로 기본 값을 ""로 해야한다. 업로드할 때 텍스트만 입력시 이미지 url ""로 비워두기 위함
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
   const { placeInfo } = useSelector((state: RootState) => state.placeInfo);
+  const [selectedPlaceText, setSelectedPlaceText] = useState(true);
 
   // submit 할때마다 document를 생성
   const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -37,27 +38,46 @@ const PostEditor = () => {
           console.log(err);
         });
     }
-    const postObj = {
-      title: title,
-      createdAt: Date.now(),
-      creatorId: userInfo.uid,
-      attachmentUrl,
-      placeInfo,
-    };
 
-    await addDoc(collection(dbService, "posts"), postObj);
-    setTitle("");
-    setAttachment(""); //파일 미리보기 img src 비워주기
-    fileInput.current!.value = "";
-    navigate(`/content`);
+    //공백만 입력된 경우
+    const blankPattern = /^\s+|\s+$/g;
+    if (title.replace(blankPattern, "") === "" || title === "") {
+      alert("제목을 입력해주세요");
+    } else if (text.replace(blankPattern, "") === "" || text === "") {
+      alert("내용을 입력해주세요");
+    } else if (placeInfo.placeAddr === "") {
+      alert("지도에서 위치를 선택해주세요");
+    } else {
+      const postObj = {
+        title: title,
+        text: text,
+        createdAt: Date.now(),
+        creatorId: userInfo.uid,
+        attachmentUrl,
+        placeInfo,
+      };
+
+      await addDoc(collection(dbService, "posts"), postObj);
+      setTitle("");
+      setText("");
+      setAttachment(""); // 파일 미리보기 img src 비워주기
+      fileInput.current!.value = "";
+      setSelectedPlaceText((prev) => !prev); // Map.tsx의 SelectedPlaceText 비활성화하기
+      // navigate(`/content`);
+      alert("등록 완료");
+    }
   };
 
   const onCancelClick = () => {
     navigate(`/content`);
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.currentTarget.value);
+  };
+
+  const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value);
   };
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,13 +107,15 @@ const PostEditor = () => {
         <TitleInput
           type="text"
           value={title}
-          onChange={onChange}
+          onChange={onTitleChange}
           maxLength={70}
           placeholder="글 제목을 입력해주세요!"
         />
 
         <TextInput
           maxLength={500}
+          value={text}
+          onChange={onTextChange}
           placeholder="자유롭게 장소에 대해 적어주세요!"
         />
       </WriteContainer>
@@ -122,7 +144,7 @@ const PostEditor = () => {
           <span>3</span>
           <h2>지도에서 장소를 선택해주세요</h2>
         </SectionTitle>
-        <MapSection />
+        <MapSection selectedPlaceText={selectedPlaceText} />
       </MapContainer>
       {/* <RadioContainer /> */}
 
