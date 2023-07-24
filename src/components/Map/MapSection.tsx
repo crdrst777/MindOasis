@@ -3,11 +3,9 @@ import { styled } from "styled-components";
 import search from "../../assets/img/search-icon.png";
 import SearchMap from "./SearchMap";
 
-interface MapSectionProps {
-  selectedPlaceText: boolean;
-}
+interface MapSectionProps {}
 
-const MapSection = ({ selectedPlaceText }: MapSectionProps) => {
+const MapSection = () => {
   const [inputText, setInputText] = useState("");
   const [place, setPlace] = useState("");
 
@@ -35,7 +33,7 @@ const MapSection = ({ selectedPlaceText }: MapSectionProps) => {
         />
         {/* <SearchBtn onClick={onSubmit}>검색</SearchBtn> */}
       </SearchForm>
-      <SearchMap searchPlace={place} selectedPlaceText={selectedPlaceText} />
+      <SearchMap searchPlace={place} />
     </Container>
   );
 };

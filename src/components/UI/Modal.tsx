@@ -54,7 +54,20 @@ const Modal = ({ postId }: ModalProps) => {
           {/* <Header></Header> */}
 
           <CloseIcon onClick={closeModal} />
-          <Content>{postId}</Content>
+          <Content>
+            <div>id {postId}</div>
+            <div>creatorId {post.creatorId}</div>
+            <div>createdAt {post.createdAt}</div>
+            <div>title {post.title}</div>
+            <div>text {post.text}</div>
+
+            <div>placeName {post.placeInfo?.placeName}</div>
+            <div>placeAddr {post.placeInfo?.placeAddr}</div>
+
+            {post.attachmentUrl && (
+              <PreviewImg src={post.attachmentUrl} alt="image" />
+            )}
+          </Content>
         </ModalContainer>
       </Container>
     </>
@@ -146,4 +159,12 @@ const Content = styled.section`
   align-items: center;
   width: 100%;
   height: 130rem;
+`;
+
+const PreviewImg = styled.img`
+  width: 17rem;
+  height: 17rem;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px;
 `;

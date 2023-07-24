@@ -9,10 +9,9 @@ const { kakao }: any = window; // 카카오맵을 쓰기 위한 코드
 
 interface SearchMapProps {
   searchPlace: string;
-  selectedPlaceText: boolean;
 }
 
-const SearchMap = ({ searchPlace, selectedPlaceText }: SearchMapProps) => {
+const SearchMap = ({ searchPlace }: SearchMapProps) => {
   const dispatch = useDispatch();
   const [places, setPlaces] = useState<PlaceType[]>([]);
   const { placeInfo } = useSelector((state: RootState) => state.placeInfo);
@@ -60,9 +59,7 @@ const SearchMap = ({ searchPlace, selectedPlaceText }: SearchMapProps) => {
             dispatch(
               setPlaceInfo({
                 placeName: data[i].place_name,
-                placeAddr: data[i].road_address_name
-                  ? data[i].road_address_name
-                  : data[i].address_name,
+                placeAddr: data[i].address_name,
               })
             );
           });
@@ -109,9 +106,7 @@ const SearchMap = ({ searchPlace, selectedPlaceText }: SearchMapProps) => {
                     dispatch(
                       setPlaceInfo({
                         placeName: "",
-                        placeAddr: result[0].road_address
-                          ? result[0].road_address.address_name
-                          : result[0].address.address_name,
+                        placeAddr: result[0].address.address_name,
                       })
                     );
                   }
@@ -172,12 +167,8 @@ const SearchMap = ({ searchPlace, selectedPlaceText }: SearchMapProps) => {
   return (
     <Container>
       <SelectedPlaceText>
-        {selectedPlaceText ? (
-          <>
-            <PlaceName>{placeInfo.placeName}</PlaceName>
-            <PlaceAddr>{placeInfo.placeAddr}</PlaceAddr>
-          </>
-        ) : null}
+        <PlaceName>{placeInfo.placeName}</PlaceName>
+        <PlaceAddr>{placeInfo.placeAddr}</PlaceAddr>
       </SelectedPlaceText>
 
       <Map id="myMap" />
@@ -187,11 +178,7 @@ const SearchMap = ({ searchPlace, selectedPlaceText }: SearchMapProps) => {
             <span>{i + 1}</span>
             <span> - {item.place_name}</span>
             <AddressName>
-              {item.road_address_name ? (
-                <span>{item.road_address_name}</span>
-              ) : (
-                <span>{item.address_name}</span>
-              )}
+              <span>{item.address_name}</span>
             </AddressName>
           </PlaceItem>
         ))}

@@ -7,12 +7,14 @@ import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setPlaceInfo } from "../../../store/placeInfoSlice";
 
 interface PostEditorProps {}
 
 const PostEditor = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
   const [title, setTitle] = useState("");
@@ -20,7 +22,6 @@ const PostEditor = () => {
   const [attachment, setAttachment] = useState<any>(""); // 사진 첨부 없이 텍스트만 업로드하고 싶을 때도 있으므로 기본 값을 ""로 해야한다. 업로드할 때 텍스트만 입력시 이미지 url ""로 비워두기 위함
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
   const { placeInfo } = useSelector((state: RootState) => state.placeInfo);
-  const [selectedPlaceText, setSelectedPlaceText] = useState(true);
 
   // submit 할때마다 document를 생성
   const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -39,14 +40,14 @@ const PostEditor = () => {
         });
     }
 
-    //공백만 입력된 경우
-    const blankPattern = /^\s+|\s+$/g;
-    if (title.replace(blankPattern, "") === "" || title === "") {
-      alert("제목을 입력해주세요");
+    const blankPattern = /^\s+|\s+$/g; //공백만 입력된 경우
+
+    if (placeInfo.placeAddr === "") {
+      alert("지도에서 위치를 선택해주세요");
+    } else if (title.replace(blankPattern, "") === "" || title === "") {
+      setTitle(placeInfo.placeAddr);
     } else if (text.replace(blankPattern, "") === "" || text === "") {
       alert("내용을 입력해주세요");
-    } else if (placeInfo.placeAddr === "") {
-      alert("지도에서 위치를 선택해주세요");
     } else {
       const postObj = {
         title: title,
@@ -62,9 +63,15 @@ const PostEditor = () => {
       setText("");
       setAttachment(""); // 파일 미리보기 img src 비워주기
       fileInput.current!.value = "";
-      setSelectedPlaceText((prev) => !prev); // Map.tsx의 SelectedPlaceText 비활성화하기
-      // navigate(`/content`);
+      dispatch(
+        setPlaceInfo({
+          placeName: "",
+          placeAddr: "",
+        })
+      );
+
       alert("등록 완료");
+      navigate(`/content`);
     }
   };
 
@@ -98,9 +105,17 @@ const PostEditor = () => {
 
   return (
     <Container>
-      <WriteContainer>
+      <MapContainer>
         <SectionTitle>
           <span>1</span>
+          <h2>지도에서 장소를 선택해주세요</h2>
+        </SectionTitle>
+        <MapSection />
+      </MapContainer>
+
+      <WriteContainer>
+        <SectionTitle>
+          <span>2</span>
           <h2>장소에 대해 알려주세요</h2>
         </SectionTitle>
         <SubTitle>제목</SubTitle>
@@ -109,7 +124,7 @@ const PostEditor = () => {
           value={title}
           onChange={onTitleChange}
           maxLength={70}
-          placeholder="글 제목을 입력해주세요!"
+          placeholder={placeInfo.placeAddr}
         />
 
         <TextInput
@@ -122,7 +137,7 @@ const PostEditor = () => {
 
       <FileContainer>
         <SectionTitle>
-          <span>2</span>
+          <span>3</span>
           <h2>사진을 공유해주세요</h2>
         </SectionTitle>
         <FileInput
@@ -139,13 +154,6 @@ const PostEditor = () => {
         )}
       </FileContainer>
 
-      <MapContainer>
-        <SectionTitle>
-          <span>3</span>
-          <h2>지도에서 장소를 선택해주세요</h2>
-        </SectionTitle>
-        <MapSection selectedPlaceText={selectedPlaceText} />
-      </MapContainer>
       {/* <RadioContainer /> */}
 
       <BtnContainer>
@@ -165,8 +173,12 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const MapContainer = styled.section`
+  margin-top: 1rem;
+`;
+
 const WriteContainer = styled.section`
-  margin-top: 3rem;
+  margin-top: 5rem;
 `;
 
 const SectionTitle = styled.div`
@@ -227,7 +239,7 @@ const TextInput = styled.textarea`
   resize: none;
 `;
 
-const FileContainer = styled(WriteContainer)`
+const FileContainer = styled.section`
   margin-top: 5rem;
 `;
 
@@ -241,8 +253,6 @@ const FileInput = styled.input`
   border: ${(props) => props.theme.borders.gray};
   cursor: pointer;
 `;
-
-const MapContainer = styled(FileContainer)``;
 
 const BtnContainer = styled.div`
   display: flex;
