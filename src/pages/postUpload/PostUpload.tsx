@@ -1,15 +1,13 @@
 import { styled } from "styled-components";
 import PostEditor from "../../components/Post/PostUpload/PostEditor";
 
-interface PostUploadProps {
-  userObj: any | null;
-}
+interface PostUploadProps {}
 
-const PostUpload = ({ userObj }: PostUploadProps) => {
+const PostUpload = () => {
   return (
     <>
       <Container>
-        <PostEditor userObj={userObj} />
+        <PostEditor />
       </Container>
     </>
   );

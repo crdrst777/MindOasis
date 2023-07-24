@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService, storageService } from "../../fbase";
 import { updateProfile } from "firebase/auth";
@@ -18,12 +18,12 @@ interface UpdateProfileProps {
 
 const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
   const navigate = useNavigate();
-  const userObj = JSON.parse(localStorage.getItem("userObj"));
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
   const [attachment, setAttachment] = useState<any>("");
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
   const [newDisplayName, setNewDisplayName] = useState<string>(
-    userObj.displayName
+    userInfo.displayName
   );
   const photoURLRef = ref(storageService, authService!.currentUser!.photoURL!);
 
@@ -40,7 +40,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
     // 파일 첨부시
     if (attachment) {
       // 기존 프로필 사진이 있는 경우 기존의 것을 스토리지에서 지워준다.
-      if (userObj.photoURL !== null) {
+      if (userInfo.photoURL !== null) {
         try {
           await deleteObject(photoURLRef);
         } catch (error: any) {
@@ -48,7 +48,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
         }
       }
 
-      const attachmentRef = ref(storageService, `${userObj.uid}/${uuidv4()}`); // 파일 경로 참조 생성
+      const attachmentRef = ref(storageService, `${userInfo.uid}/${uuidv4()}`); // 파일 경로 참조 생성
       await uploadString(attachmentRef, attachment, "data_url"); // 파일 업로드(이 경우는 url)
       await getDownloadURL(attachmentRef)
         .then((url) => {
@@ -59,16 +59,16 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
         });
     }
     // input창에 뭐라도 쓴 경우
-    if (userObj.displayName !== newDisplayName) {
+    if (userInfo.displayName !== newDisplayName) {
       await updateProfile(authService.currentUser!, {
         displayName: newDisplayName,
         photoURL: photoURL,
       });
     }
     // input창이 비어있거나 그대로인(파일만 올린) 경우
-    if (newDisplayName === "" || newDisplayName === userObj.displayName) {
+    if (newDisplayName === "" || newDisplayName === userInfo.displayName) {
       await updateProfile(authService.currentUser!, {
-        displayName: userObj.displayName,
+        displayName: userInfo.displayName,
         photoURL: photoURL,
       });
     }
@@ -99,7 +99,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
 
   // 프로필 사진 삭제
   const onDeleteClick = async () => {
-    if (userObj.photoURL) {
+    if (userInfo.photoURL) {
       await updateProfile(authService.currentUser!, {
         displayName: newDisplayName,
         photoURL: "",

@@ -2,17 +2,15 @@ import { styled } from "styled-components";
 import MyPostList from "../../components/MyPage/MyPostList";
 import Sidebar from "../../components/MyPage/Sidebar";
 
-interface MyPostsProps {
-  userObj: any | null;
-}
+interface MyPostsProps {}
 
-const MyPosts = ({ userObj }: MyPostsProps) => {
+const MyPosts = () => {
   return (
     <MyPageContainer>
       <Container>
         <Sidebar />
         <MainContainer>
-          <MyPostList userObj={userObj} />
+          <MyPostList />
         </MainContainer>
       </Container>
     </MyPageContainer>

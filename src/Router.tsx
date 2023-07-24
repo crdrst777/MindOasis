@@ -13,14 +13,13 @@ import PostUpload from "./pages/postUpload/PostUpload";
 
 interface AppRouterProps {
   isLoggedIn: boolean;
-  userObj: any | null;
   refreshUser: () => any;
 }
 
-const AppRouter = ({ isLoggedIn, userObj, refreshUser }: AppRouterProps) => {
+const AppRouter = ({ isLoggedIn, refreshUser }: AppRouterProps) => {
   return (
     <>
-      {isLoggedIn && <Nav userObj={userObj} />}
+      {isLoggedIn && <Nav />}
       {/* isLoggedIn이 true면 <Nav/>가 나오도록 */}
       <Routes>
         {isLoggedIn ? (
@@ -33,16 +32,10 @@ const AppRouter = ({ isLoggedIn, userObj, refreshUser }: AppRouterProps) => {
               }
             />
             <Route path="/mypage/updatepassword" element={<UpdatePassword />} />
-            <Route
-              path="/mypage/myposts"
-              element={<MyPosts userObj={userObj} />}
-            />
+            <Route path="/mypage/myposts" element={<MyPosts />} />
             <Route path="/mypage/mylikes" element={<MyLikes />} />
 
-            <Route
-              path="/postupload"
-              element={<PostUpload userObj={userObj} />}
-            />
+            <Route path="/postupload" element={<PostUpload />} />
           </>
         ) : (
           <Route path="/" element={<Login />} />
@@ -50,11 +43,8 @@ const AppRouter = ({ isLoggedIn, userObj, refreshUser }: AppRouterProps) => {
 
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/content" element={<Content userObj={userObj} />} />
-        <Route
-          path="/content/detail/:id"
-          element={<Content userObj={userObj} />}
-        />
+        <Route path="/content" element={<Content />} />
+        <Route path="/content/detail/:id" element={<Content />} />
       </Routes>
     </>
   );

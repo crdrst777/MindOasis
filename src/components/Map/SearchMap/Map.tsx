@@ -105,12 +105,14 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
                   if (status === kakao.maps.services.Status.OK) {
                     console.log("result", result[0]);
 
-                    setPlaceInfo({
-                      placeName: "",
-                      placeAddr: result[0].road_address
-                        ? result[0].road_address.address_name
-                        : result[0].address.address_name,
-                    });
+                    dispatch(
+                      setPlaceInfo({
+                        placeName: "",
+                        placeAddr: result[0].road_address
+                          ? result[0].road_address.address_name
+                          : result[0].address.address_name,
+                      })
+                    );
                   }
                 }
               );
@@ -164,7 +166,7 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
     }
   };
 
-  // console.log("placeInfo", placeInfo);
+  console.log("placeInfo", placeInfo);
 
   return (
     <Container>

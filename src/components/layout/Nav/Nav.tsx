@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
-interface NavProps {
-  userObj: any | null;
-}
+interface NavProps {}
 
-const Nav = ({ userObj }: NavProps) => {
+const Nav = () => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
   return (
     <NavContainer>
       <Container>
@@ -27,8 +27,8 @@ const Nav = ({ userObj }: NavProps) => {
             <Link to="/mypage/updateprofile">
               {/* <span>{userObj.displayName}'s My Page</span> */}
               <AvatarContainer>
-                {userObj.photoURL ? (
-                  <img src={userObj.photoURL} alt="profile photo" />
+                {userInfo.photoURL ? (
+                  <img src={userInfo.photoURL} alt="profile photo" />
                 ) : (
                   <img src="null" alt="profile photo" />
                 )}

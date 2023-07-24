@@ -9,12 +9,12 @@ import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../store";
 import { useSelector } from "react-redux";
 
-interface PostEditorProps {
-  userObj: any | null;
-}
+interface PostEditorProps {}
 
-const PostEditor = ({ userObj }: PostEditorProps) => {
+const PostEditor = () => {
   const navigate = useNavigate();
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [attachment, setAttachment] = useState<any>(""); // 사진 첨부 없이 텍스트만 업로드하고 싶을 때도 있으므로 기본 값을 ""로 해야한다. 업로드할 때 텍스트만 입력시 이미지 url ""로 비워두기 위함
@@ -27,7 +27,7 @@ const PostEditor = ({ userObj }: PostEditorProps) => {
     let attachmentUrl: string = "";
 
     if (attachment) {
-      const attachmentRef = ref(storageService, `${userObj.uid}/${uuidv4()}`); // 파일 경로 참조 생성
+      const attachmentRef = ref(storageService, `${userInfo.uid}/${uuidv4()}`); // 파일 경로 참조 생성
       await uploadString(attachmentRef, attachment, "data_url"); // 파일 업로드(이 경우는 url)
       await getDownloadURL(attachmentRef)
         .then((url) => {
@@ -40,7 +40,7 @@ const PostEditor = ({ userObj }: PostEditorProps) => {
     const postObj = {
       title: title,
       createdAt: Date.now(),
-      creatorId: userObj.uid,
+      creatorId: userInfo.uid,
       attachmentUrl,
       placeInfo,
     };
