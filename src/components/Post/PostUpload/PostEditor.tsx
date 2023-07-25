@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlaceInfo } from "../../../store/placeInfoSlice";
+import { IPostType } from "../../../types/types";
 
 interface PostEditorProps {}
 
@@ -22,6 +23,20 @@ const PostEditor = () => {
   const [attachment, setAttachment] = useState<any>(""); // 사진 첨부 없이 텍스트만 업로드하고 싶을 때도 있으므로 기본 값을 ""로 해야한다. 업로드할 때 텍스트만 입력시 이미지 url ""로 비워두기 위함
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
   const { placeInfo } = useSelector((state: RootState) => state.placeInfo);
+
+  const uploadData = (Data: IPostType) => {
+    addDoc(collection(dbService, "posts"), Data);
+    setTitle("");
+    setText("");
+    setAttachment(""); // 파일 미리보기 img src 비워주기
+    fileInput.current!.value = "";
+    dispatch(
+      setPlaceInfo({
+        placeName: "",
+        placeAddr: "",
+      })
+    );
+  };
 
   // submit 할때마다 document를 생성
   const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -44,10 +59,23 @@ const PostEditor = () => {
 
     if (placeInfo.placeAddr === "") {
       alert("지도에서 위치를 선택해주세요");
-    } else if (title.replace(blankPattern, "") === "" || title === "") {
-      setTitle(placeInfo.placeAddr);
     } else if (text.replace(blankPattern, "") === "" || text === "") {
       alert("내용을 입력해주세요");
+
+      // 공백만 있거나 값이 없는 경우
+    } else if (title.replace(blankPattern, "") === "" || title === "") {
+      // setTitle(placeInfo.placeAddr); // 이 코드가 실행될때 리랜더링 되는데 이 리랜더링을 막아야 등록 버튼 눌렀을때 한번에 제출됨
+      const postObj = {
+        title: placeInfo.placeAddr,
+        text: text,
+        createdAt: Date.now(),
+        creatorId: userInfo.uid,
+        attachmentUrl,
+        placeInfo,
+      };
+      await uploadData(postObj);
+      alert("등록 완료");
+      navigate(`/content`);
     } else {
       const postObj = {
         title: title,
@@ -57,19 +85,7 @@ const PostEditor = () => {
         attachmentUrl,
         placeInfo,
       };
-
-      await addDoc(collection(dbService, "posts"), postObj);
-      setTitle("");
-      setText("");
-      setAttachment(""); // 파일 미리보기 img src 비워주기
-      fileInput.current!.value = "";
-      dispatch(
-        setPlaceInfo({
-          placeName: "",
-          placeAddr: "",
-        })
-      );
-
+      await uploadData(postObj);
       alert("등록 완료");
       navigate(`/content`);
     }
@@ -219,7 +235,7 @@ const TitleInput = styled.input`
   width: 45rem;
   min-height: 3.5rem;
   font-size: 1rem;
-  color: ${(props) => props.theme.colors.darkGray};
+  color: ${(props) => props.theme.colors.moreDarkGray};
   padding: 0 1.2rem;
   margin-bottom: 0.8rem;
   border-radius: 5px;
@@ -230,7 +246,7 @@ const TextInput = styled.textarea`
   width: 45rem;
   height: 11.4rem;
   font-size: 1rem;
-  color: ${(props) => props.theme.colors.darkGray};
+  color: ${(props) => props.theme.colors.moreDarkGray};
   padding: 1.2rem;
   border-radius: 5px;
   border: ${(props) => props.theme.borders.gray};
@@ -247,7 +263,7 @@ const FileInput = styled.input`
   width: 45rem;
   height: 5rem;
   font-size: 1rem;
-  color: ${(props) => props.theme.colors.darkGray};
+  color: ${(props) => props.theme.colors.moreDarkGray};
   padding: 0 1.2rem;
   border-radius: 5px;
   border: ${(props) => props.theme.borders.gray};
@@ -278,4 +294,7 @@ const PostBtn = styled(CancelBtn)`
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.lightBlack};
   font-weight: 500;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.darkGray};
+  }
 `;
