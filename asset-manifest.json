@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/mindoasis/static/js/main.625c647c.js",
+    "index.html": "/mindoasis/index.html",
+    "main.625c647c.js.map": "/mindoasis/static/js/main.625c647c.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.625c647c.js"
+  ]
+}
