@@ -51,10 +51,13 @@ const Modal = ({ postId }: ModalProps) => {
         <Overlay onClick={closeModal} />
 
         <ModalContainer>
-          {/* <Header></Header> */}
-
-          <CloseIcon onClick={closeModal} />
+          {/* <CloseIcon onClick={closeModal} /> */}
           <Content>
+            <Header></Header>
+            {post.attachmentUrl && (
+              <PreviewImg src={post.attachmentUrl} alt="image" />
+            )}
+
             <div>id {postId}</div>
             <div>creatorId {post.creatorId}</div>
             <div>createdAt {post.createdAt}</div>
@@ -63,10 +66,6 @@ const Modal = ({ postId }: ModalProps) => {
 
             <div>placeName {post.placeInfo?.placeName}</div>
             <div>placeAddr {post.placeInfo?.placeAddr}</div>
-
-            {post.attachmentUrl && (
-              <PreviewImg src={post.attachmentUrl} alt="image" />
-            )}
           </Content>
         </ModalContainer>
       </Container>
@@ -114,8 +113,7 @@ const ModalContainer = styled.article`
   width: 60rem;
   top: 2.3rem;
   margin: auto 0;
-  border-radius: 0.4rem;
-  padding: 1.5rem;
+  border-radius: 0.2rem;
   background-color: white;
   height: 50rem;
   overflow: scroll;
@@ -143,28 +141,30 @@ const ModalContainer = styled.article`
 `;
 // const Header = styled.header``;
 
-const CloseIcon = styled.img.attrs({
-  src: close,
-})`
-  position: absolute;
-  width: 1rem;
-  right: 1.5rem;
-  top: 1.5rem;
-  cursor: pointer;
-`;
+// const CloseIcon = styled.img.attrs({
+//   src: close,
+// })`
+//   position: absolute;
+//   width: 1rem;
+//   right: 1.5rem;
+//   top: 1.5rem;
+//   cursor: pointer;
+// `;
 
 const Content = styled.section`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   width: 100%;
   height: 130rem;
 `;
 
+const Header = styled.header`
+  height: 4rem;
+  padding: 0.6rem 1.5rem;
+`;
+
 const PreviewImg = styled.img`
-  width: 17rem;
-  height: 17rem;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px;
+  height: 32rem;
+  padding: 0.6rem 1.5rem;
 `;

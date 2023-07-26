@@ -62,7 +62,7 @@ const PostEditor = () => {
     } else if (text.replace(blankPattern, "") === "" || text === "") {
       alert("내용을 입력해주세요");
 
-      // 공백만 있거나 값이 없는 경우
+      //  title인풋에 공백만 있거나 값이 없는 경우엔 장소이름을 넣어준다.
     } else if (title.replace(blankPattern, "") === "" || title === "") {
       // setTitle(placeInfo.placeAddr); // 이 코드가 실행될때 리랜더링 되는데 이 리랜더링을 막아야 등록 버튼 눌렀을때 한번에 제출됨
       const postObj = {

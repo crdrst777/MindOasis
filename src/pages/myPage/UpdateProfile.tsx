@@ -30,6 +30,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
   const onLogOutClick = async () => {
     await authService.signOut();
     navigate("/");
+    window.location.reload();
   };
 
   // 프로필 업데이트

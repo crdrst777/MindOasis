@@ -1,11 +1,22 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
-
+import avatar from "../../../assets/img/avatar-icon.png";
+{
+}
 interface NavProps {}
 
 const Nav = () => {
+  const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+  const goToLogin = () => {
+    if (!userInfo) {
+      alert("로그인을 해주세요");
+      navigate("/login");
+      // refreshUser();
+      // window.location.reload();
+    }
+  };
 
   return (
     <NavContainer>
@@ -20,21 +31,27 @@ const Nav = () => {
           <li>
             <Link to="/content">목록</Link>
           </li>
-          <li>
+          <li onClick={goToLogin}>
             <Link to="/postupload">새 글 쓰기</Link>
           </li>
-          <li>
-            <Link to="/mypage/updateprofile">
-              {/* <span>{userObj.displayName}'s My Page</span> */}
-              <AvatarContainer>
-                {userInfo.photoURL ? (
-                  <img src={userInfo.photoURL} alt="profile photo" />
-                ) : (
-                  <img src="null" alt="profile photo" />
-                )}
-              </AvatarContainer>
-            </Link>
-          </li>
+
+          {userInfo ? (
+            <li>
+              <Link to="/mypage/updateprofile">
+                <AvatarContainer>
+                  {userInfo.photoURL ? (
+                    <img src={userInfo.photoURL} alt="profile photo" />
+                  ) : (
+                    <BasicAvatarIcon />
+                  )}
+                </AvatarContainer>
+              </Link>
+            </li>
+          ) : (
+            <li>
+              <Link to="/login">로그인</Link>
+            </li>
+          )}
         </NavbarMenu>
       </Container>
     </NavContainer>
@@ -80,15 +97,24 @@ const NavbarMenu = styled.ul`
 `;
 
 const AvatarContainer = styled.div`
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 2.7rem;
+  height: 2.7rem;
   border-radius: 50%;
-  background-color: orange;
+  /* background-color: orange; */
 
   img {
-    width: 2.8rem;
-    height: 2.8rem;
+    width: 2.7rem;
+    height: 2.7rem;
     object-fit: cover;
     border-radius: 50%;
   }
+`;
+
+const BasicAvatarIcon = styled.img.attrs({
+  src: avatar,
+})`
+  width: 2.7rem;
+  height: 2.7rem;
+  object-fit: cover;
+  border-radius: 50%;
 `;

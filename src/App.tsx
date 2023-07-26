@@ -5,6 +5,7 @@ import { updateProfile } from "firebase/auth";
 import AppRouter from "./Router";
 import Footer from "./components/Layout/Footer";
 import { UserInfoType } from "./types/types";
+import Nav from "./components/Layout/Nav/Nav";
 
 function App() {
   const [init, setInit] = useState(false);
@@ -60,7 +61,9 @@ function App() {
   console.log("userInfo", userInfo);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <Nav />
+
       {init ? (
         <AppRouter isLoggedIn={Boolean(userInfo)} refreshUser={refreshUser} />
       ) : (

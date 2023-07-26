@@ -19,7 +19,7 @@ interface AppRouterProps {
 const AppRouter = ({ isLoggedIn, refreshUser }: AppRouterProps) => {
   return (
     <>
-      {isLoggedIn && <Nav />}
+      {/* {isLoggedIn && <Nav />} */}
       {/* isLoggedIn이 true면 <Nav/>가 나오도록 */}
       <Routes>
         {isLoggedIn ? (
@@ -38,7 +38,7 @@ const AppRouter = ({ isLoggedIn, refreshUser }: AppRouterProps) => {
             <Route path="/postupload" element={<PostUpload />} />
           </>
         ) : (
-          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
         )}
 
         <Route path="/" element={<Home />} />

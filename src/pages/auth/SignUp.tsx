@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { authService } from "../../fbase";
+import { authService, dbService } from "../../fbase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { addDoc, collection } from "firebase/firestore";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const [error, setError] = useState("");
@@ -15,6 +18,16 @@ const SignUp = () => {
     setPassword(e.currentTarget.value);
   };
 
+  const uploadData = (data: any) => {
+    const usersData = {
+      email: email,
+      displayName: data.email.split("@")[0],
+      uid: data.uid,
+      photoURL: data.photoURL,
+    };
+    addDoc(collection(dbService, "users"), usersData);
+  };
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -23,8 +36,13 @@ const SignUp = () => {
         email,
         password
       );
-      console.log("data", data);
-      console.log(data.user.email);
+      console.log(data.user.uid); // document id는 유저 uid로 하면 편리할듯
+      console.log("data.user", data.user); // document id는 유저 uid로 하면 편리할듯
+
+      await uploadData(data.user);
+
+      alert("회원가입 완료");
+      navigate(`/`);
     } catch (error: any) {
       // } catch (error: FirebaseApp.FirebaseError) {
       window.confirm(error.code);

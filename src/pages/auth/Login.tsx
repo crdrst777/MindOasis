@@ -26,6 +26,7 @@ const Login = () => {
         password
       );
       console.log(data.user.email);
+      navigate("/content");
     } catch (error: any) {
       window.confirm(error.code);
     }
