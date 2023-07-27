@@ -19,13 +19,13 @@ const SignUp = () => {
   };
 
   const uploadData = (data: any) => {
-    const usersData = {
+    const userDoc = {
       email: email,
       displayName: data.email.split("@")[0],
       uid: data.uid,
       photoURL: data.photoURL,
     };
-    addDoc(collection(dbService, "users"), usersData);
+    addDoc(collection(dbService, "users"), userDoc);
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

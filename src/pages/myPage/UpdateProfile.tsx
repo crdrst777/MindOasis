@@ -10,6 +10,7 @@ import {
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { styled } from "styled-components";
+import avatar from "../../assets/img/avatar-icon.png";
 import Sidebar from "../../components/MyPage/Sidebar";
 
 interface UpdateProfileProps {
@@ -34,7 +35,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
   };
 
   // 프로필 업데이트
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     let photoURL: string = "";
 
@@ -59,19 +60,30 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
           console.log(err);
         });
     }
-    // input창에 뭐라도 쓴 경우
-    if (userInfo.displayName !== newDisplayName) {
-      await updateProfile(authService.currentUser!, {
+    if (userInfo.displayName !== newDisplayName && photoURL !== "") {
+      const userObj = {
         displayName: newDisplayName,
         photoURL: photoURL,
-      });
+      };
+      await updateProfile(authService.currentUser!, userObj);
     }
-    // input창이 비어있거나 그대로인(파일만 올린) 경우
-    if (newDisplayName === "" || newDisplayName === userInfo.displayName) {
-      await updateProfile(authService.currentUser!, {
+    // input창에 뭐라도 쓴 경우
+    if (userInfo.displayName !== newDisplayName) {
+      const userObj = {
+        displayName: newDisplayName,
+        photoURL: userInfo.photoURL,
+      };
+      await updateProfile(authService.currentUser!, userObj);
+    } else if (
+      // input창이 비어있거나 그대로인(파일만 올린) 경우
+      newDisplayName === "" ||
+      newDisplayName === userInfo.displayName
+    ) {
+      const userObj = {
         displayName: userInfo.displayName,
         photoURL: photoURL,
-      });
+      };
+      await updateProfile(authService.currentUser!, userObj);
     }
     refreshUser();
     setAttachment(""); //파일 미리보기 img src 비워주기
@@ -119,22 +131,21 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
       <Container>
         <Sidebar />
         <MainContainer>
-          <button onClick={onDeleteClick}>Delete Avatar</button>
-
-          <form onSubmit={onSubmit}>
-            <input
-              type="text"
-              value={newDisplayName}
-              onChange={onChange}
-              placeholder="Display name"
-            />
-            <input
+          <FileContainer>
+            <AvatarContainer>
+              {userInfo.photoURL ? (
+                <img src={userInfo.photoURL} alt="profile photo" />
+              ) : (
+                <BasicAvatarIcon />
+              )}
+            </AvatarContainer>
+            <button onClick={onDeleteClick}>Delete Avatar</button>
+            <FileInput
               type="file"
               accept="image/*"
               onChange={onFileChange}
               ref={fileInput}
             />
-            <input type="submit" value="Update Profile" />
             {attachment && (
               <>
                 <img
@@ -146,7 +157,25 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
                 <button onClick={onClearAttachment}>Clear</button>
               </>
             )}
-          </form>
+          </FileContainer>
+
+          {/* <input type="text" value={newDisplayName} onChange={onChange} /> */}
+
+          <NicknameContainer>
+            <SubTitle>닉네임</SubTitle>
+            <NicknameInput
+              type="text"
+              value={newDisplayName}
+              onChange={onChange}
+              maxLength={30}
+              // placeholder={placeInfo.placeAddr}
+            />
+          </NicknameContainer>
+
+          <BtnContainer>
+            {/* <CancelBtn onClick={onCancelClick}>취소</CancelBtn> */}
+            <PostBtn onClick={onSubmit}>저장하기</PostBtn>
+          </BtnContainer>
 
           <button onClick={onLogOutClick}>Log Out</button>
         </MainContainer>
@@ -163,7 +192,7 @@ const MyPageContainer = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
   width: 1100px;
   height: 800px;
   margin: auto;
@@ -171,9 +200,97 @@ const Container = styled.div`
 `;
 
 const MainContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 800px;
   padding: 2.5rem;
   border: 1px solid ${(props) => props.theme.colors.borderGray};
   border-radius: 0.4rem;
   background-color: ${(props) => props.theme.colors.white};
+`;
+
+const FileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const FileInput = styled.input`
+  width: 18rem;
+  font-size: 1rem;
+  color: ${(props) => props.theme.colors.moreDarkGray};
+  padding: 0 1.2rem;
+  margin: 2rem 0;
+  border-radius: 5px;
+  border: ${(props) => props.theme.borders.gray};
+  cursor: pointer;
+`;
+
+const AvatarContainer = styled.div`
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  background-color: orange;
+  margin: 1rem 0;
+
+  img {
+    width: 10rem;
+    height: 10rem;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+`;
+
+const BasicAvatarIcon = styled.img.attrs({
+  src: avatar,
+})`
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 50%;
+`;
+
+const NicknameContainer = styled.div`
+  margin-top: 2rem;
+`;
+
+const SubTitle = styled.div`
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0 0 5px;
+  color: ${(props) => props.theme.colors.darkGray};
+`;
+
+const NicknameInput = styled.input`
+  width: 18rem;
+  min-height: 3.5rem;
+  font-size: 1rem;
+  color: ${(props) => props.theme.colors.moreDarkGray};
+  padding: 0 1.2rem;
+  border-radius: 5px;
+  border: ${(props) => props.theme.borders.gray};
+`;
+
+const BtnContainer = styled.div`
+  margin: 1.5rem 0;
+`;
+
+const PostBtn = styled.button`
+  width: 18rem;
+  height: 3rem;
+  color: ${(props) => props.theme.colors.white};
+  background-color: ${(props) => props.theme.colors.lightBlack};
+  border-radius: 11px;
+  padding: 0 1.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.darkGray};
+  }
+
+  @media ${(props) => props.theme.mobile} {
+    /* width: 15rem;
+    height: 3rem; */
+  }
 `;

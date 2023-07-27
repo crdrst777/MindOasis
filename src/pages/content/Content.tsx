@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { authService, dbService } from "../../fbase";
+import { dbService } from "../../fbase";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { IPostType } from "../../types/types";
 import { styled } from "styled-components";
 import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import Modal from "../../components/UI/Modal";
-import { onAuthStateChanged } from "firebase/auth";
-import { unsubscribe } from "diagnostics_channel";
 
 interface ContentProps {}
 
@@ -45,11 +43,6 @@ const Content = () => {
 
   useEffect(() => {
     getPosts();
-    // onAuthStateChanged(authService, (user) => {
-    //   if (user == null) {
-    //     getPosts();
-    //   }
-    // });
   }, []); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
 
   const onPostClick = (id: any) => {

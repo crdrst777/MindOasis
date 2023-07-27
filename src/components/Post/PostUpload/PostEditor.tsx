@@ -286,8 +286,8 @@ const CancelBtn = styled.button`
   font-weight: 400;
 
   @media ${(props) => props.theme.mobile} {
-    width: 5rem;
-    height: 2rem;
+    /* width: 5rem;
+    height: 2rem; */
   }
 `;
 const PostBtn = styled(CancelBtn)`
