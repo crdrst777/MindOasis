@@ -37,7 +37,11 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
   // 프로필 업데이트
   const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    let photoURL: string = "";
+    let userObj = {
+      displayName: newDisplayName,
+      photoURL: "",
+    };
+    // let photoURL = "";
 
     // 파일 첨부시
     if (attachment) {
@@ -54,37 +58,33 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
       await uploadString(attachmentRef, attachment, "data_url"); // 파일 업로드(이 경우는 url)
       await getDownloadURL(attachmentRef)
         .then((url) => {
-          photoURL = url;
+          userObj.photoURL = url;
         })
         .catch((err) => {
           console.log(err);
         });
     }
-    if (userInfo.displayName !== newDisplayName && photoURL !== "") {
-      const userObj = {
-        displayName: newDisplayName,
-        photoURL: photoURL,
+    if (userInfo.displayName !== newDisplayName && userObj.photoURL !== "") {
+      userObj = {
+        ...userObj,
       };
-      await updateProfile(authService.currentUser!, userObj);
-    }
-    // input창에 뭐라도 쓴 경우
-    if (userInfo.displayName !== newDisplayName) {
-      const userObj = {
-        displayName: newDisplayName,
+    } else if (userInfo.displayName !== newDisplayName) {
+      // input창에 뭐라도 쓴 경우
+      userObj = {
+        ...userObj,
         photoURL: userInfo.photoURL,
       };
-      await updateProfile(authService.currentUser!, userObj);
     } else if (
       // input창이 비어있거나 그대로인(파일만 올린) 경우
       newDisplayName === "" ||
       newDisplayName === userInfo.displayName
     ) {
-      const userObj = {
+      userObj = {
         displayName: userInfo.displayName,
-        photoURL: photoURL,
+        ...userObj,
       };
-      await updateProfile(authService.currentUser!, userObj);
     }
+    await updateProfile(authService.currentUser!, userObj);
     refreshUser();
     setAttachment(""); //파일 미리보기 img src 비워주기
     fileInput.current!.value = "";
@@ -168,12 +168,10 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
               value={newDisplayName}
               onChange={onChange}
               maxLength={30}
-              // placeholder={placeInfo.placeAddr}
             />
           </NicknameContainer>
 
           <BtnContainer>
-            {/* <CancelBtn onClick={onCancelClick}>취소</CancelBtn> */}
             <PostBtn onClick={onSubmit}>저장하기</PostBtn>
           </BtnContainer>
 
@@ -192,11 +190,9 @@ const MyPageContainer = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  /* align-items: center; */
   width: 1100px;
-  height: 800px;
   margin: auto;
-  padding: 6rem 0 6rem 0;
+  padding: 5rem 0 7rem 0;
 `;
 
 const MainContainer = styled.section`
@@ -204,6 +200,7 @@ const MainContainer = styled.section`
   flex-direction: column;
   align-items: center;
   width: 800px;
+  min-height: 40rem;
   padding: 2.5rem;
   border: 1px solid ${(props) => props.theme.colors.borderGray};
   border-radius: 0.4rem;
@@ -216,27 +213,16 @@ const FileContainer = styled.div`
   align-items: center;
 `;
 
-const FileInput = styled.input`
-  width: 18rem;
-  font-size: 1rem;
-  color: ${(props) => props.theme.colors.moreDarkGray};
-  padding: 0 1.2rem;
-  margin: 2rem 0;
-  border-radius: 5px;
-  border: ${(props) => props.theme.borders.gray};
-  cursor: pointer;
-`;
-
 const AvatarContainer = styled.div`
-  width: 10rem;
-  height: 10rem;
+  width: 11rem;
+  height: 11rem;
   border-radius: 50%;
   background-color: orange;
-  margin: 1rem 0;
+  margin: 2rem 0 1rem 0;
 
   img {
-    width: 10rem;
-    height: 10rem;
+    width: 11rem;
+    height: 11rem;
     object-fit: cover;
     border-radius: 50%;
   }
@@ -245,10 +231,21 @@ const AvatarContainer = styled.div`
 const BasicAvatarIcon = styled.img.attrs({
   src: avatar,
 })`
-  width: 10rem;
-  height: 10rem;
+  width: 11rem;
+  height: 11rem;
   object-fit: cover;
   border-radius: 50%;
+`;
+
+const FileInput = styled.input`
+  width: 18rem;
+  font-size: 1rem;
+  color: ${(props) => props.theme.colors.moreDarkGray};
+  padding: 0 1.2rem;
+  margin: 1rem 0;
+  border-radius: 5px;
+  border: ${(props) => props.theme.borders.gray};
+  cursor: pointer;
 `;
 
 const NicknameContainer = styled.div`

@@ -27,7 +27,7 @@ export default Sidebar;
 
 const Container = styled.aside`
   width: 280px;
-  /* height: 100%; */
+  height: 34rem;
   border: 1px solid ${(props) => props.theme.colors.borderGray};
   border-radius: 0.4rem;
   padding: 3rem 2rem 3rem 2rem;
@@ -40,11 +40,15 @@ const SidebarHeader = styled.header`
 `;
 
 const SidebarMenu = styled.ul`
-  margin-top: 4rem;
+  height: 10rem;
+  margin-top: 3rem;
   /* background-color: azure; */
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 
   li {
-    margin-top: 2rem;
+    /* margin-top: 2rem; */
     font-size: ${(props) => props.theme.fontSizes.lg};
     font-weight: 400;
   }
