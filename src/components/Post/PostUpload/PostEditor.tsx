@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlaceInfo } from "../../../store/placeInfoSlice";
-import { IPostType } from "../../../types/types";
+import { PostType } from "../../../types/types";
 
 interface PostEditorProps {}
 
@@ -24,7 +24,7 @@ const PostEditor = () => {
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
   const { placeInfo } = useSelector((state: RootState) => state.placeInfo);
 
-  const uploadData = (Data: IPostType) => {
+  const uploadData = (Data: PostType) => {
     addDoc(collection(dbService, "posts"), Data);
     setTitle("");
     setText("");

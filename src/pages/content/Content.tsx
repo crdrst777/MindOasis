@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { dbService } from "../../fbase";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
-import { IPostType } from "../../types/types";
+import { PostType } from "../../types/types";
 import { styled } from "styled-components";
 import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import Modal from "../../components/UI/Modal";
@@ -9,7 +9,7 @@ import Modal from "../../components/UI/Modal";
 interface ContentProps {}
 
 const Content = () => {
-  const [posts, setPosts] = useState<IPostType[]>([]);
+  const [posts, setPosts] = useState<PostType[]>([]);
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
   const bigMatch: PathMatch<string> | null = useMatch(`content/detail/:id`);
 
@@ -33,7 +33,7 @@ const Content = () => {
     );
     onSnapshot(q, (querySnapshot) => {
       // console.log("querySnapshot.docs", querySnapshot.docs);
-      const postsArr: IPostType[] = querySnapshot.docs.map((doc) => ({
+      const postsArr: PostType[] = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
@@ -93,4 +93,5 @@ const PreviewImg = styled.img`
   border-radius: 5px;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px;
+  object-fit: cover;
 `;

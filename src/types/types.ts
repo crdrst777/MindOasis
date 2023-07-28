@@ -1,4 +1,4 @@
-export interface IPostType {
+export interface PostType {
   id?: string;
   title?: string;
   text?: string;
@@ -9,6 +9,13 @@ export interface IPostType {
     placeName: string;
     placeAddr: string;
   };
+}
+
+export interface UserDocType {
+  email: string;
+  displayName?: string;
+  uid: string;
+  photoURL?: string;
 }
 
 export interface UserInfoType {

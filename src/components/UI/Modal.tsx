@@ -1,28 +1,31 @@
 import { styled } from "styled-components";
 import close from "../../assets/img/close-icon.png";
 import { useMatch, useNavigate } from "react-router-dom";
-import { IPostType } from "../../types/types";
+import { PostType, UserDocType } from "../../types/types";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
+import ModalHeader from "./ModalHeader";
 
 interface ModalProps {
   postId?: string;
 }
 
 const Modal = ({ postId }: ModalProps) => {
-  const [post, setPost] = useState<IPostType>({});
+  const [post, setPost] = useState<PostType>({});
+  // const [user, setUser] = useState<any>({});
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
   const modalMatch = useMatch(`/content/detail/:id`);
   // useMatch는 이 route 안에 있는지 다른 곳에 있는지 알려줌. -->  string | null
-  const docRef = doc(dbService, "posts", `${postId}`);
+  const postDocRef = doc(dbService, "posts", `${postId}`);
+
   const closeModal = () => navigate(-1);
 
   const getPost = async () => {
     try {
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setPost(docSnap.data());
+      const postDocSnap = await getDoc(postDocRef);
+      if (postDocSnap.exists()) {
+        setPost(postDocSnap.data());
       } else {
         console.log("Document does not exist");
       }
@@ -31,18 +34,42 @@ const Modal = ({ postId }: ModalProps) => {
     }
   };
 
-  // Modal 배경 스크롤 막기
   useEffect(() => {
     getPost();
+    // getUser();
 
+    // Modal 배경 스크롤 막기
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "unset";
     };
   }, []);
 
-  console.log("postId", postId);
+  // console.log("post.creatorId", post.creatorId);
+  // 여기서 post.creatorId를 가져올수가잇음
+
+  // const userDocRef = doc(dbService, "users", `${post.creatorId}`); // 파일을 가리키는 참조 생성
+
+  // const getUser = async () => {
+  //   try {
+  //     const userDocSnap = await getDoc(userDocRef);
+  //     if (userDocSnap.exists()) {
+  //       setUser(userDocSnap.data());
+  //     } else {
+  //       console.log("User document does not exist");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getUser();
+  // }, []);
+
   console.log("post", post);
+  console.log("postId", postId);
+  // console.log("user", user);
   // console.log("modalMatch", modalMatch);
 
   return (
@@ -53,16 +80,19 @@ const Modal = ({ postId }: ModalProps) => {
         <ModalContainer>
           {/* <CloseIcon onClick={closeModal} /> */}
           <Main>
-            <Header></Header>
-            {post.attachmentUrl && <Img src={post.attachmentUrl} alt="image" />}
+            <ModalHeader post={post} />
 
+            <ImgContainer>
+              {post.attachmentUrl && (
+                <Img src={post.attachmentUrl} alt="image" />
+              )}
+            </ImgContainer>
             <ContentsContainer>
               <div>id {postId}</div>
               <div>creatorId {post.creatorId}</div>
               <div>createdAt {post.createdAt}</div>
               <div>title {post.title}</div>
               <div>text {post.text}</div>
-
               <div>placeName {post.placeInfo?.placeName}</div>
               <div>placeAddr {post.placeInfo?.placeAddr}</div>
             </ContentsContainer>
@@ -107,7 +137,7 @@ const Overlay = styled.div`
   }
 `;
 
-const ModalContainer = styled.article`
+const ModalContainer = styled.div`
   /* position: absolute; */
   position: fixed;
   width: 60rem;
@@ -139,7 +169,6 @@ const ModalContainer = styled.article`
     }
   } */
 `;
-// const Header = styled.header``;
 
 // const CloseIcon = styled.img.attrs({
 //   src: close,
@@ -159,14 +188,17 @@ const Main = styled.article`
   height: 130rem;
 `;
 
-const Header = styled.header`
-  height: 4rem;
+const ImgContainer = styled.section`
+  height: 32rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0.6rem 1.5rem;
 `;
 
 const Img = styled.img`
-  height: 32rem;
-  padding: 0.6rem 1.5rem;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const ContentsContainer = styled.section`

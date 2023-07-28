@@ -1,16 +1,16 @@
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import { useEffect, useState } from "react";
-import { IPostType } from "../../types/types";
+import { PostType } from "../../types/types";
 
 interface MyPostListProps {}
 
 const MyPostList = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const [myPosts, setMyPosts] = useState<IPostType[]>([]);
+  const [myPosts, setMyPosts] = useState<PostType[]>([]);
 
   const getMyPosts = async () => {
-    const myPostArr: IPostType[] = [];
+    const myPostArr: PostType[] = [];
 
     // dbService의 컬렉션 중 "posts" Docs에서 userInfo의 uid와 동일한 creatorID를 가진 모든 문서를 내림차순으로 가져오는 쿼리(요청) 생성
     const q = query(
