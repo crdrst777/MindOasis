@@ -5,12 +5,13 @@ import { useState } from "react";
 import { ref, deleteObject } from "firebase/storage";
 import { styled } from "styled-components";
 
-interface PostListProps {
+interface PostEditProps {
   post: IPostType;
   isOwner: boolean;
 }
 
-const PostList = ({ post, isOwner }: PostListProps) => {
+// 어디에도 import 되지 않은 컴포넌트인듯
+const PostEdit = ({ post, isOwner }: PostEditProps) => {
   const [editing, setEditing] = useState(false); // editing 모드인지 여부
   const [newPost, setNewPost] = useState(post.title); // input의 값
   const postTextRef = doc(dbService, "posts", `${post.id}`); // 파일을 가리키는 참조 생성
@@ -85,7 +86,7 @@ const PostList = ({ post, isOwner }: PostListProps) => {
   );
 };
 
-export default PostList;
+export default PostEdit;
 
 const Container = styled.div`
   display: inline-block;

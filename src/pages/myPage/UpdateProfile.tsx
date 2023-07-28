@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService, storageService } from "../../fbase";
+import { authService, dbService, storageService } from "../../fbase";
 import { updateProfile } from "firebase/auth";
 import {
   ref,
@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import { styled } from "styled-components";
 import avatar from "../../assets/img/avatar-icon.png";
 import Sidebar from "../../components/MyPage/Sidebar";
+import { doc, updateDoc } from "firebase/firestore";
 
 interface UpdateProfileProps {
   refreshUser: () => any;
@@ -26,7 +27,13 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
   const [newDisplayName, setNewDisplayName] = useState<string>(
     userInfo.displayName
   );
-  const photoURLRef = ref(storageService, authService!.currentUser!.photoURL!);
+  const userAuthURLRef = ref(
+    storageService,
+    authService!.currentUser!.photoURL!
+  );
+
+  // `${userInfo.uid}`이 자리엔 원래 documentId 값이 들어가야하는데 문서 생성시 uid값으로 documentId를 만들어줬었음. 동일한 값임.
+  const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 파일을 가리키는 참조 생성
 
   const onLogOutClick = async () => {
     await authService.signOut();
@@ -48,7 +55,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
       // 기존 프로필 사진이 있는 경우 기존의 것을 스토리지에서 지워준다.
       if (userInfo.photoURL !== null) {
         try {
-          await deleteObject(photoURLRef);
+          await deleteObject(userAuthURLRef);
         } catch (error: any) {
           console.log(error.code);
         }
@@ -64,18 +71,19 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
           console.log(err);
         });
     }
+    // input창에 입력하고, 파일도 올린 경우
     if (userInfo.displayName !== newDisplayName && userObj.photoURL !== "") {
       userObj = {
         ...userObj,
       };
     } else if (userInfo.displayName !== newDisplayName) {
-      // input창에 뭐라도 쓴 경우
+      // input창에 입력한 경우
       userObj = {
         ...userObj,
         photoURL: userInfo.photoURL,
       };
     } else if (
-      // input창이 비어있거나 그대로인(파일만 올린) 경우
+      // 파일만 올린 경우 (input창이 비어있거나 그대로인)
       newDisplayName === "" ||
       newDisplayName === userInfo.displayName
     ) {
@@ -84,7 +92,15 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
         ...userObj,
       };
     }
+
+    // auth 업데이트
     await updateProfile(authService.currentUser!, userObj);
+
+    // 도큐먼트(db) 업데이트
+    await updateDoc(userDocRef, {
+      ...userObj,
+    });
+
     refreshUser();
     setAttachment(""); //파일 미리보기 img src 비워주기
     fileInput.current!.value = "";
@@ -118,7 +134,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
         photoURL: "",
       });
       try {
-        await deleteObject(photoURLRef);
+        await deleteObject(userAuthURLRef);
       } catch (error: any) {
         console.log(error.code);
       }

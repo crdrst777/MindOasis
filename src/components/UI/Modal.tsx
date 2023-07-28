@@ -52,21 +52,21 @@ const Modal = ({ postId }: ModalProps) => {
 
         <ModalContainer>
           {/* <CloseIcon onClick={closeModal} /> */}
-          <Content>
+          <Main>
             <Header></Header>
-            {post.attachmentUrl && (
-              <PreviewImg src={post.attachmentUrl} alt="image" />
-            )}
+            {post.attachmentUrl && <Img src={post.attachmentUrl} alt="image" />}
 
-            <div>id {postId}</div>
-            <div>creatorId {post.creatorId}</div>
-            <div>createdAt {post.createdAt}</div>
-            <div>title {post.title}</div>
-            <div>text {post.text}</div>
+            <ContentsContainer>
+              <div>id {postId}</div>
+              <div>creatorId {post.creatorId}</div>
+              <div>createdAt {post.createdAt}</div>
+              <div>title {post.title}</div>
+              <div>text {post.text}</div>
 
-            <div>placeName {post.placeInfo?.placeName}</div>
-            <div>placeAddr {post.placeInfo?.placeAddr}</div>
-          </Content>
+              <div>placeName {post.placeInfo?.placeName}</div>
+              <div>placeAddr {post.placeInfo?.placeAddr}</div>
+            </ContentsContainer>
+          </Main>
         </ModalContainer>
       </Container>
     </>
@@ -151,7 +151,7 @@ const ModalContainer = styled.article`
 //   cursor: pointer;
 // `;
 
-const Content = styled.section`
+const Main = styled.article`
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -164,7 +164,11 @@ const Header = styled.header`
   padding: 0.6rem 1.5rem;
 `;
 
-const PreviewImg = styled.img`
+const Img = styled.img`
   height: 32rem;
+  padding: 0.6rem 1.5rem;
+`;
+
+const ContentsContainer = styled.section`
   padding: 0.6rem 1.5rem;
 `;

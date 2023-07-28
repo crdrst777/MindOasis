@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { authService, dbService } from "../../fbase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -18,16 +18,6 @@ const SignUp = () => {
     setPassword(e.currentTarget.value);
   };
 
-  const uploadData = (data: any) => {
-    const userDoc = {
-      email: email,
-      displayName: data.email.split("@")[0],
-      uid: data.uid,
-      photoURL: data.photoURL,
-    };
-    addDoc(collection(dbService, "users"), userDoc);
-  };
-
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -36,15 +26,18 @@ const SignUp = () => {
         email,
         password
       );
-      console.log(data.user.uid); // document id는 유저 uid로 하면 편리할듯
-      console.log("data.user", data.user); // document id는 유저 uid로 하면 편리할듯
-
-      await uploadData(data.user);
+      const userData = {
+        email: email,
+        displayName: data.user.email.split("@")[0],
+        uid: data.user.uid,
+        photoURL: data.user.photoURL,
+      };
+      // `${data.user.uid}` -> documentId 값이 된다. documentId를 직접 지정하는게 가능.
+      await setDoc(doc(dbService, "users", `${data.user.uid}`), userData);
 
       alert("회원가입 완료");
       navigate(`/`);
     } catch (error: any) {
-      // } catch (error: FirebaseApp.FirebaseError) {
       window.confirm(error.code);
     }
   };
