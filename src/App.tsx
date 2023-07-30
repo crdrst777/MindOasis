@@ -17,7 +17,6 @@ function App() {
   useEffect(() => {
     authService.onAuthStateChanged(async (user) => {
       // 여기서 받아오는 user는 authService.currentUser 와 같음. 이걸 userInfo에 넣어준다.
-      console.log("user", user);
       if (user) {
         setIsLoggedIn(true);
 
@@ -56,8 +55,6 @@ function App() {
 
   localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
-  console.log("currentUser", authService.currentUser);
-  console.log("isLoggedIn", isLoggedIn);
   console.log("userInfo", userInfo);
 
   return (

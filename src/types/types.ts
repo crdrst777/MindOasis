@@ -11,12 +11,12 @@ export interface PostType {
   };
 }
 
-export interface UserDocType {
-  email: string;
-  displayName?: string;
-  uid: string;
-  photoURL?: string;
-}
+// export interface UserDocType {
+//   email: string;
+//   displayName?: string;
+//   uid: string;
+//   photoURL?: string;
+// }
 
 export interface UserInfoType {
   displayName: string;

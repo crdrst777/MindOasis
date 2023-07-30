@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
-import { PostType, UserDocType } from "../../types/types";
+import { PostType } from "../../types/types";
 import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
+import { ReactComponent as HeartIcon } from "../../assets/icon/heart-icon.svg";
 
 interface ModalHeaderProps {
   post: PostType;
@@ -12,7 +13,6 @@ const ModalHeader = ({ post }: ModalHeaderProps) => {
   // `${post.creatorId}` ->  users db의 documentId와 동일. documentId로 해당 user 데이터 찾기
   const userDocRef = doc(dbService, "users", `${post.creatorId}`); // 파일을 가리키는 참조 생성
   // const [user, setUser] = useState<UserDocType>({});
-
   const [user, setUser] = useState<any>({});
 
   const getUser = async () => {
@@ -45,7 +45,7 @@ const ModalHeader = ({ post }: ModalHeaderProps) => {
         <Nickname>{user.displayName}</Nickname>
       </UserInfo>
       <LikeBtn>
-        <button>like</button>
+        <HeartIcon />
       </LikeBtn>
     </Header>
   );
@@ -88,9 +88,28 @@ const Nickname = styled.div`
   margin-left: 0.8rem;
 `;
 
-const LikeBtn = styled.div`
-  background-color: bisque;
-  button {
-    padding: 0.8rem;
+const LikeBtn = styled.button`
+  width: 2.6rem;
+  height: 2rem;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #d1d1d1;
+  border-radius: 3px;
+  cursor: pointer;
+
+  svg {
+    width: 2.6rem;
+    height: 2rem;
+    padding: 0.4rem 0.4rem;
+    fill: ${(props) => props.theme.colors.gray};
+    &:hover {
+      fill: ${(props) => props.theme.colors.darkGray};
+    }
+  }
+
+  &:hover {
+    border-color: ${(props) => props.theme.colors.darkGray};
   }
 `;

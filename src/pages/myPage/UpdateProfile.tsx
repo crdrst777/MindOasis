@@ -230,15 +230,15 @@ const FileContainer = styled.div`
 `;
 
 const AvatarContainer = styled.div`
-  width: 11rem;
-  height: 11rem;
+  width: 9rem;
+  height: 9rem;
   border-radius: 50%;
-  background-color: orange;
+  /* background-color: orange; */
   margin: 2rem 0 1rem 0;
 
   img {
-    width: 11rem;
-    height: 11rem;
+    width: 9rem;
+    height: 9rem;
     object-fit: cover;
     border-radius: 50%;
   }
@@ -247,8 +247,8 @@ const AvatarContainer = styled.div`
 const BasicAvatarIcon = styled.img.attrs({
   src: avatar,
 })`
-  width: 11rem;
-  height: 11rem;
+  width: 9rem;
+  height: 9rem;
   object-fit: cover;
   border-radius: 50%;
 `;

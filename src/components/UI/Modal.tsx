@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import close from "../../assets/img/close-icon.png";
 import { useMatch, useNavigate } from "react-router-dom";
-import { PostType, UserDocType } from "../../types/types";
+import { PostType } from "../../types/types";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
@@ -13,12 +13,10 @@ interface ModalProps {
 
 const Modal = ({ postId }: ModalProps) => {
   const [post, setPost] = useState<PostType>({});
-  // const [user, setUser] = useState<any>({});
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
   const modalMatch = useMatch(`/content/detail/:id`);
   // useMatch는 이 route 안에 있는지 다른 곳에 있는지 알려줌. -->  string | null
   const postDocRef = doc(dbService, "posts", `${postId}`);
-
   const closeModal = () => navigate(-1);
 
   const getPost = async () => {
@@ -36,7 +34,6 @@ const Modal = ({ postId }: ModalProps) => {
 
   useEffect(() => {
     getPost();
-    // getUser();
 
     // Modal 배경 스크롤 막기
     document.body.style.overflow = "hidden";
@@ -67,9 +64,6 @@ const Modal = ({ postId }: ModalProps) => {
   //   getUser();
   // }, []);
 
-  console.log("post", post);
-  console.log("postId", postId);
-  // console.log("user", user);
   // console.log("modalMatch", modalMatch);
 
   return (
@@ -81,7 +75,6 @@ const Modal = ({ postId }: ModalProps) => {
           {/* <CloseIcon onClick={closeModal} /> */}
           <Main>
             <ModalHeader post={post} />
-
             <ImgContainer>
               {post.attachmentUrl && (
                 <Img src={post.attachmentUrl} alt="image" />

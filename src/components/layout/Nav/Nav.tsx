@@ -90,21 +90,20 @@ const NavbarMenu = styled.ul`
     align-items: center;
     font-size: 1rem;
     font-weight: 500;
-    color: ${(props) => props.theme.colors.darkGray};
+    color: ${(props) => props.theme.colors.black};
     padding-left: 2rem;
     /* background-color: blue; */
   }
 `;
 
 const AvatarContainer = styled.div`
-  width: 2.7rem;
-  height: 2.7rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
-  /* background-color: orange; */
 
   img {
-    width: 2.7rem;
-    height: 2.7rem;
+    width: 2.5rem;
+    height: 2.5rem;
     object-fit: cover;
     border-radius: 50%;
   }
@@ -113,8 +112,8 @@ const AvatarContainer = styled.div`
 const BasicAvatarIcon = styled.img.attrs({
   src: avatar,
 })`
-  width: 2.7rem;
-  height: 2.7rem;
+  width: 2.5rem;
+  height: 2.5rem;
   object-fit: cover;
   border-radius: 50%;
 `;
