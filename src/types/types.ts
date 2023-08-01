@@ -1,3 +1,8 @@
+export type PlaceInfoType = {
+  placeName: string;
+  placeAddr: string;
+};
+
 export interface PostType {
   id?: string;
   title?: string;
@@ -5,10 +10,7 @@ export interface PostType {
   createdAt?: number;
   creatorId?: string;
   attachmentUrl?: string;
-  placeInfo?: {
-    placeName: string;
-    placeAddr: string;
-  };
+  placeInfo?: PlaceInfoType;
 }
 
 // export interface UserDocType {

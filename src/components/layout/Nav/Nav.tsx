@@ -75,7 +75,7 @@ const Container = styled.nav`
 `;
 
 const NavbarLogo = styled.div`
-  font-size: ${(props) => props.theme.fontSizes.xl};
+  font-size: 1.3rem;
   font-weight: 600;
 `;
 
@@ -83,12 +83,11 @@ const NavbarMenu = styled.ul`
   display: flex;
   justify-content: space-between;
   height: inherit;
-  /* background-color: red; */
 
   li {
     display: flex;
     align-items: center;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 500;
     color: ${(props) => props.theme.colors.black};
     padding-left: 2rem;

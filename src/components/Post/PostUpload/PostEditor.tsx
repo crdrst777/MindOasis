@@ -10,6 +10,7 @@ import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlaceInfo } from "../../../store/placeInfoSlice";
 import { PostType } from "../../../types/types";
+import CheckBox from "../../UI/CheckBox";
 
 interface PostEditorProps {}
 
@@ -170,7 +171,13 @@ const PostEditor = () => {
         )}
       </FileContainer>
 
-      {/* <RadioContainer /> */}
+      <CheckBoxContainer>
+        <SectionTitle>
+          <span>4</span>
+          <h2>키워드를 선택해주세요</h2>
+        </SectionTitle>
+        <CheckBox />
+      </CheckBoxContainer>
 
       <BtnContainer>
         <CancelBtn onClick={onCancelClick}>취소</CancelBtn>
@@ -191,10 +198,12 @@ const Container = styled.div`
 
 const MapContainer = styled.section`
   margin-top: 1rem;
+  width: 45rem;
 `;
 
 const WriteContainer = styled.section`
-  margin-top: 5rem;
+  margin-top: 3.5rem;
+  width: 45rem;
 `;
 
 const SectionTitle = styled.div`
@@ -232,7 +241,7 @@ const SubTitle = styled.div`
 `;
 
 const TitleInput = styled.input`
-  width: 45rem;
+  width: 100%;
   min-height: 3.5rem;
   font-size: 1rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
@@ -243,7 +252,7 @@ const TitleInput = styled.input`
 `;
 
 const TextInput = styled.textarea`
-  width: 45rem;
+  width: 100%;
   height: 11.4rem;
   font-size: 1rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
@@ -256,11 +265,12 @@ const TextInput = styled.textarea`
 `;
 
 const FileContainer = styled.section`
-  margin-top: 5rem;
+  margin-top: 3.5rem;
+  width: 45rem;
 `;
 
 const FileInput = styled.input`
-  width: 45rem;
+  width: 100%;
   height: 5rem;
   font-size: 1rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
@@ -268,6 +278,11 @@ const FileInput = styled.input`
   border-radius: 5px;
   border: ${(props) => props.theme.borders.gray};
   cursor: pointer;
+`;
+
+const CheckBoxContainer = styled.section`
+  margin-top: 3.5rem;
+  width: 45rem;
 `;
 
 const BtnContainer = styled.div`

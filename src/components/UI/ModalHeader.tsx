@@ -4,21 +4,21 @@ import { PostType } from "../../types/types";
 import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import { ReactComponent as HeartIcon } from "../../assets/icon/heart-icon.svg";
+import avatar from "../../assets/img/avatar-icon.png";
 
 interface ModalHeaderProps {
   post: PostType;
 }
 
 const ModalHeader = ({ post }: ModalHeaderProps) => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   // `${post.creatorId}` ->  users db의 documentId와 동일. documentId로 해당 user 데이터 찾기
   const userDocRef = doc(dbService, "users", `${post.creatorId}`); // 파일을 가리키는 참조 생성
-  // const [user, setUser] = useState<UserDocType>({});
   const [user, setUser] = useState<any>({});
 
   const getUser = async () => {
     try {
       const userDocSnap = await getDoc(userDocRef);
-      console.log("userDocSnap", userDocSnap);
 
       if (userDocSnap.exists()) {
         setUser(userDocSnap.data());
@@ -40,7 +40,11 @@ const ModalHeader = ({ post }: ModalHeaderProps) => {
     <Header>
       <UserInfo>
         <AvatarContainer>
-          {/* <img src={userInfo.photoURL} alt="profile photo" /> */}
+          {userInfo.photoURL ? (
+            <img src={userInfo.photoURL} alt="profile photo" />
+          ) : (
+            <BasicAvatarIcon />
+          )}
         </AvatarContainer>
         <Nickname>{user.displayName}</Nickname>
       </UserInfo>
@@ -55,7 +59,7 @@ export default ModalHeader;
 
 const Header = styled.header`
   height: 4.5rem;
-  padding: 0.6rem 1.5rem;
+  padding: 0.6rem 1.8rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -81,6 +85,15 @@ const AvatarContainer = styled.div`
   }
 `;
 
+const BasicAvatarIcon = styled.img.attrs({
+  src: avatar,
+})`
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: cover;
+  border-radius: 50%;
+`;
+
 const Nickname = styled.div`
   color: ${(props) => props.theme.colors.black};
   font-size: 1.1rem;
@@ -98,18 +111,19 @@ const LikeBtn = styled.button`
   border: 1px solid #d1d1d1;
   border-radius: 3px;
   cursor: pointer;
+  transition: border-color 0.2s ease;
+  &:hover {
+    border-color: ${(props) => props.theme.colors.darkGray};
+  }
 
   svg {
     width: 2.6rem;
     height: 2rem;
-    padding: 0.4rem 0.4rem;
+    padding: 0.45rem;
     fill: ${(props) => props.theme.colors.gray};
+    transition: fill 0.3s ease;
     &:hover {
       fill: ${(props) => props.theme.colors.darkGray};
     }
-  }
-
-  &:hover {
-    border-color: ${(props) => props.theme.colors.darkGray};
   }
 `;

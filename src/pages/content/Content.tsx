@@ -5,12 +5,12 @@ import { PostType } from "../../types/types";
 import { styled } from "styled-components";
 import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import Modal from "../../components/UI/Modal";
+import PreviewPost from "../../components/Post/PreviewPost";
 
 interface ContentProps {}
 
 const Content = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
-  const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
   const bigMatch: PathMatch<string> | null = useMatch(`content/detail/:id`);
 
   // const getPosts = async () => {
@@ -45,27 +45,15 @@ const Content = () => {
     getPosts();
   }, []); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
 
-  const onPostClick = (id: any) => {
-    navigate(`/content/detail/${id}`); // 이 url로 바꿔줌.
-  };
-
   console.log("posts", posts);
 
   return (
     <Container>
-      <PostList>
+      <PreviewContainer>
         {posts.map((post) => (
-          <SinglePostContainer
-            key={post.id}
-            onClick={() => onPostClick(post.id)}
-          >
-            {post.attachmentUrl && (
-              <PreviewImg src={post.attachmentUrl} alt="image" />
-            )}
-            <div>{post?.title}</div>
-          </SinglePostContainer>
+          <PreviewPost key={post.id} post={post} />
         ))}
-      </PostList>
+      </PreviewContainer>
 
       {bigMatch ? <Modal postId={bigMatch?.params.id}></Modal> : null}
     </Container>
@@ -75,23 +63,18 @@ const Content = () => {
 export default Content;
 
 const Container = styled.div`
-  width: 80%;
-  margin: auto;
-  padding: 5rem 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 6rem 7rem;
 `;
 
-const PostList = styled.section``;
-
-const SinglePostContainer = styled.div`
-  display: inline-block;
-  margin: 1.3rem;
-`;
-
-const PreviewImg = styled.img`
-  width: 17rem;
-  height: 17rem;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px;
-  object-fit: cover;
+const PreviewContainer = styled.section`
+  width: 100%;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, 17rem);
+  column-gap: 2.2rem;
+  row-gap: 2.2rem;
 `;

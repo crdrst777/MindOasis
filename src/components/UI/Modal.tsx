@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import ModalHeader from "./ModalHeader";
+import ReadMap from "../Map/ReadMap";
 
 interface ModalProps {
   postId?: string;
@@ -18,6 +19,15 @@ const Modal = ({ postId }: ModalProps) => {
   // useMatch는 이 route 안에 있는지 다른 곳에 있는지 알려줌. -->  string | null
   const postDocRef = doc(dbService, "posts", `${postId}`);
   const closeModal = () => navigate(-1);
+
+  const createdAt = post.createdAt;
+  const timestamp = new Intl.DateTimeFormat("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(createdAt);
 
   const getPost = async () => {
     try {
@@ -42,28 +52,6 @@ const Modal = ({ postId }: ModalProps) => {
     };
   }, []);
 
-  // console.log("post.creatorId", post.creatorId);
-  // 여기서 post.creatorId를 가져올수가잇음
-
-  // const userDocRef = doc(dbService, "users", `${post.creatorId}`); // 파일을 가리키는 참조 생성
-
-  // const getUser = async () => {
-  //   try {
-  //     const userDocSnap = await getDoc(userDocRef);
-  //     if (userDocSnap.exists()) {
-  //       setUser(userDocSnap.data());
-  //     } else {
-  //       console.log("User document does not exist");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getUser();
-  // }, []);
-
   // console.log("modalMatch", modalMatch);
 
   return (
@@ -81,14 +69,24 @@ const Modal = ({ postId }: ModalProps) => {
               )}
             </ImgContainer>
             <ContentsContainer>
-              <div>id {postId}</div>
-              <div>creatorId {post.creatorId}</div>
-              <div>createdAt {post.createdAt}</div>
-              <div>title {post.title}</div>
-              <div>text {post.text}</div>
-              <div>placeName {post.placeInfo?.placeName}</div>
-              <div>placeAddr {post.placeInfo?.placeAddr}</div>
+              <ContentInfo>
+                <Title>{post.title}</Title>
+                <CreatedAt>{timestamp}</CreatedAt>
+              </ContentInfo>
+
+              <Text>{post.text}</Text>
+
+              <TagContainer>
+                <Tag>도시</Tag>
+                <Tag>인적이 드문</Tag>
+                <Tag>자연</Tag>
+              </TagContainer>
             </ContentsContainer>
+
+            {/* <div>placeName {post.placeInfo?.placeName}</div>
+            <div>placeAddr {post.placeInfo?.placeAddr}</div> */}
+
+            <ReadMap placeInfo={post.placeInfo} />
           </Main>
         </ModalContainer>
       </Container>
@@ -133,7 +131,7 @@ const Overlay = styled.div`
 const ModalContainer = styled.div`
   /* position: absolute; */
   position: fixed;
-  width: 60rem;
+  width: 52rem;
   top: 2.3rem;
   margin: auto 0;
   border-radius: 0.2rem;
@@ -178,22 +176,73 @@ const Main = styled.article`
   flex-direction: column;
   /* align-items: center; */
   width: 100%;
-  height: 130rem;
 `;
 
 const ImgContainer = styled.section`
+  padding: 0rem 2rem;
   height: 32rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.6rem 1.5rem;
 `;
 
 const Img = styled.img`
   height: 100%;
+  max-width: 47.5rem;
   object-fit: cover;
 `;
 
 const ContentsContainer = styled.section`
-  padding: 0.6rem 1.5rem;
+  padding: 1.25rem 4rem;
+`;
+
+const ContentInfo = styled.div`
+  padding: 0.9rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Title = styled.div`
+  display: inline-block;
+  max-width: 32.5rem;
+  overflow: hidden;
+  color: ${(props) => props.theme.colors.moreDarkGray};
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.7rem;
+`;
+
+const CreatedAt = styled.div`
+  color: ${(props) => props.theme.colors.gray};
+  font-size: 0.9rem;
+`;
+
+const Text = styled.div`
+  /* display: inline-block; */
+  min-height: 4rem;
+  max-height: 15.5rem;
+  overflow: hidden;
+  padding: 0.6rem 0;
+  font-size: 1.1rem;
+  line-height: 1.6rem;
+`;
+
+const TagContainer = styled.div`
+  display: flex;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+`;
+
+const Tag = styled.div`
+  display: flex;
+  align-items: center;
+  height: 1.625rem;
+  color: ${(props) => props.theme.colors.darkGray};
+  background-color: lightblue;
+  border-radius: 2px;
+  padding: 0 0.5rem;
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 400;
 `;
