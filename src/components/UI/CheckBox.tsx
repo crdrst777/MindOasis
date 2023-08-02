@@ -1,5 +1,7 @@
 import { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 import { styled } from "styled-components";
+import { setPlaceKeyword } from "../../store/checkedListSlice";
 
 const checkBoxList = [
   "자연",
@@ -12,6 +14,7 @@ const checkBoxList = [
 ];
 
 const CheckBox = () => {
+  const dispatch = useDispatch();
   // checkBoxList 배열 중 check된 요소가 담기는 배열
   const [checkedList, setCheckedList] = useState<string[]>([]);
   const [isChecked, setIsChecked] = useState(false);
@@ -21,14 +24,9 @@ const CheckBox = () => {
   const checkedItemHandler = (value: string, isChecked: boolean) => {
     if (isChecked) {
       setCheckedList((prev) => [...prev, value]);
-      return;
+    } else if (!isChecked && checkedList.includes(value)) {
+      setCheckedList(checkedList.filter((item) => item !== value));
     }
-    // !isChecked && 이 부분이 이해가안가네..
-    if (!isChecked && checkedList.includes(value)) {
-      setCheckedList(checkBoxList.filter((item) => item !== value));
-      return;
-    }
-    return;
   };
 
   // input을 클릭했을때 실행되는 함수
@@ -38,18 +36,18 @@ const CheckBox = () => {
   ) => {
     setIsChecked((prev) => !prev);
     checkedItemHandler(value, e.target.checked);
-
-    console.log(value, e.target.checked);
   };
 
-  const onSubmit = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
+  // const onSubmit = useCallback(
+  //   (e: React.MouseEvent<HTMLButtonElement>) => {
+  //     e.preventDefault();
 
-      console.log("checkedList", checkedList);
-    },
-    [checkedList]
-  );
+  //     console.log("checkedList", checkedList);
+  //   },
+  //   [checkedList]
+  // );
+
+  dispatch(setPlaceKeyword(checkedList));
 
   return (
     <Container>
@@ -67,7 +65,7 @@ const CheckBox = () => {
           <label htmlFor={item}>{item}</label>
         </CheckBoxWrapper>
       ))}
-      <button onClick={onSubmit}>submit</button>
+      {/* <button onClick={onSubmit}>submit</button> */}
     </Container>
   );
 };

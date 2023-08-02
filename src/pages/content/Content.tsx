@@ -12,6 +12,9 @@ interface ContentProps {}
 const Content = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
   const bigMatch: PathMatch<string> | null = useMatch(`content/detail/:id`);
+  // const { placeKeyword } = useSelector(
+  //   (state: RootState) => state.placeKeyword
+  // );
 
   // const getPosts = async () => {
   //   // const q = query(collection(dbService, "posts"));
@@ -46,6 +49,7 @@ const Content = () => {
   }, []); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
 
   console.log("posts", posts);
+  // console.log("placeKeyword", placeKeyword);
 
   return (
     <Container>

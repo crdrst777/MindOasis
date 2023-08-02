@@ -7,6 +7,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import ModalHeader from "./ModalHeader";
 import ReadMap from "../Map/ReadMap";
+import PostKeyword from "../Post/PostKeyword";
 
 interface ModalProps {
   postId?: string;
@@ -53,6 +54,7 @@ const Modal = ({ postId }: ModalProps) => {
   }, []);
 
   // console.log("modalMatch", modalMatch);
+  console.log("post", post);
 
   return (
     <>
@@ -76,11 +78,9 @@ const Modal = ({ postId }: ModalProps) => {
 
               <Text>{post.text}</Text>
 
-              <TagContainer>
-                <Tag>도시</Tag>
-                <Tag>인적이 드문</Tag>
-                <Tag>자연</Tag>
-              </TagContainer>
+              <KeywordContainer>
+                <PostKeyword placeKeyword={post.placeKeyword} />
+              </KeywordContainer>
             </ContentsContainer>
 
             {/* <div>placeName {post.placeInfo?.placeName}</div>
@@ -228,21 +228,21 @@ const Text = styled.div`
   line-height: 1.6rem;
 `;
 
-const TagContainer = styled.div`
+const KeywordContainer = styled.div`
   display: flex;
   margin-top: 0.5rem;
   margin-bottom: 2rem;
 `;
 
-const Tag = styled.div`
-  display: flex;
-  align-items: center;
-  height: 1.625rem;
-  color: ${(props) => props.theme.colors.darkGray};
-  background-color: lightblue;
-  border-radius: 2px;
-  padding: 0 0.5rem;
-  margin-right: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 400;
-`;
+// const Tag = styled.div`
+//   display: flex;
+//   align-items: center;
+//   height: 1.625rem;
+//   color: ${(props) => props.theme.colors.darkGray};
+//   background-color: lightblue;
+//   border-radius: 2px;
+//   padding: 0 0.5rem;
+//   margin-right: 0.5rem;
+//   font-size: 0.9rem;
+//   font-weight: 400;
+// `;

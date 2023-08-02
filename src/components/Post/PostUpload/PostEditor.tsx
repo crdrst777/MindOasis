@@ -24,6 +24,9 @@ const PostEditor = () => {
   const [attachment, setAttachment] = useState<any>(""); // 사진 첨부 없이 텍스트만 업로드하고 싶을 때도 있으므로 기본 값을 ""로 해야한다. 업로드할 때 텍스트만 입력시 이미지 url ""로 비워두기 위함
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
   const { placeInfo } = useSelector((state: RootState) => state.placeInfo);
+  const { placeKeyword } = useSelector(
+    (state: RootState) => state.placeKeyword
+  );
 
   const uploadData = (Data: PostType) => {
     addDoc(collection(dbService, "posts"), Data);
@@ -73,6 +76,7 @@ const PostEditor = () => {
         creatorId: userInfo.uid,
         attachmentUrl,
         placeInfo,
+        placeKeyword,
       };
       await uploadData(postObj);
       alert("등록 완료");
@@ -85,6 +89,7 @@ const PostEditor = () => {
         creatorId: userInfo.uid,
         attachmentUrl,
         placeInfo,
+        placeKeyword,
       };
       await uploadData(postObj);
       alert("등록 완료");
@@ -119,6 +124,8 @@ const PostEditor = () => {
     setAttachment("");
     fileInput.current!.value = ""; // 사진을 선택했다가 clear를 눌렀을때, 선택된 파일명을 지워줌.
   };
+
+  console.log("placeKeyword", placeKeyword);
 
   return (
     <Container>

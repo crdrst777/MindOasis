@@ -42,14 +42,14 @@ const Overlay = styled.div`
   width: 17rem;
   height: 17rem;
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.154);
+  background-color: rgba(0, 0, 0, 0.184);
   /* z-index: 2000; */
   transition: opacity 0.2s ease;
   border-radius: 4px;
 
   &:hover {
     opacity: 1;
-    box-shadow: inset 0 2px 45px rgba(0, 0, 0, 0.218);
+    box-shadow: inset 0 2px 45px rgba(0, 0, 0, 0.209);
   }
 `;
 

@@ -11,6 +11,7 @@ export interface PostType {
   creatorId?: string;
   attachmentUrl?: string;
   placeInfo?: PlaceInfoType;
+  placeKeyword?: string[];
 }
 
 // export interface UserDocType {
