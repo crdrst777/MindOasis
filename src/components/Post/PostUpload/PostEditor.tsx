@@ -204,7 +204,7 @@ const Container = styled.div`
 `;
 
 const MapContainer = styled.section`
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   width: 45rem;
 `;
 
@@ -228,7 +228,7 @@ const SectionTitle = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    background: ${(props) => props.theme.colors.mint};
+    background: ${(props) => props.theme.colors.yellow};
     font-size: 1rem;
     font-weight: 700;
     color: ${(props) => props.theme.colors.white};
@@ -300,9 +300,9 @@ const BtnContainer = styled.div`
 const CancelBtn = styled.button`
   height: 2rem;
   color: black;
-  background-color: ${(props) => props.theme.colors.moreLightGray};
+  background-color: ${(props) => props.theme.colors.lightGray};
   border-radius: 4px;
-  margin: 2.5rem 0.5rem;
+  margin: 1.8rem 0.5rem;
   padding: 0 1.25rem;
   font-size: 1rem;
   font-weight: 400;

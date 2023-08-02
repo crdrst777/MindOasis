@@ -45,7 +45,6 @@ const Container = styled.div``;
 const SearchForm = styled.div`
   display: flex;
   justify-content: center;
-  /* margin-bottom: 1rem; */
   position: relative;
 `;
 
@@ -56,7 +55,6 @@ const SearchIcon = styled.img.attrs({
   width: 1.4rem;
   top: 1.1rem;
   left: 1rem;
-  /* cursor: pointer; */
 `;
 
 const Search = styled.input`

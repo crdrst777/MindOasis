@@ -6,15 +6,21 @@ interface Props {
 
 const PostKeyword = ({ placeKeyword }: Props) => {
   return (
-    <>
+    <Container>
       {placeKeyword?.map((item, idx) => (
         <Keyword key={idx}>{item}</Keyword>
       ))}
-    </>
+    </Container>
   );
 };
 
 export default PostKeyword;
+
+const Container = styled.div`
+  display: flex;
+  margin-top: 0.5rem;
+  margin-bottom: 1.7rem;
+`;
 
 const Keyword = styled.div`
   display: flex;

@@ -60,8 +60,8 @@ const colors = {
   black: "#222222",
   white: "#ffffff",
 
-  moreLightGray: "#e9ecef",
-  lightGray: "#f8f9fa",
+  moreLightGray: "#f8f9fa",
+  lightGray: "#e9ecef",
   gray: "#8E8E8E",
   darkGray: "#464646",
   moreDarkGray: "#333333", //darkGray였는데 바꿧음

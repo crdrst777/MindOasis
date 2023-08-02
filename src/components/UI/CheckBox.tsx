@@ -62,7 +62,7 @@ const CheckBox = () => {
               checkHandler(e, item)
             }
           />
-          <label htmlFor={item}>{item}</label>
+          <CheckBoxLabel htmlFor={item}>{item}</CheckBoxLabel>
         </CheckBoxWrapper>
       ))}
       {/* <button onClick={onSubmit}>submit</button> */}
@@ -74,17 +74,41 @@ export default CheckBox;
 
 const Container = styled.div`
   width: 100%;
-  height: 5rem;
-  /* background-color: aquamarine; */
+  height: 7rem;
   display: flex;
   justify-content: space-between;
-  /* align-items: center; */
 `;
 
 const CheckBoxWrapper = styled.div`
-  /* background-color: beige; */
-  margin: 0.3rem;
-  padding: 0.5rem;
+  margin-top: 1rem;
 `;
 
-const CheckBoxInput = styled.input``;
+// 원래의 인풋을 보이지 않는것처럼 멀리 보내버리고, 체크가 되었을 경우 라벨의 배경색, 글자색을 변경
+const CheckBoxInput = styled.input`
+  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+
+  &:checked + label {
+    background-color: ${(props) => props.theme.colors.blue};
+    color: ${(props) => props.theme.colors.white};
+  }
+`;
+
+const CheckBoxLabel = styled.label`
+  padding: 0.5rem 1rem;
+  height: 2.25rem;
+  cursor: pointer;
+  border-radius: 2rem;
+  background-color: ${(props) => props.theme.colors.lightGray};
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: ${(props) => props.theme.colors.black};
+`;

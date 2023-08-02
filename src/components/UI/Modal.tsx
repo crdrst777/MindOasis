@@ -83,9 +83,6 @@ const Modal = ({ postId }: ModalProps) => {
               </KeywordContainer>
             </ContentsContainer>
 
-            {/* <div>placeName {post.placeInfo?.placeName}</div>
-            <div>placeAddr {post.placeInfo?.placeAddr}</div> */}
-
             <ReadMap placeInfo={post.placeInfo} />
           </Main>
         </ModalContainer>
@@ -219,7 +216,7 @@ const CreatedAt = styled.div`
 `;
 
 const Text = styled.div`
-  /* display: inline-block; */
+  display: inline-block;
   min-height: 4rem;
   max-height: 15.5rem;
   overflow: hidden;
@@ -228,21 +225,4 @@ const Text = styled.div`
   line-height: 1.6rem;
 `;
 
-const KeywordContainer = styled.div`
-  display: flex;
-  margin-top: 0.5rem;
-  margin-bottom: 2rem;
-`;
-
-// const Tag = styled.div`
-//   display: flex;
-//   align-items: center;
-//   height: 1.625rem;
-//   color: ${(props) => props.theme.colors.darkGray};
-//   background-color: lightblue;
-//   border-radius: 2px;
-//   padding: 0 0.5rem;
-//   margin-right: 0.5rem;
-//   font-size: 0.9rem;
-//   font-weight: 400;
-// `;
+const KeywordContainer = styled.div``;
