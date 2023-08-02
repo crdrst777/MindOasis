@@ -97,7 +97,7 @@ const CheckBoxInput = styled.input`
   border: 0;
 
   &:checked + label {
-    background-color: ${(props) => props.theme.colors.blue};
+    background-color: ${(props) => props.theme.colors.violet};
     color: ${(props) => props.theme.colors.white};
   }
 `;

@@ -35,6 +35,13 @@ const ReadMap = ({ placeInfo }: Props) => {
             map: map,
             position: coords,
           });
+
+          // 인포윈도우로 장소에 대한 설명을 표시합니다
+          const infowindow = new kakao.maps.InfoWindow({
+            content: `<div style="width:170px;text-align:center;padding:6px 6px;">${placeInfo?.placeName}<br/>${placeInfo?.placeAddr}</div>`,
+          });
+          infowindow.open(map, marker);
+
           // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
           map.setCenter(coords);
           marker.setMap(map);
@@ -47,10 +54,10 @@ const ReadMap = ({ placeInfo }: Props) => {
 
   return (
     <Container>
-      {/* <PlaceText>
+      <PlaceText>
         <PlaceName>{placeInfo?.placeName}</PlaceName>
-        <PlaceAddr>{placeInfo?.placeAddr}</PlaceAddr>
-      </PlaceText> */}
+        {/* <PlaceAddr>{placeInfo?.placeAddr}</PlaceAddr> */}
+      </PlaceText>
       <Map>
         <div id="map"></div>
       </Map>
@@ -65,15 +72,15 @@ const Container = styled.section`
   margin-bottom: 2rem;
 `;
 
-// const PlaceText = styled.div`
-//   display: flex;
-//   justify-content: end;
-//   font-weight: 400;
-//   margin: 0 0 0.8rem 0;
-// `;
-// const PlaceName = styled.span`
-//   color: ${(props) => props.theme.colors.darkGray};
-// `;
+const PlaceText = styled.div`
+  display: flex;
+  justify-content: end;
+  font-weight: 400;
+  margin: 0 0 0.8rem 0;
+`;
+const PlaceName = styled.span`
+  color: ${(props) => props.theme.colors.darkGray};
+`;
 // const PlaceAddr = styled.span`
 //   color: ${(props) => props.theme.colors.blue};
 // `;

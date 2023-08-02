@@ -27,7 +27,7 @@ const Keyword = styled.div`
   align-items: center;
   height: 1.625rem;
   color: ${(props) => props.theme.colors.darkGray};
-  background-color: lightblue;
+  background-color: #c7dbf5;
   border-radius: 2px;
   padding: 0 0.5rem;
   margin-right: 0.5rem;

@@ -162,6 +162,10 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
     }
   };
 
+  const test = () => {
+    console.log("test", test);
+  };
+
   console.log("placeInfo", placeInfo);
 
   return (
@@ -174,12 +178,12 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
       <Map id="myMap" />
       <PlaceList>
         {places.map((item, i) => (
-          <PlaceItem key={i}>
-            <span>{i + 1}</span>
-            <span> - {item.place_name}</span>
-            <AddressName>
-              <span>{item.address_name}</span>
-            </AddressName>
+          <PlaceItem key={i} onClick={test}>
+            <ItemNum>{i + 1}</ItemNum>
+            <ItemNameContainer>
+              <ItemPlaceName>{item.place_name}</ItemPlaceName>
+              <ItemAddrName>{item.address_name}</ItemAddrName>
+            </ItemNameContainer>
           </PlaceItem>
         ))}
 
@@ -204,7 +208,7 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   margin: auto;
-  width: 45rem;
+  width: 43rem;
 `;
 
 const SelectedPlaceText = styled.div`
@@ -220,12 +224,12 @@ const PlaceName = styled.span`
   margin-right: 0.8rem;
 `;
 const PlaceAddr = styled.span`
-  color: ${(props) => props.theme.colors.blue};
+  color: ${(props) => props.theme.colors.violet};
 `;
 
 const Map = styled.div`
   width: 100%;
-  height: 18rem;
+  height: 16rem;
   margin-bottom: 1rem;
 `;
 
@@ -242,10 +246,30 @@ const PlaceList = styled.div`
 `;
 
 const PlaceItem = styled.div`
-  margin-top: 1rem;
+  display: flex;
+  margin: 0.5rem 0;
+  padding: 0.5rem 0;
+  cursor: pointer;
 `;
 
-const AddressName = styled.div``;
+const ItemNum = styled.div`
+  width: 3rem;
+`;
+
+const ItemNameContainer = styled.div``;
+
+const ItemPlaceName = styled.div`
+  color: ${(props) => props.theme.colors.darkGray};
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.1rem;
+`;
+
+const ItemAddrName = styled.div`
+  color: ${(props) => props.theme.colors.gray};
+  font-size: 0.9rem;
+  font-weight: 400;
+`;
 
 const PaginationContainer = styled.div`
   width: 100%;

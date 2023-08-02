@@ -61,7 +61,7 @@ const colors = {
   white: "#ffffff",
 
   moreLightGray: "#f8f9fa",
-  lightGray: "#e9ecef",
+  lightGray: "#f2f2f2",
   gray: "#8E8E8E",
   darkGray: "#464646",
   moreDarkGray: "#333333", //darkGray였는데 바꿧음
@@ -72,6 +72,8 @@ const colors = {
   green: "#41b979",
   mint: "#1EC997",
   blue: "#0080ff",
+  lightBlue: "#c7dbf5",
+  violet: "#6758EF",
 };
 
 const borders = {

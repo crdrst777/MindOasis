@@ -201,16 +201,17 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  width: 43rem;
 `;
 
 const MapContainer = styled.section`
   margin-top: 0.5rem;
-  width: 45rem;
+  width: 100%;
 `;
 
 const WriteContainer = styled.section`
   margin-top: 3.5rem;
-  width: 45rem;
+  width: 100%;
 `;
 
 const SectionTitle = styled.div`
@@ -218,7 +219,7 @@ const SectionTitle = styled.div`
   align-items: center;
   padding: 1rem;
   margin-bottom: 2.25rem;
-  border-bottom: 3px solid #f2f2f2;
+  border-bottom: 3px solid ${(props) => props.theme.colors.lightGray};
 
   span {
     margin-right: 0.5rem;
@@ -260,7 +261,7 @@ const TitleInput = styled.input`
 
 const TextInput = styled.textarea`
   width: 100%;
-  height: 11.4rem;
+  height: 10rem;
   font-size: 1rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
   padding: 1.2rem;
@@ -273,7 +274,7 @@ const TextInput = styled.textarea`
 
 const FileContainer = styled.section`
   margin-top: 3.5rem;
-  width: 45rem;
+  width: 100%;
 `;
 
 const FileInput = styled.input`
@@ -289,7 +290,7 @@ const FileInput = styled.input`
 
 const CheckBoxContainer = styled.section`
   margin-top: 3.5rem;
-  width: 45rem;
+  width: 100%;
 `;
 
 const BtnContainer = styled.div`
