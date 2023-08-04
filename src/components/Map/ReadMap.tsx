@@ -38,7 +38,7 @@ const ReadMap = ({ placeInfo }: Props) => {
 
           // 인포윈도우로 장소에 대한 설명을 표시합니다
           const infowindow = new kakao.maps.InfoWindow({
-            content: `<div style="width:170px;text-align:center;padding:6px 6px;">${placeInfo?.placeName}<br/>${placeInfo?.placeAddr}</div>`,
+            content: `<div class="infowindow"><span>${placeInfo?.placeName}</span><span>${placeInfo?.placeAddr}</span></div>`,
           });
           infowindow.open(map, marker);
 
@@ -54,10 +54,9 @@ const ReadMap = ({ placeInfo }: Props) => {
 
   return (
     <Container>
-      <PlaceText>
+      {/* <PlaceText>
         <PlaceName>{placeInfo?.placeName}</PlaceName>
-        {/* <PlaceAddr>{placeInfo?.placeAddr}</PlaceAddr> */}
-      </PlaceText>
+      </PlaceText> */}
       <Map>
         <div id="map"></div>
       </Map>
@@ -89,5 +88,19 @@ const Map = styled.div`
   #map {
     width: 100%;
     height: 16rem;
+
+    .infowindow {
+      width: 13.75rem;
+      padding: 0.6rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      font-weight: 400;
+
+      span {
+        padding: 0.1rem 0;
+      }
+    }
   }
 `;
