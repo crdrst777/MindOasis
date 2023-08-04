@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import { styled } from "styled-components";
 import avatar from "../../assets/img/avatar-icon.png";
 import Sidebar from "../../components/MyPage/Sidebar";
-import { doc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 
 interface UpdateProfileProps {
   refreshUser: () => any;
@@ -133,6 +133,10 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
         displayName: newDisplayName,
         photoURL: "",
       });
+      await updateDoc(userDocRef, {
+        photoURL: "",
+      });
+
       try {
         await deleteObject(userAuthURLRef);
       } catch (error: any) {

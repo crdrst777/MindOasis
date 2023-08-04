@@ -81,14 +81,23 @@ const borders = {
   lightGray: "1px solid #e1e3e8",
 };
 
-// const flex = {
-//   flexBox: (direction = "row", align = "center", justify = "center") => `
-//     display: flex;
-//     flex-direction: ${direction};
-//     align-items: ${align};
-//     justify-content: ${justify};
-//   `,
-// };
+const markerPosition = [
+  "0 -10px",
+  "0 -56px",
+  "0 -102px",
+  "0 -148px",
+  "0 -194px",
+  "0 -240px",
+  "0 -286px",
+  "0 -332px",
+  "0 -378px",
+  "0 -423px",
+  "0 -470px",
+  "0 -516px",
+  "0 -562px",
+  "0 -608px",
+  "0 -654px",
+];
 
 const theme = {
   fontSizes,
@@ -96,6 +105,7 @@ const theme = {
   margins,
   colors,
   borders,
+  markerPosition,
 };
 
 export default theme;

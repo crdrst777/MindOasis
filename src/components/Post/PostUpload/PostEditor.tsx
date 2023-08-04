@@ -28,8 +28,8 @@ const PostEditor = () => {
     (state: RootState) => state.placeKeyword
   );
 
-  const uploadData = (Data: PostType) => {
-    addDoc(collection(dbService, "posts"), Data);
+  const uploadData = (data: PostType) => {
+    addDoc(collection(dbService, "posts"), data);
     setTitle("");
     setText("");
     setAttachment(""); // 파일 미리보기 img src 비워주기
@@ -125,7 +125,7 @@ const PostEditor = () => {
     fileInput.current!.value = ""; // 사진을 선택했다가 clear를 눌렀을때, 선택된 파일명을 지워줌.
   };
 
-  console.log("placeKeyword", placeKeyword);
+  // console.log("placeKeyword", placeKeyword);
 
   return (
     <Container>

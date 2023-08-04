@@ -9,11 +9,11 @@ import ModalHeader from "./ModalHeader";
 import ReadMap from "../Map/ReadMap";
 import PostKeyword from "../Post/PostKeyword";
 
-interface ModalProps {
+interface Props {
   postId?: string;
 }
 
-const Modal = ({ postId }: ModalProps) => {
+const Modal = ({ postId }: Props) => {
   const [post, setPost] = useState<PostType>({});
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
   const modalMatch = useMatch(`/content/detail/:id`);
@@ -64,7 +64,7 @@ const Modal = ({ postId }: ModalProps) => {
         <ModalContainer>
           {/* <CloseIcon onClick={closeModal} /> */}
           <Main>
-            <ModalHeader post={post} />
+            <ModalHeader post={post} postId={postId} />
             <ImgContainer>
               {post.attachmentUrl && (
                 <Img src={post.attachmentUrl} alt="image" />

@@ -1,25 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { PostType } from "../../types/types";
-import { doc, getDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import { ReactComponent as HeartIcon } from "../../assets/icon/heart-icon.svg";
 import avatar from "../../assets/img/avatar-icon.png";
 
-interface ModalHeaderProps {
+interface Props {
   post: PostType;
+  postId: string;
 }
 
-const ModalHeader = ({ post }: ModalHeaderProps) => {
+const ModalHeader = ({ post, postId }: Props) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   // `${post.creatorId}` ->  users db의 documentId와 동일. documentId로 해당 user 데이터 찾기
-  const userDocRef = doc(dbService, "users", `${post.creatorId}`); // 파일을 가리키는 참조 생성
+  const creatorDocRef = doc(dbService, "users", `${post.creatorId}`); // 파일을 가리키는 참조 생성
+  const [creator, setCreator] = useState<any>({});
+  const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 파일을 가리키는 참조 생성
   const [user, setUser] = useState<any>({});
+
+  const getCreator = async () => {
+    try {
+      const creatorDocSnap = await getDoc(creatorDocRef);
+      if (creatorDocSnap.exists()) {
+        setCreator(creatorDocSnap.data());
+      } else {
+        console.log("creator document does not exist");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getUser = async () => {
     try {
       const userDocSnap = await getDoc(userDocRef);
-
       if (userDocSnap.exists()) {
         setUser(userDocSnap.data());
       } else {
@@ -31,8 +46,21 @@ const ModalHeader = ({ post }: ModalHeaderProps) => {
   };
 
   useEffect(() => {
+    getCreator();
     getUser();
-  }, [post]);
+  }, [post, postId]);
+
+  const onLikeBtnClick = async () => {
+    if (user.myLikes) {
+      await updateDoc(userDocRef, {
+        myLikes: [...user.myLikes, postId],
+      });
+    } else {
+      await updateDoc(userDocRef, {
+        myLikes: [postId],
+      });
+    }
+  };
 
   console.log("user", user);
 
@@ -40,15 +68,15 @@ const ModalHeader = ({ post }: ModalHeaderProps) => {
     <Header>
       <UserInfo>
         <AvatarContainer>
-          {userInfo.photoURL ? (
-            <img src={userInfo.photoURL} alt="profile photo" />
+          {creator.photoURL ? (
+            <img src={creator.photoURL} alt="profile photo" />
           ) : (
             <BasicAvatarIcon />
           )}
         </AvatarContainer>
-        <Nickname>{user.displayName}</Nickname>
+        <Nickname>{creator.displayName}</Nickname>
       </UserInfo>
-      <LikeBtn>
+      <LikeBtn onClick={onLikeBtnClick}>
         <HeartIcon />
       </LikeBtn>
     </Header>
@@ -75,7 +103,6 @@ const AvatarContainer = styled.div`
   width: 2.7rem;
   height: 2.7rem;
   border-radius: 50%;
-  background-color: orange;
 
   img {
     width: 2.7rem;

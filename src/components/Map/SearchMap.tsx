@@ -19,6 +19,23 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
   const [pagination, setPagination] = useState<PaginaionType | null>(null);
   const markers: any = [];
   let marker: any = null;
+  // const MARKER_POSITIONS = [
+  //   "0 -10px",
+  //   "0 -56px",
+  //   "0 -102px",
+  //   "0 -148px",
+  //   "0 -194px",
+  //   "0 -240px",
+  //   "0 -286px",
+  //   "0 -332px",
+  //   "0 -378px",
+  //   "0 -423px",
+  //   "0 -470px",
+  //   "0 -516px",
+  //   "0 -562px",
+  //   "0 -608px",
+  //   "0 -654px",
+  // ];
 
   useEffect(() => {
     const mapContainer = document.getElementById("myMap"); // 지도를 표시할 div
@@ -147,6 +164,32 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
       return marker;
     };
 
+    // 마커를 생성하고 리스트에 마커를 표시하는 함수
+    const addListMarker = (idx: number) => {
+      var imageSrc =
+          "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
+        imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
+        imgOptions = {
+          spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+          spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+          offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+        },
+        markerImage = new kakao.maps.MarkerImage(
+          imageSrc,
+          imageSize,
+          imgOptions
+        ),
+        marker = new kakao.maps.Marker({
+          // position: position, // 마커의 위치
+          image: markerImage,
+        });
+
+      marker.setMap(map); // 지도 위에 마커를 표출
+      markers.push(marker); // 배열에 생성된 마커를 추가
+
+      return marker;
+    };
+
     // 인포윈도우에 장소명을 표시
     const displayInfowindow = (marker: any, title: string) => {
       infowindow.setContent(
@@ -162,8 +205,13 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
     }
   };
 
-  const test = () => {
-    console.log("test", test);
+  const onPlaceItemClick = (placeName: string, placeAddr: string) => {
+    dispatch(
+      setPlaceInfo({
+        placeName: placeName,
+        placeAddr: placeAddr,
+      })
+    );
   };
 
   console.log("placeInfo", placeInfo);
@@ -178,8 +226,11 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
       <Map id="myMap" />
       <PlaceList>
         {places.map((item, i) => (
-          <PlaceItem key={i} onClick={test}>
-            <ItemNum>{i + 1}</ItemNum>
+          <PlaceItem
+            key={i}
+            onClick={() => onPlaceItemClick(item.place_name, item.address_name)}
+          >
+            <ItemNum index={i}></ItemNum>
             <ItemNameContainer>
               <ItemPlaceName>{item.place_name}</ItemPlaceName>
               <ItemAddrName>{item.address_name}</ItemAddrName>
@@ -252,8 +303,11 @@ const PlaceItem = styled.div`
   cursor: pointer;
 `;
 
-const ItemNum = styled.div`
-  width: 3rem;
+const ItemNum = styled.span<{ index: number }>`
+  width: 2.3rem;
+  margin-right: 1rem;
+  background-image: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png");
+  background-position: ${(props) => props.theme.markerPosition[props.index]};
 `;
 
 const ItemNameContainer = styled.div``;
