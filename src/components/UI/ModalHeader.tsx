@@ -52,7 +52,7 @@ const ModalHeader = ({ post, postId }: Props) => {
     getUser();
   }, [post, postId]);
 
-  const UpdateLikedUsers = async () => {
+  const updateLikedUsers = async () => {
     try {
       if (post.likedUsers) {
         await updateDoc(postDocRef, {
@@ -71,12 +71,25 @@ const ModalHeader = ({ post, postId }: Props) => {
   // like 버튼 클릭시 실행되는 함수
   const onLikeBtnClick = async () => {
     try {
-      console.log("post.creatorId", post.creatorId);
-      console.log("userInfo.uid", userInfo.uid);
+      let equalElArr = user.myLikes.filter((item: string) => item === postId);
 
       // 내가 쓴 게시물이라면 alert창 뜨도록 하기
       if (post.creatorId === user.uid) {
         alert("내가 작성한 게시물입니다");
+        // post의 id와 동일한 요소가 user의 myLikes 배열 안에 이미 있다면, 배열 안에서 제거한다.
+      } else if (equalElArr.length !== 0) {
+        const unequalElArr = user.myLikes.filter(
+          (item: string) => item !== postId
+        );
+        const unequalLikedUsersArr = post.likedUsers.filter(
+          (item: string) => item !== userInfo.uid
+        );
+        await updateDoc(userDocRef, {
+          myLikes: unequalElArr,
+        });
+        await updateDoc(postDocRef, {
+          likedUsers: unequalLikedUsersArr,
+        });
       } else {
         // 기존에 좋아요 게시물이 있는 경우. 기존것에 추가
         if (user.myLikes) {
@@ -89,7 +102,7 @@ const ModalHeader = ({ post, postId }: Props) => {
             myLikes: [postId],
           });
         }
-        UpdateLikedUsers();
+        updateLikedUsers();
       }
     } catch (err) {
       console.log(err);
