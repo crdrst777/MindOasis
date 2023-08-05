@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { PostType } from "../../types/types";
 import { useNavigate } from "react-router-dom";
+import { dbService } from "../../fbase";
+import { doc, getDoc } from "firebase/firestore";
 
 interface PreviewPostProps {
   post: PostType;
@@ -10,10 +12,46 @@ interface PreviewPostProps {
 
 const PreviewPost = ({ post }: PreviewPostProps) => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
+  // const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  // const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 파일을 가리키는 참조 생성
+  // const [user, setUser] = useState<any>({});
+
+  // const [isLiked, setIsLiked] = useState(false);
 
   const openModal = (id: any) => {
     navigate(`/content/detail/${id}`); // 이 url로 바꿔줌.
   };
+
+  // const getUser = async () => {
+  //   try {
+  //     const userDocSnap = await getDoc(userDocRef);
+  //     if (userDocSnap.exists()) {
+  //       setUser(userDocSnap.data());
+  //     } else {
+  //       console.log("User document does not exist");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // console.log("testuser", user);
+
+  // const test = () => {
+  //   if (user.myLikes) {
+  //     for (let i of user.myLikes) {
+  //       if (i === post.id) {
+  //         console.log("내가 좋아요 누른 게시물");
+  //       }
+  //     }
+  //   }
+  //   console.log("지금 user는 myLikes 목록이 없어요");
+  // };
+
+  // useEffect(() => {
+  //   getUser();
+  //   test();
+  // }, [post]);
 
   return (
     <Container onClick={() => openModal(post.id)}>

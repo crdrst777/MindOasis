@@ -69,7 +69,7 @@ const PostEditor = () => {
       //  title인풋에 공백만 있거나 값이 없는 경우엔 장소이름을 넣어준다.
     } else if (title.replace(blankPattern, "") === "" || title === "") {
       // setTitle(placeInfo.placeAddr); // 이 코드가 실행될때 리랜더링 되는데 이 리랜더링을 막아야 등록 버튼 눌렀을때 한번에 제출됨
-      const postObj = {
+      const postObj: PostType = {
         title: placeInfo.placeAddr,
         text: text,
         createdAt: Date.now(),
@@ -77,12 +77,13 @@ const PostEditor = () => {
         attachmentUrl,
         placeInfo,
         placeKeyword,
+        likedUsers: [],
       };
       await uploadData(postObj);
       alert("등록 완료");
       navigate(`/content`);
     } else {
-      const postObj = {
+      const postObj: PostType = {
         title: title,
         text: text,
         createdAt: Date.now(),
@@ -90,6 +91,7 @@ const PostEditor = () => {
         attachmentUrl,
         placeInfo,
         placeKeyword,
+        likedUsers: [],
       };
       await uploadData(postObj);
       alert("등록 완료");

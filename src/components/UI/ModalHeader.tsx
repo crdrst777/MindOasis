@@ -14,10 +14,12 @@ interface Props {
 const ModalHeader = ({ post, postId }: Props) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   // `${post.creatorId}` ->  users db의 documentId와 동일. documentId로 해당 user 데이터 찾기
-  const creatorDocRef = doc(dbService, "users", `${post.creatorId}`); // 파일을 가리키는 참조 생성
+  const postDocRef = doc(dbService, "posts", `${postId}`); // 현재 게시물을 가리키는 참조 생성
+  const creatorDocRef = doc(dbService, "users", `${post.creatorId}`); // 게시물 작성자를 가리키는 참조 생성
   const [creator, setCreator] = useState<any>({});
-  const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 파일을 가리키는 참조 생성
+  const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 현재 로그인한 유저를 가리키는 참조 생성
   const [user, setUser] = useState<any>({});
+  const [isLiked, setIsLiked] = useState(false);
 
   const getCreator = async () => {
     try {
@@ -50,15 +52,47 @@ const ModalHeader = ({ post, postId }: Props) => {
     getUser();
   }, [post, postId]);
 
+  const UpdateLikedUsers = async () => {
+    try {
+      if (post.likedUsers) {
+        await updateDoc(postDocRef, {
+          likedUsers: [...post.likedUsers, userInfo.uid],
+        });
+      } else {
+        await updateDoc(postDocRef, {
+          likedUsers: [userInfo.uid],
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // like 버튼 클릭시 실행되는 함수
   const onLikeBtnClick = async () => {
-    if (user.myLikes) {
-      await updateDoc(userDocRef, {
-        myLikes: [...user.myLikes, postId],
-      });
-    } else {
-      await updateDoc(userDocRef, {
-        myLikes: [postId],
-      });
+    try {
+      console.log("post.creatorId", post.creatorId);
+      console.log("userInfo.uid", userInfo.uid);
+
+      // 내가 쓴 게시물이라면 alert창 뜨도록 하기
+      if (post.creatorId === user.uid) {
+        alert("내가 작성한 게시물입니다");
+      } else {
+        // 기존에 좋아요 게시물이 있는 경우. 기존것에 추가
+        if (user.myLikes) {
+          await updateDoc(userDocRef, {
+            myLikes: [...user.myLikes, postId],
+          });
+          // 좋아요 게시물을 처음 누른 경우
+        } else {
+          await updateDoc(userDocRef, {
+            myLikes: [postId],
+          });
+        }
+        UpdateLikedUsers();
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
