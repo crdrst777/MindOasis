@@ -15,27 +15,9 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
   const dispatch = useDispatch();
   const [places, setPlaces] = useState<PlaceType[]>([]);
   const { placeInfo } = useSelector((state: RootState) => state.placeInfo);
-
   const [pagination, setPagination] = useState<PaginaionType | null>(null);
   const markers: any = [];
   let marker: any = null;
-  // const MARKER_POSITIONS = [
-  //   "0 -10px",
-  //   "0 -56px",
-  //   "0 -102px",
-  //   "0 -148px",
-  //   "0 -194px",
-  //   "0 -240px",
-  //   "0 -286px",
-  //   "0 -332px",
-  //   "0 -378px",
-  //   "0 -423px",
-  //   "0 -470px",
-  //   "0 -516px",
-  //   "0 -562px",
-  //   "0 -608px",
-  //   "0 -654px",
-  // ];
 
   useEffect(() => {
     const mapContainer = document.getElementById("myMap"); // 지도를 표시할 div
@@ -167,7 +149,7 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
     // 마커를 생성하고 리스트에 마커를 표시하는 함수
     const addListMarker = (idx: number) => {
       var imageSrc =
-          "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
+          "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씀
         imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
         imgOptions = {
           spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기

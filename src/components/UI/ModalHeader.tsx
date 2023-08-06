@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { PostType } from "../../types/types";
-import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import { ReactComponent as HeartIcon } from "../../assets/icon/heart-icon.svg";
 import avatar from "../../assets/img/avatar-icon.png";
@@ -16,16 +16,16 @@ const ModalHeader = ({ post, postId }: Props) => {
   // `${post.creatorId}` ->  users db의 documentId와 동일. documentId로 해당 user 데이터 찾기
   const postDocRef = doc(dbService, "posts", `${postId}`); // 현재 게시물을 가리키는 참조 생성
   const creatorDocRef = doc(dbService, "users", `${post.creatorId}`); // 게시물 작성자를 가리키는 참조 생성
-  const [creator, setCreator] = useState<any>({});
+  const [creatorData, setCreatorData] = useState<any>({});
   const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 현재 로그인한 유저를 가리키는 참조 생성
-  const [user, setUser] = useState<any>({});
+  const [userData, setUserData] = useState<any>({});
   const [isLiked, setIsLiked] = useState(false);
 
-  const getCreator = async () => {
+  const getCreatorData = async () => {
     try {
       const creatorDocSnap = await getDoc(creatorDocRef);
       if (creatorDocSnap.exists()) {
-        setCreator(creatorDocSnap.data());
+        setCreatorData(creatorDocSnap.data());
       } else {
         console.log("creator document does not exist");
       }
@@ -34,11 +34,11 @@ const ModalHeader = ({ post, postId }: Props) => {
     }
   };
 
-  const getUser = async () => {
+  const getUserData = async () => {
     try {
       const userDocSnap = await getDoc(userDocRef);
       if (userDocSnap.exists()) {
-        setUser(userDocSnap.data());
+        setUserData(userDocSnap.data());
       } else {
         console.log("User document does not exist");
       }
@@ -48,9 +48,9 @@ const ModalHeader = ({ post, postId }: Props) => {
   };
 
   useEffect(() => {
-    getCreator();
-    getUser();
-  }, [post, postId]);
+    getCreatorData();
+    getUserData();
+  }, [post, postId, isLiked]);
 
   const updateLikedUsers = async () => {
     try {
@@ -71,14 +71,16 @@ const ModalHeader = ({ post, postId }: Props) => {
   // like 버튼 클릭시 실행되는 함수
   const onLikeBtnClick = async () => {
     try {
-      let equalElArr = user.myLikes.filter((item: string) => item === postId);
+      let equalElArr = userData.myLikes.filter(
+        (item: string) => item === postId
+      );
 
       // 내가 쓴 게시물이라면 alert창 뜨도록 하기
-      if (post.creatorId === user.uid) {
+      if (post.creatorId === userData.uid) {
         alert("내가 작성한 게시물입니다");
         // post의 id와 동일한 요소가 user의 myLikes 배열 안에 이미 있다면, 배열 안에서 제거한다.
       } else if (equalElArr.length !== 0) {
-        const unequalElArr = user.myLikes.filter(
+        const unequalElArr = userData.myLikes.filter(
           (item: string) => item !== postId
         );
         const unequalLikedUsersArr = post.likedUsers.filter(
@@ -90,11 +92,12 @@ const ModalHeader = ({ post, postId }: Props) => {
         await updateDoc(postDocRef, {
           likedUsers: unequalLikedUsersArr,
         });
+        setIsLiked(false);
       } else {
         // 기존에 좋아요 게시물이 있는 경우. 기존것에 추가
-        if (user.myLikes) {
+        if (userData.myLikes) {
           await updateDoc(userDocRef, {
-            myLikes: [...user.myLikes, postId],
+            myLikes: [...userData.myLikes, postId],
           });
           // 좋아요 게시물을 처음 누른 경우
         } else {
@@ -103,25 +106,26 @@ const ModalHeader = ({ post, postId }: Props) => {
           });
         }
         updateLikedUsers();
+        setIsLiked(true);
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  console.log("user", user);
+  console.log("isLiked", isLiked);
 
   return (
     <Header>
       <UserInfo>
         <AvatarContainer>
-          {creator.photoURL ? (
-            <img src={creator.photoURL} alt="profile photo" />
+          {creatorData.photoURL ? (
+            <img src={creatorData.photoURL} alt="profile photo" />
           ) : (
             <BasicAvatarIcon />
           )}
         </AvatarContainer>
-        <Nickname>{creator.displayName}</Nickname>
+        <Nickname>{creatorData.displayName}</Nickname>
       </UserInfo>
       <LikeBtn onClick={onLikeBtnClick}>
         <HeartIcon />

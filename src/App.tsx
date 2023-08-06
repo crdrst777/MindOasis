@@ -1,5 +1,5 @@
 import { BrowserRouter } from "react-router-dom";
-import { authService } from "./fbase";
+import { authService, dbService } from "./fbase";
 import { useEffect, useState } from "react";
 import { updateProfile } from "firebase/auth";
 import AppRouter from "./Router";
@@ -54,8 +54,6 @@ function App() {
   };
 
   localStorage.setItem("userInfo", JSON.stringify(userInfo));
-
-  console.log("userInfo", userInfo);
 
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>

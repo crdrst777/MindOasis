@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { PostType } from "../../types/types";
 import { useNavigate } from "react-router-dom";
 import { dbService } from "../../fbase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 interface PreviewPostProps {
   post: PostType;
-  // openModal: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const PreviewPost = ({ post }: PreviewPostProps) => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
+  // const postDocRef = doc(dbService, "posts", `${post.id}`); // 현재 게시물을 가리키는 참조 생성
   // const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  // const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 파일을 가리키는 참조 생성
-  // const [user, setUser] = useState<any>({});
 
-  // const [isLiked, setIsLiked] = useState(false);
+  // // const [isLiked, setIsLiked] = useState(false);
+  // const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 현재 로그인한 유저를 가리키는 참조 생성
+  // const [user, setUser] = useState<any>({});
 
   const openModal = (id: any) => {
     navigate(`/content/detail/${id}`); // 이 url로 바꿔줌.
@@ -35,23 +35,27 @@ const PreviewPost = ({ post }: PreviewPostProps) => {
   //   }
   // };
 
-  // console.log("testuser", user);
-
-  // const test = () => {
+  // const test = async () => {
   //   if (user.myLikes) {
-  //     for (let i of user.myLikes) {
-  //       if (i === post.id) {
-  //         console.log("내가 좋아요 누른 게시물");
-  //       }
+  //     const likePostsArr = user.myLikes.filter(
+  //       (item: string) => item === post.id
+  //     );
+  //     if (likePostsArr.length !== 0) {
+  //       await updateDoc(postDocRef, {
+  //         likeState: true,
+  //       });
   //     }
+  //     console.log("likeState");
+  //   } else {
+  //     console.log("fail");
   //   }
-  //   console.log("지금 user는 myLikes 목록이 없어요");
   // };
 
   // useEffect(() => {
   //   getUser();
-  //   test();
   // }, [post]);
+
+  // console.log("post", post);
 
   return (
     <Container onClick={() => openModal(post.id)}>
@@ -68,8 +72,6 @@ const PreviewPost = ({ post }: PreviewPostProps) => {
 export default PreviewPost;
 
 const Container = styled.div`
-  /* display: inline-block; */
-  /* margin: 1.3rem; */
   width: 17rem;
   height: 17rem;
   cursor: pointer;

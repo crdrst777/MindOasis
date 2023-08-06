@@ -3,6 +3,7 @@ import { authService, dbService } from "../../fbase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { UserDocType } from "../../types/types";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -26,11 +27,12 @@ const SignUp = () => {
         email,
         password
       );
-      const userData = {
+      const userData: UserDocType = {
         email: email,
         displayName: data.user.email.split("@")[0],
         uid: data.user.uid,
         photoURL: data.user.photoURL,
+        myLikes: [],
       };
       // `${data.user.uid}` -> documentId 값이 된다. documentId를 직접 지정하는게 가능.
       await setDoc(doc(dbService, "users", `${data.user.uid}`), userData);

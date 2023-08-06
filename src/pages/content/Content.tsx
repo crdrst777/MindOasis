@@ -1,17 +1,25 @@
 import { useEffect, useState } from "react";
 import { dbService } from "../../fbase";
-import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { PostType } from "../../types/types";
 import { styled } from "styled-components";
-import { PathMatch, useMatch, useNavigate } from "react-router-dom";
+import { PathMatch, useMatch } from "react-router-dom";
 import Modal from "../../components/UI/Modal";
 import PreviewPost from "../../components/Post/PreviewPost";
 
-interface ContentProps {}
-
 const Content = () => {
-  const [posts, setPosts] = useState<PostType[]>([]);
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const bigMatch: PathMatch<string> | null = useMatch(`content/detail/:id`);
+  const [posts, setPosts] = useState<PostType[]>([]);
+  const [userData, setUserData] = useState<any>({});
   // const { placeKeyword } = useSelector(
   //   (state: RootState) => state.placeKeyword
   // );
@@ -35,7 +43,6 @@ const Content = () => {
       orderBy("createdAt", "desc") // document를 글을 쓴 순서대로 차례대로 내림차순으로 정렬하기
     );
     onSnapshot(q, (querySnapshot) => {
-      // console.log("querySnapshot.docs", querySnapshot.docs);
       const postsArr: PostType[] = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -44,12 +51,41 @@ const Content = () => {
     });
   };
 
+  const getUserData = async () => {
+    const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 현재 로그인한 유저를 가리키는 참조 생성
+    try {
+      const userDocSnap = await getDoc(userDocRef);
+      if (userDocSnap.exists()) {
+        setUserData(userDocSnap.data());
+      } else {
+        console.log("User document does not exist");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     getPosts();
+    getUserData();
   }, []); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
 
-  console.log("posts", posts);
-  // console.log("placeKeyword", placeKeyword);
+  const changeLikeState = async (myLikeId: string) => {
+    const postDocRef = doc(dbService, "posts", `${myLikeId}`);
+    await updateDoc(postDocRef, {
+      likeState: true,
+    });
+  };
+
+  useEffect(() => {
+    if (userData.myLikes) {
+      for (let item of userData.myLikes) {
+        changeLikeState(item);
+      }
+    }
+  }, [userData]);
+
+  console.log(posts);
 
   return (
     <Container>

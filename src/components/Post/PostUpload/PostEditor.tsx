@@ -78,6 +78,7 @@ const PostEditor = () => {
         placeInfo,
         placeKeyword,
         likedUsers: [],
+        likeState: false,
       };
       await uploadData(postObj);
       alert("등록 완료");
@@ -92,6 +93,7 @@ const PostEditor = () => {
         placeInfo,
         placeKeyword,
         likedUsers: [],
+        likeState: false,
       };
       await uploadData(postObj);
       alert("등록 완료");
