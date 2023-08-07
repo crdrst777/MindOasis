@@ -14,12 +14,17 @@ import { styled } from "styled-components";
 import { PathMatch, useMatch } from "react-router-dom";
 import Modal from "../../components/UI/Modal";
 import PreviewPost from "../../components/Post/PreviewPost";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 const Content = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const bigMatch: PathMatch<string> | null = useMatch(`content/detail/:id`);
   const [posts, setPosts] = useState<PostType[]>([]);
   const [userData, setUserData] = useState<any>({});
+  const [isLiked, setIsLiked] = useState(false);
+  const { reload } = useSelector((state: RootState) => state.reload);
+
   // const { placeKeyword } = useSelector(
   //   (state: RootState) => state.placeKeyword
   // );
@@ -68,13 +73,15 @@ const Content = () => {
   useEffect(() => {
     getPosts();
     getUserData();
-  }, []); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
+  }, [reload]); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
 
   const changeLikeState = async (myLikeId: string) => {
+    console.log("myLikeId", myLikeId);
     const postDocRef = doc(dbService, "posts", `${myLikeId}`);
     await updateDoc(postDocRef, {
       likeState: true,
     });
+    setIsLiked(true);
   };
 
   useEffect(() => {
@@ -85,17 +92,29 @@ const Content = () => {
     }
   }, [userData]);
 
+  // 버튼을 눌렀을때 user-myLikes에는 추가되지만, post-likeState는 새로고침을 해야 true로 바뀐다.
+  // 버튼을 또 다시 눌렀을때 아무 이벤트가 발생하지 않는다. 새로고침 하면 됨. -> 해결
+  // 좋아요 눌렀다가 취소하고서 모달창 닫고 다시 열어서 좋아요 누르면 post.likedUsers 배열에 같은 userId가 중복으로 추가됨;
+
   console.log(posts);
+  console.log("userData", userData);
 
   return (
     <Container>
       <PreviewContainer>
         {posts.map((post) => (
-          <PreviewPost key={post.id} post={post} />
+          <PreviewPost
+            key={post.id}
+            post={post}
+            isLiked={isLiked}
+            userData={userData}
+          />
         ))}
       </PreviewContainer>
 
-      {bigMatch ? <Modal postId={bigMatch?.params.id}></Modal> : null}
+      {bigMatch ? (
+        <Modal userData={userData} postId={bigMatch?.params.id}></Modal>
+      ) : null}
     </Container>
   );
 };

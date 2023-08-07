@@ -1,65 +1,29 @@
-import { useEffect, useState } from "react";
 import { styled } from "styled-components";
-import { PostType } from "../../types/types";
+import { PostType, UserDocType } from "../../types/types";
 import { useNavigate } from "react-router-dom";
-import { dbService } from "../../fbase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { ReactComponent as HeartIcon } from "../../assets/icon/heart-icon.svg";
 
-interface PreviewPostProps {
+interface Props {
   post: PostType;
+  isLiked: boolean;
+  userData: UserDocType;
 }
 
-const PreviewPost = ({ post }: PreviewPostProps) => {
+const PreviewPost = ({ post, isLiked, userData }: Props) => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
-  // const postDocRef = doc(dbService, "posts", `${post.id}`); // 현재 게시물을 가리키는 참조 생성
-  // const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
-  // // const [isLiked, setIsLiked] = useState(false);
-  // const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 현재 로그인한 유저를 가리키는 참조 생성
-  // const [user, setUser] = useState<any>({});
 
   const openModal = (id: any) => {
     navigate(`/content/detail/${id}`); // 이 url로 바꿔줌.
   };
 
-  // const getUser = async () => {
-  //   try {
-  //     const userDocSnap = await getDoc(userDocRef);
-  //     if (userDocSnap.exists()) {
-  //       setUser(userDocSnap.data());
-  //     } else {
-  //       console.log("User document does not exist");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const test = async () => {
-  //   if (user.myLikes) {
-  //     const likePostsArr = user.myLikes.filter(
-  //       (item: string) => item === post.id
-  //     );
-  //     if (likePostsArr.length !== 0) {
-  //       await updateDoc(postDocRef, {
-  //         likeState: true,
-  //       });
-  //     }
-  //     console.log("likeState");
-  //   } else {
-  //     console.log("fail");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getUser();
-  // }, [post]);
-
-  // console.log("post", post);
+  console.log("isLiked", isLiked);
 
   return (
     <Container onClick={() => openModal(post.id)}>
       <Overlay>
+        {/* <LikeBtn isLiked={isLiked}>
+          <HeartIcon />
+        </LikeBtn> */}
         <Title>{post?.title}</Title>
       </Overlay>
       {/* {post.attachmentUrl && ( */}
@@ -93,12 +57,11 @@ const Overlay = styled.div`
   }
 `;
 
-const PreviewImg = styled.img`
-  width: 100%;
-  height: 100%;
-  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px; */
-  object-fit: cover;
-  border-radius: 4px;
+const LikeBtn = styled.div<{ isLiked: boolean }>`
+  width: 3rem;
+  height: 3rem;
+  background-color: ${(props) =>
+    props.isLiked ? props.theme.colors.blue : props.theme.colors.yellow};
 `;
 
 const Title = styled.div`
@@ -111,4 +74,12 @@ const Title = styled.div`
   margin-left: 2rem;
   font-size: 1.02rem;
   line-height: 1.3rem;
+`;
+
+const PreviewImg = styled.img`
+  width: 100%;
+  height: 100%;
+  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px; */
+  object-fit: cover;
+  border-radius: 4px;
 `;

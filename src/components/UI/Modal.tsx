@@ -1,19 +1,23 @@
 import { styled } from "styled-components";
 import close from "../../assets/img/close-icon.png";
 import { useMatch, useNavigate } from "react-router-dom";
-import { PostType } from "../../types/types";
+import { PostType, UserDocType } from "../../types/types";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import ModalHeader from "./ModalHeader";
 import ReadMap from "../Map/ReadMap";
 import PostKeyword from "../Post/PostKeyword";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface Props {
+  userData: UserDocType;
   postId?: string;
 }
 
-const Modal = ({ postId }: Props) => {
+const Modal = ({ userData, postId }: Props) => {
+  const { reload } = useSelector((state: RootState) => state.reload);
   const [post, setPost] = useState<PostType>({});
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
   const modalMatch = useMatch(`/content/detail/:id`);
@@ -51,7 +55,7 @@ const Modal = ({ postId }: Props) => {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, []);
+  }, [reload]);
 
   // console.log("modalMatch", modalMatch);
   console.log("post", post);
@@ -64,7 +68,7 @@ const Modal = ({ postId }: Props) => {
         <ModalContainer>
           {/* <CloseIcon onClick={closeModal} /> */}
           <Main>
-            <ModalHeader post={post} postId={postId} />
+            <ModalHeader post={post} postId={postId} userData={userData} />
             <ImgContainer>
               {post.attachmentUrl && (
                 <Img src={post.attachmentUrl} alt="image" />
