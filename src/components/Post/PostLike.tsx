@@ -3,10 +3,8 @@ import { ReactComponent as HeartIcon } from "../../assets/icon/heart-icon.svg";
 import { doc, updateDoc } from "firebase/firestore";
 import { PostType, UserDocType } from "../../types/types";
 import { dbService } from "../../fbase";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setReload } from "../../store/reloadSlice";
-import MyLikes from "../../pages/myPage/MyLikes";
+import { setIsLiked } from "../../store/isLikedSlice";
 
 interface Props {
   post: PostType;
@@ -19,23 +17,6 @@ const PostLike = ({ post, postId, userData }: Props) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const postDocRef = doc(dbService, "posts", `${postId}`); // 현재 게시물을 가리키는 참조 생성
   const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 현재 로그인한 유저를 가리키는 참조 생성
-  // const [isLiked, setIsLiked] = useState(false);
-
-  // const updateLikedUsers = async () => {
-  //   try {
-  //     if (post.likedUsers) {
-  //       await updateDoc(postDocRef, {
-  //         likedUsers: [...post.likedUsers, userInfo.uid],
-  //       });
-  //     } else {
-  //       await updateDoc(postDocRef, {
-  //         likedUsers: [userInfo.uid],
-  //       });
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
 
   // like 버튼 클릭시 실행되는 함수
   const onLikeBtnClick = async () => {
@@ -102,7 +83,7 @@ const PostLike = ({ post, postId, userData }: Props) => {
         });
       }
     }
-    dispatch(setReload((prev: any) => !prev));
+    dispatch(setIsLiked((prev: any) => !prev));
   };
 
   // if (equalUserId !== 0 ) {

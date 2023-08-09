@@ -22,8 +22,8 @@ const Content = () => {
   const bigMatch: PathMatch<string> | null = useMatch(`content/detail/:id`);
   const [posts, setPosts] = useState<PostType[]>([]);
   const [userData, setUserData] = useState<any>({});
-  const [isLiked, setIsLiked] = useState(false);
-  const { reload } = useSelector((state: RootState) => state.reload);
+  const [checkLike, setCheckLike] = useState(false);
+  const { isLiked } = useSelector((state: RootState) => state.isLiked);
 
   // const { placeKeyword } = useSelector(
   //   (state: RootState) => state.placeKeyword
@@ -73,24 +73,24 @@ const Content = () => {
   useEffect(() => {
     getPosts();
     getUserData();
-  }, [reload]); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
+  }, [isLiked]); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
 
-  const changeLikeState = async (myLikeId: string) => {
-    console.log("myLikeId", myLikeId);
-    const postDocRef = doc(dbService, "posts", `${myLikeId}`);
-    await updateDoc(postDocRef, {
-      likeState: true,
-    });
-    setIsLiked(true);
-  };
+  // const changeLikeState = async (myLikeId: string) => {
+  //   console.log("myLikeId", myLikeId);
+  //   const postDocRef = doc(dbService, "posts", `${myLikeId}`);
+  //   await updateDoc(postDocRef, {
+  //     likeState: true,
+  //   });
+  //   setCheckLike(true);
+  // };
 
-  useEffect(() => {
-    if (userData.myLikes) {
-      for (let item of userData.myLikes) {
-        changeLikeState(item);
-      }
-    }
-  }, [userData]);
+  // useEffect(() => {
+  //   if (userData.myLikes) {
+  //     for (let item of userData.myLikes) {
+  //       changeLikeState(item);
+  //     }
+  //   }
+  // }, [userData]);
 
   // 버튼을 눌렀을때 user-myLikes에는 추가되지만, post-likeState는 새로고침을 해야 true로 바뀐다.
   // 버튼을 또 다시 눌렀을때 아무 이벤트가 발생하지 않는다. 새로고침 하면 됨. -> 해결
@@ -106,7 +106,7 @@ const Content = () => {
           <PreviewPost
             key={post.id}
             post={post}
-            isLiked={isLiked}
+            checkLike={checkLike}
             userData={userData}
           />
         ))}

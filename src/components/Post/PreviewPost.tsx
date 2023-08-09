@@ -5,25 +5,25 @@ import { ReactComponent as HeartIcon } from "../../assets/icon/heart-icon.svg";
 
 interface Props {
   post: PostType;
-  isLiked: boolean;
+  checkLike: boolean;
   userData: UserDocType;
 }
 
-const PreviewPost = ({ post, isLiked, userData }: Props) => {
+const PreviewPost = ({ post, checkLike, userData }: Props) => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
 
   const openModal = (id: any) => {
     navigate(`/content/detail/${id}`); // 이 url로 바꿔줌.
   };
 
-  console.log("isLiked", isLiked);
+  console.log("checkLike", checkLike);
 
   return (
     <Container onClick={() => openModal(post.id)}>
       <Overlay>
-        {/* <LikeBtn isLiked={isLiked}>
+        <LikeBtn likeState={post.likeState}>
           <HeartIcon />
-        </LikeBtn> */}
+        </LikeBtn>
         <Title>{post?.title}</Title>
       </Overlay>
       {/* {post.attachmentUrl && ( */}
@@ -57,11 +57,11 @@ const Overlay = styled.div`
   }
 `;
 
-const LikeBtn = styled.div<{ isLiked: boolean }>`
+const LikeBtn = styled.div<{ likeState: boolean }>`
   width: 3rem;
   height: 3rem;
   background-color: ${(props) =>
-    props.isLiked ? props.theme.colors.blue : props.theme.colors.yellow};
+    props.likeState ? props.theme.colors.yellow : props.theme.colors.black};
 `;
 
 const Title = styled.div`

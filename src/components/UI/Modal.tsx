@@ -17,10 +17,9 @@ interface Props {
 }
 
 const Modal = ({ userData, postId }: Props) => {
-  const { reload } = useSelector((state: RootState) => state.reload);
   const [post, setPost] = useState<PostType>({});
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
-  const modalMatch = useMatch(`/content/detail/:id`);
+  // const modalMatch = useMatch(`/content/detail/:id`);
   // useMatch는 이 route 안에 있는지 다른 곳에 있는지 알려줌. -->  string | null
   const postDocRef = doc(dbService, "posts", `${postId}`);
   const closeModal = () => navigate(-1);
@@ -55,7 +54,7 @@ const Modal = ({ userData, postId }: Props) => {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [reload]);
+  }, []);
 
   // console.log("modalMatch", modalMatch);
   console.log("post", post);
