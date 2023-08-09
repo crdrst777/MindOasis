@@ -22,7 +22,6 @@ const Content = () => {
   const bigMatch: PathMatch<string> | null = useMatch(`content/detail/:id`);
   const [posts, setPosts] = useState<PostType[]>([]);
   const [userData, setUserData] = useState<any>({});
-  const [checkLike, setCheckLike] = useState(false);
   const { isLiked } = useSelector((state: RootState) => state.isLiked);
 
   // const { placeKeyword } = useSelector(
@@ -103,12 +102,7 @@ const Content = () => {
     <Container>
       <PreviewContainer>
         {posts.map((post) => (
-          <PreviewPost
-            key={post.id}
-            post={post}
-            checkLike={checkLike}
-            userData={userData}
-          />
+          <PreviewPost key={post.id} post={post} />
         ))}
       </PreviewContainer>
 

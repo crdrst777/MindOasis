@@ -50,8 +50,6 @@ const ReadMap = ({ placeInfo }: Props) => {
     );
   }, [placeInfo]);
 
-  console.log(placeInfo);
-
   return (
     <Container>
       {/* <PlaceText>

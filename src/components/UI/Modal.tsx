@@ -23,6 +23,7 @@ const Modal = ({ userData, postId }: Props) => {
   // useMatch는 이 route 안에 있는지 다른 곳에 있는지 알려줌. -->  string | null
   const postDocRef = doc(dbService, "posts", `${postId}`);
   const closeModal = () => navigate(-1);
+  const { isLiked } = useSelector((state: RootState) => state.isLiked);
 
   const createdAt = post.createdAt;
   const timestamp = new Intl.DateTimeFormat("ko-KR", {
@@ -54,7 +55,7 @@ const Modal = ({ userData, postId }: Props) => {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, []);
+  }, [isLiked]);
 
   // console.log("modalMatch", modalMatch);
   console.log("post", post);
@@ -78,14 +79,11 @@ const Modal = ({ userData, postId }: Props) => {
                 <Title>{post.title}</Title>
                 <CreatedAt>{timestamp}</CreatedAt>
               </ContentInfo>
-
               <Text>{post.text}</Text>
-
               <KeywordContainer>
                 <PostKeyword placeKeyword={post.placeKeyword} />
               </KeywordContainer>
             </ContentsContainer>
-
             <ReadMap placeInfo={post.placeInfo} />
           </Main>
         </ModalContainer>

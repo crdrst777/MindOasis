@@ -5,23 +5,19 @@ import { ReactComponent as HeartIcon } from "../../assets/icon/heart-icon.svg";
 
 interface Props {
   post: PostType;
-  checkLike: boolean;
-  userData: UserDocType;
 }
 
-const PreviewPost = ({ post, checkLike, userData }: Props) => {
+const PreviewPost = ({ post }: Props) => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
 
   const openModal = (id: any) => {
     navigate(`/content/detail/${id}`); // 이 url로 바꿔줌.
   };
 
-  console.log("checkLike", checkLike);
-
   return (
     <Container onClick={() => openModal(post.id)}>
       <Overlay>
-        <LikeBtn likeState={post.likeState}>
+        <LikeBtn $likestate={post.likeState}>
           <HeartIcon />
         </LikeBtn>
         <Title>{post?.title}</Title>
@@ -57,11 +53,17 @@ const Overlay = styled.div`
   }
 `;
 
-const LikeBtn = styled.div<{ likeState: boolean }>`
-  width: 3rem;
-  height: 3rem;
-  background-color: ${(props) =>
-    props.likeState ? props.theme.colors.yellow : props.theme.colors.black};
+const LikeBtn = styled.div<{ $likestate: boolean }>`
+  float: right;
+  margin: 1rem 1rem 0 0;
+
+  svg {
+    width: 2.6rem;
+    height: 2rem;
+    padding: 0.45rem;
+    fill: ${(props) =>
+      props.$likestate ? "#ffdd00" : props.theme.colors.white};
+  }
 `;
 
 const Title = styled.div`
@@ -70,7 +72,7 @@ const Title = styled.div`
   height: 2.7rem;
   overflow: hidden;
   color: ${(props) => props.theme.colors.white};
-  margin-top: 11.5rem;
+  margin-top: 12.5rem;
   margin-left: 2rem;
   font-size: 1.02rem;
   line-height: 1.3rem;

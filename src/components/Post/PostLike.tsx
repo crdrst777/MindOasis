@@ -51,7 +51,6 @@ const PostLike = ({ post, postId, userData }: Props) => {
       // 추가 - 현재 postId가 userData.myLikes 에 없는 경우
       if (equalPostId.length === 0) {
         console.log("현재 postId가 userData.myLikes 에 없는 경우");
-        console.log("equalPostId", equalPostId);
 
         await updateDoc(userDocRef, {
           myLikes: [...userData.myLikes, postId],
@@ -104,7 +103,7 @@ const PostLike = ({ post, postId, userData }: Props) => {
 
   return (
     <Container>
-      <LikeBtn onClick={onLikeBtnClick}>
+      <LikeBtn onClick={onLikeBtnClick} $likestate={post.likeState}>
         <HeartIcon />
       </LikeBtn>
     </Container>
@@ -115,29 +114,41 @@ export default PostLike;
 
 const Container = styled.div``;
 
-const LikeBtn = styled.button`
+const LikeBtn = styled.button<{ $likestate: boolean }>`
   width: 2.6rem;
   height: 2rem;
-  background-color: transparent;
+  background-color: ${(props) => props.theme.colors.white};
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #d1d1d1;
+  border: 1px solid
+    ${(props) =>
+      props.$likestate ? props.theme.colors.yellow : props.theme.colors.gray};
   border-radius: 3px;
   cursor: pointer;
   transition: border-color 0.2s ease;
+  /* opacity: 85%; */
   &:hover {
-    border-color: ${(props) => props.theme.colors.darkGray};
+    border-color: ${(props) =>
+      props.$likestate
+        ? props.theme.colors.yellow
+        : props.theme.colors.darkGray};
+    /* opacity: 100%; */
   }
 
   svg {
     width: 2.6rem;
     height: 2rem;
     padding: 0.45rem;
-    fill: ${(props) => props.theme.colors.gray};
-    transition: fill 0.3s ease;
+    fill: ${(props) =>
+      props.$likestate ? props.theme.colors.yellow : props.theme.colors.gray};
+
+    transition: fill 0.2s ease;
     &:hover {
-      fill: ${(props) => props.theme.colors.darkGray};
+      fill: ${(props) =>
+        props.$likestate
+          ? props.theme.colors.yellow
+          : props.theme.colors.darkGray};
     }
   }
 `;
