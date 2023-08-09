@@ -21,10 +21,8 @@ const Modal = ({ userData, postId }: Props) => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
   // const modalMatch = useMatch(`/content/detail/:id`);
   // useMatch는 이 route 안에 있는지 다른 곳에 있는지 알려줌. -->  string | null
-  const postDocRef = doc(dbService, "posts", `${postId}`);
   const closeModal = () => navigate(-1);
   const { isLiked } = useSelector((state: RootState) => state.isLiked);
-
   const createdAt = post.createdAt;
   const timestamp = new Intl.DateTimeFormat("ko-KR", {
     year: "numeric",
@@ -36,14 +34,15 @@ const Modal = ({ userData, postId }: Props) => {
 
   const getPost = async () => {
     try {
+      const postDocRef = doc(dbService, "posts", `${postId}`);
       const postDocSnap = await getDoc(postDocRef);
       if (postDocSnap.exists()) {
         setPost(postDocSnap.data());
       } else {
         console.log("Document does not exist");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
     }
   };
 

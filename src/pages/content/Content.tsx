@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 import { dbService } from "../../fbase";
-import {
-  collection,
-  query,
-  orderBy,
-  onSnapshot,
-  doc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { PostType } from "../../types/types";
 import { styled } from "styled-components";
 import { PathMatch, useMatch } from "react-router-dom";
@@ -16,6 +8,7 @@ import Modal from "../../components/UI/Modal";
 import PreviewPost from "../../components/Post/PreviewPost";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { getUserData } from "../../api/user";
 
 const Content = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -55,23 +48,9 @@ const Content = () => {
     });
   };
 
-  const getUserData = async () => {
-    const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 현재 로그인한 유저를 가리키는 참조 생성
-    try {
-      const userDocSnap = await getDoc(userDocRef);
-      if (userDocSnap.exists()) {
-        setUserData(userDocSnap.data());
-      } else {
-        console.log("User document does not exist");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   useEffect(() => {
     getPosts();
-    getUserData();
+    getUserData(userInfo.uid, setUserData);
   }, [isLiked]); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
 
   // const changeLikeState = async (myLikeId: string) => {

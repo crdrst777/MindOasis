@@ -23,8 +23,9 @@ function App() {
         // 새 유저가 로그인할때마다 userInfo에 저장.
         // 내가 원하는 firebase의 특정 부분만을 가져와서 리액트한테 주기.
         setUserInfo({
-          displayName: user.displayName, // 초기값이 null임
           uid: user.uid,
+          email: user.email,
+          displayName: user.displayName, // 초기값이 null임
           photoURL: user.photoURL, // 초기값이 null임
         });
 
@@ -46,8 +47,9 @@ function App() {
     // 위와 같이 하면 authService.currentUser가 너무 큰 obj라 리액트가 어떤 부분이 바뀌었는지 판단하기 어려워서 setUserInfo() 이 코드가 실행 안됨. -> 아래처럼 쪼개준다.
     const user = authService.currentUser;
     setUserInfo({
-      displayName: user!.displayName,
       uid: user!.uid,
+      email: user!.email,
+      displayName: user!.displayName,
       photoURL: user!.photoURL,
     });
     // setUserInfo(Object.assign({}, user));

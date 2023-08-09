@@ -74,7 +74,6 @@ const Search = styled.input`
   &:hover {
     outline: 1px solid #c9c9c9;
   }
-
   &:focus {
     outline: 2px solid ${(props) => props.theme.colors.yellow};
   }

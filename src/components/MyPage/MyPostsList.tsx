@@ -3,14 +3,14 @@ import { dbService } from "../../fbase";
 import { useEffect, useState } from "react";
 import { PostType } from "../../types/types";
 
-interface MyPostListProps {}
+interface Props {}
 
-const MyPostList = () => {
+const MyPostsList = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const [myPosts, setMyPosts] = useState<PostType[]>([]);
 
   const getMyPosts = async () => {
-    const myPostArr: PostType[] = [];
+    const myPostsArr: PostType[] = [];
 
     // dbService의 컬렉션 중 "posts" Docs에서 userInfo의 uid와 동일한 creatorID를 가진 모든 문서를 내림차순으로 가져오는 쿼리(요청) 생성
     const q = query(
@@ -21,7 +21,7 @@ const MyPostList = () => {
     // getDocs()메서드로 쿼리 결과 값 가져오기
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      myPostArr.push(
+      myPostsArr.push(
         (doc.id,
         "=>",
         {
@@ -30,7 +30,7 @@ const MyPostList = () => {
         })
       );
     });
-    setMyPosts(myPostArr);
+    setMyPosts(myPostsArr);
   };
 
   useEffect(() => {
@@ -48,4 +48,4 @@ const MyPostList = () => {
   );
 };
 
-export default MyPostList;
+export default MyPostsList;

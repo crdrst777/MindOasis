@@ -261,6 +261,12 @@ const TitleInput = styled.input`
   margin-bottom: 0.8rem;
   border-radius: 5px;
   border: ${(props) => props.theme.borders.gray};
+  &:hover {
+    outline: 1px solid #c9c9c9;
+  }
+  &:focus {
+    outline: 2px solid ${(props) => props.theme.colors.yellow};
+  }
 `;
 
 const TextInput = styled.textarea`
@@ -274,6 +280,12 @@ const TextInput = styled.textarea`
   line-height: 1.5rem;
   word-spacing: -0.3rem;
   resize: none;
+  &:hover {
+    outline: 1px solid #c9c9c9;
+  }
+  &:focus {
+    outline: 2px solid ${(props) => props.theme.colors.yellow};
+  }
 `;
 
 const FileContainer = styled.section`

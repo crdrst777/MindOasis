@@ -287,6 +287,12 @@ const NicknameInput = styled.input`
   padding: 0 1.2rem;
   border-radius: 5px;
   border: ${(props) => props.theme.borders.gray};
+  &:hover {
+    outline: 1px solid #c9c9c9;
+  }
+  &:focus {
+    outline: 2px solid ${(props) => props.theme.colors.yellow};
+  }
 `;
 
 const BtnContainer = styled.div`

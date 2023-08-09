@@ -17,15 +17,16 @@ export interface PostType {
 }
 
 export interface UserDocType {
+  uid: string;
   email: string;
   displayName?: string;
-  uid: string;
   photoURL?: string;
   myLikes: string[];
 }
 
 export interface UserInfoType {
-  displayName: string;
   uid: string;
+  email: string;
+  displayName: string;
   photoURL: string;
 }

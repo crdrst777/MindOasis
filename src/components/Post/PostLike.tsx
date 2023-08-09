@@ -126,7 +126,7 @@ const LikeBtn = styled.button<{ $likestate: boolean }>`
       props.$likestate ? props.theme.colors.yellow : props.theme.colors.gray};
   border-radius: 3px;
   cursor: pointer;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.15s ease;
   /* opacity: 85%; */
   &:hover {
     border-color: ${(props) =>
@@ -143,7 +143,7 @@ const LikeBtn = styled.button<{ $likestate: boolean }>`
     fill: ${(props) =>
       props.$likestate ? props.theme.colors.yellow : props.theme.colors.gray};
 
-    transition: fill 0.2s ease;
+    transition: fill 0.15s ease;
     &:hover {
       fill: ${(props) =>
         props.$likestate

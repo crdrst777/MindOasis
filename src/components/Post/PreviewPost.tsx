@@ -75,6 +75,7 @@ const Title = styled.div`
   margin-top: 12.5rem;
   margin-left: 2rem;
   font-size: 1.02rem;
+  font-weight: 400;
   line-height: 1.3rem;
 `;
 

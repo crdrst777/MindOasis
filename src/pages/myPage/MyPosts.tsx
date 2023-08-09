@@ -1,8 +1,8 @@
 import { styled } from "styled-components";
-import MyPostList from "../../components/MyPage/MyPostList";
+import MyPostList from "../../components/MyPage/MyPostsList";
 import Sidebar from "../../components/MyPage/Sidebar";
 
-interface MyPostsProps {}
+interface Props {}
 
 const MyPosts = () => {
   return (
