@@ -12,8 +12,6 @@ import { setPlaceInfo } from "../../../store/placeInfoSlice";
 import { PostType } from "../../../types/types";
 import CheckBox from "../../UI/CheckBox";
 
-interface PostEditorProps {}
-
 const PostEditor = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -128,8 +126,6 @@ const PostEditor = () => {
     setAttachment("");
     fileInput.current!.value = ""; // 사진을 선택했다가 clear를 눌렀을때, 선택된 파일명을 지워줌.
   };
-
-  // console.log("placeKeyword", placeKeyword);
 
   return (
     <Container>
@@ -333,6 +329,7 @@ const PostBtn = styled(CancelBtn)`
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.lightBlack};
   font-weight: 500;
+  transition: background-color 0.2s ease;
   &:hover {
     background-color: ${(props) => props.theme.colors.darkGray};
   }

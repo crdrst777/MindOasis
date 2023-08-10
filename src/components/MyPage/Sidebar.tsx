@@ -45,7 +45,7 @@ const Container = styled.aside`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 280px;
+  width: 15rem;
   height: 32rem;
   border: 1px solid ${(props) => props.theme.colors.borderGray};
   border-radius: 0.4rem;
@@ -97,23 +97,28 @@ const Email = styled.div`
 `;
 
 const SidebarMenu = styled.ul`
-  height: 10.3rem;
-  /* background-color: azure; */
+  height: 11rem;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
 
   li {
-    /* display: flex;
-    align-items: center; */
-    /* height: 2.2rem; */
+    border-left: 3.5px solid ${(props) => props.theme.colors.white};
+    cursor: pointer;
+    transition: border-left 0.2s ease;
+    &:hover {
+      border-left: 4px solid ${(props) => props.theme.colors.yellow};
+    }
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    float: right;
+    height: 2rem;
     font-size: 1.1rem;
     font-weight: 400;
     color: ${(props) => props.theme.colors.darkGray};
-    /* padding-left: 1rem; */
-    /* &:hover {
-      border-left: 3.5px solid ${(props) => props.theme.colors.mint};
-    } */
   }
 `;
 

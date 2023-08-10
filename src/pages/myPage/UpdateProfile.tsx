@@ -237,7 +237,6 @@ const AvatarContainer = styled.div`
   width: 9rem;
   height: 9rem;
   border-radius: 50%;
-  /* background-color: orange; */
   margin: 2rem 0 1rem 0;
 
   img {
@@ -308,6 +307,7 @@ const PostBtn = styled.button`
   padding: 0 1.25rem;
   font-size: 1rem;
   font-weight: 500;
+  transition: background-color 0.2s ease;
   &:hover {
     background-color: ${(props) => props.theme.colors.darkGray};
   }

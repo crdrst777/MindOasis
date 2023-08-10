@@ -7,6 +7,7 @@ import avatar from "../../assets/img/avatar-icon.png";
 import PostLike from "../Post/PostLike";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import DetailsDropdown from "./DetailsDropdown";
 
 interface Props {
   post: PostType;
@@ -111,7 +112,17 @@ const ModalHeader = ({ post, postId, userData }: Props) => {
         <Nickname>{creatorData.displayName}</Nickname>
       </UserInfo>
 
-      <PostLike post={post} postId={postId} userData={userData} />
+      {/* <PostLike post={post} postId={postId} userData={userData} /> */}
+      {post.creatorId === userData.uid ? (
+        <>
+          <BtnContainer>
+            <PostLike post={post} postId={postId} userData={userData} />
+            <DetailsDropdown></DetailsDropdown>
+          </BtnContainer>
+        </>
+      ) : (
+        <PostLike post={post} postId={postId} userData={userData} />
+      )}
     </Header>
   );
 };
@@ -159,4 +170,10 @@ const Nickname = styled.div`
   font-size: 1.1rem;
   font-weight: 500;
   margin-left: 0.8rem;
+`;
+
+const BtnContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
 `;

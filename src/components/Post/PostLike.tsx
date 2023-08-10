@@ -122,8 +122,7 @@ const LikeBtn = styled.button<{ $likestate: boolean }>`
   justify-content: center;
   align-items: center;
   border: 1px solid
-    ${(props) =>
-      props.$likestate ? props.theme.colors.yellow : props.theme.colors.gray};
+    ${(props) => (props.$likestate ? props.theme.colors.yellow : "#ababab")};
   border-radius: 3px;
   cursor: pointer;
   transition: border-color 0.15s ease;
@@ -139,7 +138,7 @@ const LikeBtn = styled.button<{ $likestate: boolean }>`
   svg {
     width: 2.6rem;
     height: 2rem;
-    padding: 0.45rem;
+    padding: 0.48rem;
     fill: ${(props) =>
       props.$likestate ? props.theme.colors.yellow : props.theme.colors.gray};
 
