@@ -10,7 +10,7 @@ import { dbService, storageService } from "../../fbase";
 import { PostType } from "../../types/types";
 import { setPlaceInfo } from "../../store/placeInfoSlice";
 import MapSection from "../../components/Map/MapSection";
-import CheckBoxEditPost from "../../components/UI/CheckBox/CheckBoxEditPost";
+import CheckBox from "../../components/UI/CheckBox";
 
 const EditPost = () => {
   const navigate = useNavigate();
@@ -189,7 +189,7 @@ const EditPost = () => {
             <span>4</span>
             <h2>키워드를 선택해주세요</h2>
           </SectionTitle>
-          <CheckBoxEditPost placeKeyword={post.placeKeyword} />
+          <CheckBox checkedListArr={post.placeKeyword} />
         </CheckBoxContainer>
 
         <BtnContainer>

@@ -10,7 +10,9 @@ import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlaceInfo } from "../../../store/placeInfoSlice";
 import { PostType } from "../../../types/types";
-import CheckBox from "../../UI/CheckBox/CheckBox";
+import CheckBox from "../../UI/CheckBox";
+
+// import CheckBox from "../../UI/CheckBox/CheckBox";
 
 const PostEditor = () => {
   const navigate = useNavigate();
@@ -183,7 +185,8 @@ const PostEditor = () => {
           <span>4</span>
           <h2>키워드를 선택해주세요</h2>
         </SectionTitle>
-        <CheckBox />
+
+        <CheckBox checkedListArr={[]} />
       </CheckBoxContainer>
 
       <BtnContainer>

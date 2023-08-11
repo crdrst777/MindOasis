@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { styled } from "styled-components";
-import { setPlaceKeyword } from "../../../store/checkedListSlice";
+import { setPlaceKeyword } from "../../store/checkedListSlice";
 
 const checkBoxList = [
   "자연",
@@ -13,21 +13,19 @@ const checkBoxList = [
   "예시3",
 ];
 
-const CheckBoxEditPost = (data: any) => {
+interface Props {
+  checkedListArr: string[];
+}
+
+const CheckBox = ({ checkedListArr }: Props) => {
   const dispatch = useDispatch();
   // checkBoxList 배열 중 check된 요소가 담기는 배열
   const [checkedList, setCheckedList] = useState<string[]>([]);
   const [isChecked, setIsChecked] = useState(false);
 
-  console.log("data", data);
-
   useEffect(() => {
-    if (data !== null) {
-      const { placeKeyword } = data;
-      setCheckedList(placeKeyword);
-    } else {
-      console.log("err");
-    }
+    // 수정하는 페이지에서, 기존값에 체크되있게 하기 위해 기존값을 넣어준다.
+    setCheckedList(checkedListArr);
   }, []);
 
   // input을 클릭했을때 checkedList라는 useState 배열에 해당 element가 포함되어있지 않다면 추가하고,
@@ -77,7 +75,7 @@ const CheckBoxEditPost = (data: any) => {
   );
 };
 
-export default CheckBoxEditPost;
+export default CheckBox;
 
 const Container = styled.div`
   width: 100%;
