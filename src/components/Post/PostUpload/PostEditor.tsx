@@ -10,7 +10,7 @@ import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlaceInfo } from "../../../store/placeInfoSlice";
 import { PostType } from "../../../types/types";
-import CheckBox from "../../UI/CheckBox";
+import CheckBox from "../../UI/CheckBox/CheckBox";
 
 const PostEditor = () => {
   const navigate = useNavigate();

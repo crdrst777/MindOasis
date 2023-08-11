@@ -10,14 +10,13 @@ import { dbService, storageService } from "../../fbase";
 import { PostType } from "../../types/types";
 import { setPlaceInfo } from "../../store/placeInfoSlice";
 import MapSection from "../../components/Map/MapSection";
-import CheckBox from "../../components/UI/CheckBox";
+import CheckBoxEditPost from "../../components/UI/CheckBox/CheckBoxEditPost";
 
 const EditPost = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [attachment, setAttachment] = useState<any>(""); // 사진 첨부 없이 텍스트만 업로드하고 싶을 때도 있으므로 기본 값을 ""로 해야한다. 업로드할 때 텍스트만 입력시 이미지 url ""로 비워두기 위함
@@ -31,7 +30,6 @@ const EditPost = () => {
   const state = location.state as { post: PostType; postId: string };
   const post = state.post;
   const postId = state.postId;
-  console.log("location.state", state);
 
   const uploadData = (data: PostType) => {
     addDoc(collection(dbService, "posts"), data);
@@ -156,14 +154,14 @@ const EditPost = () => {
             value={title}
             onChange={onTitleChange}
             maxLength={70}
-            placeholder={placeInfo.placeAddr}
+            placeholder={post.placeInfo.placeAddr}
           />
 
           <TextInput
             maxLength={500}
             value={text}
             onChange={onTextChange}
-            placeholder="자유롭게 장소에 대해 적어주세요!"
+            placeholder={post.text}
           />
         </WriteContainer>
 
@@ -191,7 +189,7 @@ const EditPost = () => {
             <span>4</span>
             <h2>키워드를 선택해주세요</h2>
           </SectionTitle>
-          <CheckBox />
+          <CheckBoxEditPost placeKeyword={post.placeKeyword} />
         </CheckBoxContainer>
 
         <BtnContainer>

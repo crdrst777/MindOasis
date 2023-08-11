@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { styled } from "styled-components";
-import { setPlaceKeyword } from "../../store/checkedListSlice";
+import { setPlaceKeyword } from "../../../store/checkedListSlice";
 
 const checkBoxList = [
   "자연",
@@ -13,17 +13,18 @@ const checkBoxList = [
   "예시3",
 ];
 
-const CheckBox = (data: any) => {
+const CheckBoxEditPost = (data: any) => {
   const dispatch = useDispatch();
   // checkBoxList 배열 중 check된 요소가 담기는 배열
   const [checkedList, setCheckedList] = useState<string[]>([]);
   const [isChecked, setIsChecked] = useState(false);
 
   console.log("data", data);
+
   useEffect(() => {
     if (data !== null) {
-      setCheckedList(["자연", "도시"]);
-      // setCheckedList(data);
+      const { placeKeyword } = data;
+      setCheckedList(placeKeyword);
     } else {
       console.log("err");
     }
@@ -50,28 +51,33 @@ const CheckBox = (data: any) => {
 
   dispatch(setPlaceKeyword(checkedList));
 
+  console.log("checkedList", checkedList);
+
   return (
     <Container>
-      {checkBoxList.map((item, idx) => (
-        <CheckBoxWrapper key={idx}>
-          <CheckBoxInput
-            type="checkbox"
-            id={item}
-            // Array.prototype.includes() -> 내부에 해당 요소(element)가 존재할 경우 true를 반환
-            checked={checkedList.includes(item)}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              checkHandler(e, item)
-            }
-          />
-          <CheckBoxLabel htmlFor={item}>{item}</CheckBoxLabel>
-        </CheckBoxWrapper>
-      ))}
-      {/* <button onClick={onSubmit}>submit</button> */}
+      {checkedList ? (
+        <>
+          {checkBoxList.map((item, idx) => (
+            <CheckBoxWrapper key={idx}>
+              <CheckBoxInput
+                type="checkbox"
+                id={item}
+                // Array.prototype.includes() -> 내부에 해당 요소(element)가 존재할 경우 true를 반환
+                checked={checkedList.includes(item)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  checkHandler(e, item)
+                }
+              />
+              <CheckBoxLabel htmlFor={item}>{item}</CheckBoxLabel>
+            </CheckBoxWrapper>
+          ))}
+        </>
+      ) : null}
     </Container>
   );
 };
 
-export default CheckBox;
+export default CheckBoxEditPost;
 
 const Container = styled.div`
   width: 100%;
