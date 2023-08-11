@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { styled } from "styled-components";
 import { setPlaceKeyword } from "../../store/checkedListSlice";
@@ -13,11 +13,21 @@ const checkBoxList = [
   "예시3",
 ];
 
-const CheckBox = () => {
+const CheckBox = (data: any) => {
   const dispatch = useDispatch();
   // checkBoxList 배열 중 check된 요소가 담기는 배열
   const [checkedList, setCheckedList] = useState<string[]>([]);
   const [isChecked, setIsChecked] = useState(false);
+
+  console.log("data", data);
+  useEffect(() => {
+    if (data !== null) {
+      setCheckedList(["자연", "도시"]);
+      // setCheckedList(data);
+    } else {
+      console.log("err");
+    }
+  }, []);
 
   // input을 클릭했을때 checkedList라는 useState 배열에 해당 element가 포함되어있지 않다면 추가하고,
   // checkedList 배열에 이미 포함되어 있다면 해당 배열에서 제거하는 함수
@@ -37,15 +47,6 @@ const CheckBox = () => {
     setIsChecked((prev) => !prev);
     checkedItemHandler(value, e.target.checked);
   };
-
-  // const onSubmit = useCallback(
-  //   (e: React.MouseEvent<HTMLButtonElement>) => {
-  //     e.preventDefault();
-
-  //     console.log("checkedList", checkedList);
-  //   },
-  //   [checkedList]
-  // );
 
   dispatch(setPlaceKeyword(checkedList));
 

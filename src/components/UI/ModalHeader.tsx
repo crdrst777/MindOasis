@@ -5,8 +5,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import avatar from "../../assets/img/avatar-icon.png";
 import PostLike from "../Post/PostLike";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+
 import DetailsDropdown from "./DetailsDropdown";
 
 interface Props {
@@ -117,7 +116,7 @@ const ModalHeader = ({ post, postId, userData }: Props) => {
         <>
           <BtnContainer>
             <PostLike post={post} postId={postId} userData={userData} />
-            <DetailsDropdown></DetailsDropdown>
+            <DetailsDropdown post={post} postId={postId}></DetailsDropdown>
           </BtnContainer>
         </>
       ) : (

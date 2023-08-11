@@ -32,7 +32,7 @@ const Nav = () => {
             <Link to="/content">목록</Link>
           </li>
           <li onClick={goToLogin}>
-            <Link to="/postupload">새 글 쓰기</Link>
+            <Link to="/uploadpost">새 글 쓰기</Link>
           </li>
 
           {userInfo ? (

@@ -1,17 +1,49 @@
 import { styled } from "styled-components";
 import { ReactComponent as EllipsisIcon } from "../../assets/icon/ellipsis-icon.svg";
 import { useState } from "react";
+import { deleteDoc, doc } from "firebase/firestore";
+import { dbService, storageService } from "../../fbase";
+import { deleteObject, ref } from "firebase/storage";
+import { PostType } from "../../types/types";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
-const DetailsDropdown = () => {
+interface Props {
+  post: PostType;
+  postId: string;
+}
+
+const DetailsDropdown = ({ post, postId }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  // const navigate: NavigateFunction = useNavigate();
+  const postTextRef = doc(dbService, "posts", `${postId}`); // 파일을 가리키는 참조 생성
+  const postUrlRef = ref(storageService, post.attachmentUrl); // 파일을 가리키는 참조 생성
 
   const DropdownBtnClick = () => {
     setIsOpen((prev) => !prev);
   };
 
-  const onDeleteClick = () => {};
+  const onEditClick = () => {
+    // EditPost.tsx로 props 전달
+    navigate(`/editpost`, {
+      state: {
+        post: post,
+        postId: postId,
+      },
+    });
+  };
 
-  const onEditClick = () => {};
+  const onDeleteClick = async () => {
+    const ok = window.confirm("정말 이 게시물을 삭제하시겠습니까?");
+    if (ok) {
+      await deleteDoc(postTextRef);
+      // 삭제하려는 게시물에 이미지 파일이 있는 경우 이미지 파일 스토리지에서 삭제
+      if (post.attachmentUrl) {
+        await deleteObject(postUrlRef);
+      }
+      navigate(`/content`);
+    }
+  };
 
   console.log(isOpen);
 
@@ -23,16 +55,18 @@ const DetailsDropdown = () => {
       {!isOpen ? (
         <Hidden />
       ) : (
-        <DropdownList>
-          <Test>
+        <DropdownContainer>
+          <Arrow>
             <div></div>
+          </Arrow>
+          <ArrowBorder>
             <div></div>
-          </Test>
-          <Ul>
-            <Li onClick={onEditClick}>수정</Li>
-            <Li onClick={onDeleteClick}>삭제</Li>
-          </Ul>
-        </DropdownList>
+          </ArrowBorder>
+          <DropdownList>
+            <DropdownItem onClick={onEditClick}>수정</DropdownItem>
+            <DropdownItem onClick={onDeleteClick}>삭제</DropdownItem>
+          </DropdownList>
+        </DropdownContainer>
       )}
     </Container>
   );
@@ -82,16 +116,15 @@ const Hidden = styled.div`
   overflow: hidden;
 `;
 
-const DropdownList = styled.div`
+const DropdownContainer = styled.div`
   width: 8rem;
   border: 1px solid #ababab;
   border-radius: 5px;
   background-color: ${(props) => props.theme.colors.white};
   box-shadow: 0 8px 16px #00000029;
-
   position: absolute;
   inset: auto 0px 0px auto;
-  transform: translate3d(-29px, -637px, 0px);
+  transform: translate3d(-29px, -633px, 0px);
   /* div {
     transition-duration: 200ms, 100ms;
     transition-timing-function: cubic-bezier(0.24, 0.22, 0.015, 1.56),
@@ -101,14 +134,39 @@ const DropdownList = styled.div`
   } */
 `;
 
-const Test = styled.div`
+const Arrow = styled.div`
   position: absolute;
   left: 0px;
-  transform: translate3d(106.667px, 0px, 0px);
+  transform: translate3d(99px, -97px, 0px);
   top: calc(100% - 1px);
+  z-index: 1;
+  pointer-events: none;
+
+  div {
+    width: 1rem;
+    height: 1rem;
+    border: 8px solid #0000;
+    border-bottom-color: rgb(255, 255, 255);
+  }
 `;
 
-const Ul = styled.ul`
+const ArrowBorder = styled.div`
+  position: absolute;
+  left: 0px;
+  transform: translate3d(99px, -98px, 0px);
+  top: calc(100% - 1px);
+  z-index: 0;
+  pointer-events: none;
+
+  div {
+    width: 1rem;
+    height: 1rem;
+    border: 8px solid #0000;
+    border-bottom-color: #ababab;
+  }
+`;
+
+const DropdownList = styled.ul`
   height: 100%;
   padding: 0.5rem 0;
   display: flex;
@@ -116,7 +174,7 @@ const Ul = styled.ul`
   justify-content: space-between;
 `;
 
-const Li = styled.li`
+const DropdownItem = styled.li`
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;

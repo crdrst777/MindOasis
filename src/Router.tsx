@@ -9,7 +9,8 @@ import SignUp from "./pages/auth/SignUp";
 import Nav from "./components/Layout/Nav/Nav";
 import Footer from "./components/Layout/Footer";
 import Content from "./pages/content/Content";
-import PostUpload from "./pages/postUpload/PostUpload";
+import UploadPost from "./pages/post/UploadPost";
+import EditPost from "./pages/post/EditPost";
 
 interface AppRouterProps {
   isLoggedIn: boolean;
@@ -35,7 +36,8 @@ const AppRouter = ({ isLoggedIn, refreshUser }: AppRouterProps) => {
             <Route path="/mypage/myposts" element={<MyPosts />} />
             <Route path="/mypage/mylikes" element={<MyLikes />} />
 
-            <Route path="/postupload" element={<PostUpload />} />
+            <Route path="/uploadpost" element={<UploadPost />} />
+            <Route path="/editpost" element={<EditPost />} />
           </>
         ) : (
           <Route path="/login" element={<Login />} />

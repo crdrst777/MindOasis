@@ -1,19 +1,20 @@
-import MapSection from "../../Map/MapSection";
 import { styled } from "styled-components";
 import { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { dbService, storageService } from "../../../fbase";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
-import { RootState } from "../../../store";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setPlaceInfo } from "../../../store/placeInfoSlice";
-import { PostType } from "../../../types/types";
-import CheckBox from "../../UI/CheckBox";
+import { RootState } from "../../store";
+import { dbService, storageService } from "../../fbase";
+import { PostType } from "../../types/types";
+import { setPlaceInfo } from "../../store/placeInfoSlice";
+import MapSection from "../../components/Map/MapSection";
+import CheckBox from "../../components/UI/CheckBox";
 
-const PostEditor = () => {
+const EditPost = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -25,6 +26,12 @@ const PostEditor = () => {
   const { placeKeyword } = useSelector(
     (state: RootState) => state.placeKeyword
   );
+
+  // DetailsDropdown.tsx에서 받아온 (location.state) 파라미터 취득
+  const state = location.state as { post: PostType; postId: string };
+  const post = state.post;
+  const postId = state.postId;
+  console.log("location.state", state);
 
   const uploadData = (data: PostType) => {
     addDoc(collection(dbService, "posts"), data);
@@ -129,74 +136,84 @@ const PostEditor = () => {
 
   return (
     <Container>
-      <MapContainer>
-        <SectionTitle>
-          <span>1</span>
-          <h2>지도에서 장소를 선택해주세요</h2>
-        </SectionTitle>
-        <MapSection />
-      </MapContainer>
+      <EditPostContainer>
+        <MapContainer>
+          <SectionTitle>
+            <span>1</span>
+            <h2>지도에서 장소를 선택해주세요</h2>
+          </SectionTitle>
+          <MapSection />
+        </MapContainer>
 
-      <WriteContainer>
-        <SectionTitle>
-          <span>2</span>
-          <h2>장소에 대해 알려주세요</h2>
-        </SectionTitle>
-        <SubTitle>제목</SubTitle>
-        <TitleInput
-          type="text"
-          value={title}
-          onChange={onTitleChange}
-          maxLength={70}
-          placeholder={placeInfo.placeAddr}
-        />
+        <WriteContainer>
+          <SectionTitle>
+            <span>2</span>
+            <h2>장소에 대해 알려주세요</h2>
+          </SectionTitle>
+          <SubTitle>제목</SubTitle>
+          <TitleInput
+            type="text"
+            value={title}
+            onChange={onTitleChange}
+            maxLength={70}
+            placeholder={placeInfo.placeAddr}
+          />
 
-        <TextInput
-          maxLength={500}
-          value={text}
-          onChange={onTextChange}
-          placeholder="자유롭게 장소에 대해 적어주세요!"
-        />
-      </WriteContainer>
+          <TextInput
+            maxLength={500}
+            value={text}
+            onChange={onTextChange}
+            placeholder="자유롭게 장소에 대해 적어주세요!"
+          />
+        </WriteContainer>
 
-      <FileContainer>
-        <SectionTitle>
-          <span>3</span>
-          <h2>사진을 공유해주세요</h2>
-        </SectionTitle>
-        <FileInput
-          type="file"
-          accept="image/*"
-          onChange={onFileChange}
-          ref={fileInput}
-        />
-        {attachment && (
-          <>
-            <img src={attachment} width="50px" height="50px" alt="preview" />
-            <button onClick={onClearAttachment}>Clear</button>
-          </>
-        )}
-      </FileContainer>
+        <FileContainer>
+          <SectionTitle>
+            <span>3</span>
+            <h2>사진을 공유해주세요</h2>
+          </SectionTitle>
+          <FileInput
+            type="file"
+            accept="image/*"
+            onChange={onFileChange}
+            ref={fileInput}
+          />
+          {attachment && (
+            <>
+              <img src={attachment} width="50px" height="50px" alt="preview" />
+              <button onClick={onClearAttachment}>Clear</button>
+            </>
+          )}
+        </FileContainer>
 
-      <CheckBoxContainer>
-        <SectionTitle>
-          <span>4</span>
-          <h2>키워드를 선택해주세요</h2>
-        </SectionTitle>
-        <CheckBox />
-      </CheckBoxContainer>
+        <CheckBoxContainer>
+          <SectionTitle>
+            <span>4</span>
+            <h2>키워드를 선택해주세요</h2>
+          </SectionTitle>
+          <CheckBox />
+        </CheckBoxContainer>
 
-      <BtnContainer>
-        <CancelBtn onClick={onCancelClick}>취소</CancelBtn>
-        <PostBtn onClick={onSubmit}>등록</PostBtn>
-      </BtnContainer>
+        <BtnContainer>
+          <CancelBtn onClick={onCancelClick}>취소</CancelBtn>
+          <PostBtn onClick={onSubmit}>등록</PostBtn>
+        </BtnContainer>
+      </EditPostContainer>
     </Container>
   );
 };
 
-export default PostEditor;
+export default EditPost;
 
 const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 45rem;
+  /* flex-direction: column; */
+  margin: 3rem auto;
+`;
+
+const EditPostContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -329,6 +346,7 @@ const PostBtn = styled(CancelBtn)`
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.lightBlack};
   font-weight: 500;
+  transition: background-color 0.2s ease;
   &:hover {
     background-color: ${(props) => props.theme.colors.darkGray};
   }

@@ -1,9 +1,7 @@
 import { styled } from "styled-components";
 import PostEditor from "../../components/Post/PostUpload/PostEditor";
 
-interface PostUploadProps {}
-
-const PostUpload = () => {
+const UploadPost = () => {
   return (
     <>
       <Container>
@@ -13,7 +11,7 @@ const PostUpload = () => {
   );
 };
 
-export default PostUpload;
+export default UploadPost;
 
 const Container = styled.div`
   display: flex;
