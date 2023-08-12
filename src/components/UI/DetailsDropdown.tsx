@@ -6,6 +6,8 @@ import { dbService, storageService } from "../../fbase";
 import { deleteObject, ref } from "firebase/storage";
 import { PostType } from "../../types/types";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setPlaceInfo } from "../../store/placeInfoSlice";
 
 interface Props {
   post: PostType;
@@ -15,6 +17,7 @@ interface Props {
 const DetailsDropdown = ({ post, postId }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   // const navigate: NavigateFunction = useNavigate();
   const postTextRef = doc(dbService, "posts", `${postId}`); // 파일을 가리키는 참조 생성
   const postUrlRef = ref(storageService, post.attachmentUrl); // 파일을 가리키는 참조 생성
@@ -24,6 +27,12 @@ const DetailsDropdown = ({ post, postId }: Props) => {
   };
 
   const onEditClick = () => {
+    dispatch(
+      setPlaceInfo({
+        placeName: post.placeInfo.placeName,
+        placeAddr: post.placeInfo.placeAddr,
+      })
+    );
     // EditPost.tsx로 props 전달
     navigate(`/editpost`, {
       state: {

@@ -1,8 +1,13 @@
 import { styled } from "styled-components";
 import { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { addDoc, collection } from "firebase/firestore";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadString,
+} from "firebase/storage";
+import { doc, updateDoc } from "firebase/firestore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
@@ -14,25 +19,29 @@ import CheckBox from "../../components/UI/CheckBox";
 
 const EditPost = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
+  const location = useLocation();
+  // DetailsDropdown.tsx에서 받아온 (location.state) 파라미터 취득
+  const state = location.state as { post: PostType; postId: string };
+  const post = state.post;
+  const postId = state.postId;
+
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  // const [title, setTitle] = useState(post.placeInfo.placeAddr);
   const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
-  const [attachment, setAttachment] = useState<any>(""); // 사진 첨부 없이 텍스트만 업로드하고 싶을 때도 있으므로 기본 값을 ""로 해야한다. 업로드할 때 텍스트만 입력시 이미지 url ""로 비워두기 위함
+  const [text, setText] = useState(post.text);
+  const [attachment, setAttachment] = useState<any>(post.attachmentUrl);
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
   const { placeInfo } = useSelector((state: RootState) => state.placeInfo);
   const { placeKeyword } = useSelector(
     (state: RootState) => state.placeKeyword
   );
 
-  // DetailsDropdown.tsx에서 받아온 (location.state) 파라미터 취득
-  const state = location.state as { post: PostType; postId: string };
-  const post = state.post;
-  const postId = state.postId;
-
   const uploadData = (data: PostType) => {
-    addDoc(collection(dbService, "posts"), data);
+    // addDoc(collection(dbService, "posts"), data);
+    const postDocRef = doc(dbService, "posts", `${postId}`);
+    updateDoc(postDocRef, { ...data });
+
     setTitle("");
     setText("");
     setAttachment(""); // 파일 미리보기 img src 비워주기
@@ -50,16 +59,24 @@ const EditPost = () => {
     e.preventDefault();
     let attachmentUrl: string = "";
 
-    if (attachment) {
+    // 다른 파일을 새로 첨부하지 않고 기존 파일 그대로 업데이트 할 경우
+    if (attachment === post.attachmentUrl) {
+      attachmentUrl = attachment;
+    }
+    // 다른 파일을 새로 첨부하는 경우
+    else {
       const attachmentRef = ref(storageService, `${userInfo.uid}/${uuidv4()}`); // 파일 경로 참조 생성
-      await uploadString(attachmentRef, attachment, "data_url"); // 파일 업로드(이 경우는 url)
-      await getDownloadURL(attachmentRef)
-        .then((url) => {
-          attachmentUrl = url;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      // 파일 업로드(이 경우는 url)
+      // ref정보가 data_url(format)으로 attachment(value)에 담겨 upload 되도록 함
+      const response = await uploadString(
+        attachmentRef,
+        attachment,
+        "data_url"
+      );
+      attachmentUrl = await getDownloadURL(response.ref);
+      // 기존 파일을 스토리지에서 삭제
+      const postUrlRef = ref(storageService, post.attachmentUrl);
+      await deleteObject(postUrlRef);
     }
 
     const blankPattern = /^\s+|\s+$/g; //공백만 입력된 경우
@@ -104,10 +121,6 @@ const EditPost = () => {
     }
   };
 
-  const onCancelClick = () => {
-    navigate(`/content`);
-  };
-
   const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.currentTarget.value);
   };
@@ -116,9 +129,9 @@ const EditPost = () => {
     setText(e.target.value);
   };
 
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const theFile = e.currentTarget.files![0];
-    console.log(theFile);
+    // console.log("theFile", theFile);
     const reader = new FileReader();
     reader.onloadend = (finishedEvent) => {
       console.log("finishedEvent", finishedEvent);
@@ -127,10 +140,19 @@ const EditPost = () => {
     reader.readAsDataURL(theFile); // 그 다음 데이터를 얻는다.
   };
 
+  // 파일을 첨부한 상태에서 clear 버튼을 누르는 경우
   const onClearAttachment = () => {
     setAttachment("");
-    fileInput.current!.value = ""; // 사진을 선택했다가 clear를 눌렀을때, 선택된 파일명을 지워줌.
+    // 선택된 파일명을 지워줌
+    fileInput.current!.value = "";
   };
+
+  // 취소 버튼 클릭
+  const onCancelClick = () => {
+    navigate(`/content`);
+  };
+
+  console.log("placeInfo", placeInfo);
 
   return (
     <Container>
@@ -140,7 +162,7 @@ const EditPost = () => {
             <span>1</span>
             <h2>지도에서 장소를 선택해주세요</h2>
           </SectionTitle>
-          <MapSection />
+          <MapSection placeAddr={post.placeInfo.placeAddr} />
         </MapContainer>
 
         <WriteContainer>
@@ -154,14 +176,14 @@ const EditPost = () => {
             value={title}
             onChange={onTitleChange}
             maxLength={70}
-            placeholder={post.placeInfo.placeAddr}
+            placeholder={placeInfo.placeAddr}
           />
 
           <TextInput
             maxLength={500}
             value={text}
             onChange={onTextChange}
-            placeholder={post.text}
+            placeholder="자유롭게 장소에 대해 적어주세요!"
           />
         </WriteContainer>
 

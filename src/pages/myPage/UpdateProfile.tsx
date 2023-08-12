@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import { styled } from "styled-components";
 import avatar from "../../assets/img/avatar-icon.png";
 import Sidebar from "../../components/MyPage/Sidebar";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
 interface UpdateProfileProps {
   refreshUser: () => any;
@@ -210,7 +210,7 @@ const MyPageContainer = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 1100px;
+  width: 1000px;
   margin: auto;
   padding: 5rem 0 7rem 0;
 `;
@@ -219,7 +219,7 @@ const MainContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 800px;
+  width: 720px;
   min-height: 40rem;
   padding: 2.5rem;
   border: 1px solid ${(props) => props.theme.colors.borderGray};

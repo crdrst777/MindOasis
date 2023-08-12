@@ -12,13 +12,10 @@ import { setPlaceInfo } from "../../../store/placeInfoSlice";
 import { PostType } from "../../../types/types";
 import CheckBox from "../../UI/CheckBox";
 
-// import CheckBox from "../../UI/CheckBox/CheckBox";
-
 const PostEditor = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [attachment, setAttachment] = useState<any>(""); // 사진 첨부 없이 텍스트만 업로드하고 싶을 때도 있으므로 기본 값을 ""로 해야한다. 업로드할 때 텍스트만 입력시 이미지 url ""로 비워두기 위함
@@ -49,14 +46,14 @@ const PostEditor = () => {
 
     if (attachment) {
       const attachmentRef = ref(storageService, `${userInfo.uid}/${uuidv4()}`); // 파일 경로 참조 생성
-      await uploadString(attachmentRef, attachment, "data_url"); // 파일 업로드(이 경우는 url)
-      await getDownloadURL(attachmentRef)
-        .then((url) => {
-          attachmentUrl = url;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      // ref정보가 data_url(format)으로 attachment(value)에 담겨 upload 되도록 함
+      const response = await uploadString(
+        attachmentRef,
+        attachment,
+        "data_url"
+      ); // 파일 업로드(이 경우는 url)
+      console.log("response.ref", response.ref);
+      attachmentUrl = await getDownloadURL(response.ref);
     }
 
     const blankPattern = /^\s+|\s+$/g; //공백만 입력된 경우
@@ -136,7 +133,7 @@ const PostEditor = () => {
           <span>1</span>
           <h2>지도에서 장소를 선택해주세요</h2>
         </SectionTitle>
-        <MapSection />
+        <MapSection placeAddr="" />
       </MapContainer>
 
       <WriteContainer>

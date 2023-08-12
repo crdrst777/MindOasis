@@ -2,50 +2,76 @@ import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import { useEffect, useState } from "react";
 import { PostType } from "../../types/types";
+import { styled } from "styled-components";
 
-interface Props {}
+interface Props {
+  post: PostType;
+}
 
-const MyPostsList = () => {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const [myPosts, setMyPosts] = useState<PostType[]>([]);
-
-  const getMyPosts = async () => {
-    const myPostsArr: PostType[] = [];
-
-    // dbService의 컬렉션 중 "posts" Docs에서 userInfo의 uid와 동일한 creatorID를 가진 모든 문서를 내림차순으로 가져오는 쿼리(요청) 생성
-    const q = query(
-      collection(dbService, "posts"),
-      where("creatorId", "==", userInfo.uid), // where -> 필터링하는 방법을 알려줌
-      orderBy("createdAt", "desc")
-    );
-    // getDocs()메서드로 쿼리 결과 값 가져오기
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      myPostsArr.push(
-        (doc.id,
-        "=>",
-        {
-          id: doc.id,
-          ...doc.data(),
-        })
-      );
-    });
-    setMyPosts(myPostsArr);
-  };
-
-  useEffect(() => {
-    getMyPosts();
-  }, []);
-
-  console.log("myPosts", myPosts);
+const MyPostsList = ({ post }: Props) => {
+  const createdAt = post.createdAt;
+  const timestamp = new Intl.DateTimeFormat("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(createdAt);
 
   return (
-    <div>
-      {myPosts.map((post) => (
-        <div key={post.id}>{post.title}</div>
-      ))}
-    </div>
+    <Container>
+      <MyPostContainer key={post.id}>
+        <Img src={post.attachmentUrl} alt="image" />
+        <Title>{post.title}</Title>
+        <CreatedAt>{timestamp}</CreatedAt>
+      </MyPostContainer>
+    </Container>
   );
 };
 
 export default MyPostsList;
+
+const Container = styled.div`
+  width: 100%;
+`;
+
+const MyPostContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1.6rem;
+  cursor: pointer;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  /* box-shadow: 0 8px 16px #00000019; */
+  box-shadow: rgba(0, 0, 0, 0.089) 0px 0px 15px 0px;
+  /* transition: all 0.5s ease 0s; */
+  transition: box-shadow 0.4s ease 0s;
+
+  &:hover {
+    /* box-shadow: 0 8px 16px #00000038; */
+    box-shadow: rgba(0, 0, 0, 0.22) 0px 0px 15px 0px;
+  }
+
+  /* background-color: lightblue; */
+`;
+
+const Img = styled.img`
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover;
+  border-radius: 4px;
+`;
+
+const Title = styled.div`
+  width: 22rem;
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  padding: 1rem;
+`;
+
+const CreatedAt = styled.div`
+  color: ${(props) => props.theme.colors.gray};
+  font-size: 0.9rem;
+`;

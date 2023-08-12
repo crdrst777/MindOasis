@@ -20,13 +20,14 @@ interface Props {
 const CheckBox = ({ checkedListArr }: Props) => {
   const dispatch = useDispatch();
   // checkBoxList 배열 중 check된 요소가 담기는 배열
-  const [checkedList, setCheckedList] = useState<string[]>([]);
+  // 수정하는 페이지에서, 기존값에 체크되어있게 하기 위해 기존값을 넣어준다.
+  const [checkedList, setCheckedList] = useState<string[]>(checkedListArr);
   const [isChecked, setIsChecked] = useState(false);
 
-  useEffect(() => {
-    // 수정하는 페이지에서, 기존값에 체크되있게 하기 위해 기존값을 넣어준다.
-    setCheckedList(checkedListArr);
-  }, []);
+  // useEffect(() => {
+  //   // 수정하는 페이지에서, 기존값에 체크되있게 하기 위해 기존값을 넣어준다.
+  //   setCheckedList(checkedListArr);
+  // }, []);
 
   // input을 클릭했을때 checkedList라는 useState 배열에 해당 element가 포함되어있지 않다면 추가하고,
   // checkedList 배열에 이미 포함되어 있다면 해당 배열에서 제거하는 함수

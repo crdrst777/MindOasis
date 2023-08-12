@@ -25,16 +25,18 @@ const MyPageContainer = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: 1100px;
-  height: 800px;
+  width: 1000px;
   margin: auto;
-  padding: 6rem 0 6rem 0;
+  padding: 5rem 0 7rem 0;
 `;
 
 const MainContainer = styled.section`
-  width: 800px;
-  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 720px;
+  min-height: 40rem;
+  padding: 3rem 5rem;
   border: 1px solid ${(props) => props.theme.colors.borderGray};
   border-radius: 0.4rem;
   background-color: ${(props) => props.theme.colors.white};

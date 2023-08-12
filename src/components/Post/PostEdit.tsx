@@ -23,9 +23,9 @@ const PostEdit = ({ post, isOwner }: PostEditProps) => {
     if (ok) {
       await deleteDoc(postTextRef);
       // 삭제하려는 게시물에 이미지 파일이 있는 경우 이미지 파일 스토리지에서 삭제
-      if (post.attachmentUrl) {
-        await deleteObject(postUrlRef);
-      }
+      // if (post.attachmentUrl) {
+      await deleteObject(postUrlRef);
+      // }
     }
   };
 

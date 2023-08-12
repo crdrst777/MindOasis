@@ -69,9 +69,7 @@ const Modal = ({ userData, postId }: Props) => {
           <Main>
             <ModalHeader post={post} postId={postId} userData={userData} />
             <ImgContainer>
-              {post.attachmentUrl && (
-                <Img src={post.attachmentUrl} alt="image" />
-              )}
+              <Img src={post.attachmentUrl} alt="image" />
             </ImgContainer>
             <ContentsContainer>
               <ContentInfo>

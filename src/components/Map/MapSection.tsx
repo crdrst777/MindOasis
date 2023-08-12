@@ -3,11 +3,13 @@ import { styled } from "styled-components";
 import search from "../../assets/img/search-icon.png";
 import SearchMap from "./SearchMap";
 
-interface MapSectionProps {}
+interface Props {
+  placeAddr: string;
+}
 
-const MapSection = () => {
-  const [inputText, setInputText] = useState("");
-  const [place, setPlace] = useState("");
+const MapSection = ({ placeAddr }: Props) => {
+  const [inputText, setInputText] = useState(placeAddr);
+  const [place, setPlace] = useState(placeAddr);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputText(e.currentTarget.value);
@@ -19,7 +21,7 @@ const MapSection = () => {
     setInputText("");
   };
 
-  console.log("MapSection");
+  console.log("placeAddr", placeAddr);
 
   return (
     <Container>
