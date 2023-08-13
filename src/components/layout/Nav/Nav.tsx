@@ -91,7 +91,6 @@ const NavbarMenu = styled.ul`
     font-weight: 500;
     color: ${(props) => props.theme.colors.black};
     padding-left: 2rem;
-    /* background-color: blue; */
   }
 `;
 

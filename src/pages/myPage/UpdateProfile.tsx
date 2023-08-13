@@ -149,7 +149,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
   return (
     <MyPageContainer>
       <Container>
-        <Sidebar />
+        <Sidebar linkTitle={"회원정보 변경"} />
         <MainContainer>
           <FileContainer>
             <AvatarContainer>

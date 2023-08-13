@@ -7,7 +7,7 @@ const UpdatePasswordPage = () => {
   return (
     <MyPageContainer>
       <Container>
-        <Sidebar />
+        <Sidebar linkTitle={"비밀번호 변경"} />
         <MainContainer />
       </Container>
     </MyPageContainer>
@@ -22,7 +22,7 @@ const MyPageContainer = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 1080px;
+  width: 1000px;
   margin: auto;
   padding: 5rem 0 7rem 0;
 `;
@@ -31,9 +31,9 @@ const MainContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 800px;
+  width: 720px;
   min-height: 40rem;
-  padding: 2.5rem;
+  padding: 3rem 3rem;
   border: 1px solid ${(props) => props.theme.colors.borderGray};
   border-radius: 0.4rem;
   background-color: ${(props) => props.theme.colors.white};

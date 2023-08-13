@@ -45,7 +45,7 @@ const MyPosts = () => {
   return (
     <MyPageContainer>
       <Container>
-        <Sidebar />
+        <Sidebar linkTitle={"내 작성글"} />
         <MainContainer>
           {myPosts.map((post) => (
             <MyPostList key={post.id} post={post} />

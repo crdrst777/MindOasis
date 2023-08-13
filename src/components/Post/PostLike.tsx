@@ -43,10 +43,6 @@ const PostLike = ({ post, postId, userData }: Props) => {
       const equalPostId: string[] = userData.myLikes.filter(
         (i) => i === postId
       );
-      // post.likedUsers에 이미 userData.uid가 있는 경우 -> post.likedUsers에서 해당 값을 삭제
-      // const equalUserId: string[] = post.likedUsers.filter(
-      //   (i) => i === userData.uid
-      // );
 
       // 추가 - 현재 postId가 userData.myLikes 에 없는 경우
       if (equalPostId.length === 0) {
@@ -103,7 +99,7 @@ const PostLike = ({ post, postId, userData }: Props) => {
 
   return (
     <Container>
-      <LikeBtn onClick={onLikeBtnClick} $likestate={post.likeState}>
+      <LikeBtn onClick={onLikeBtnClick} likestate={post.likeState}>
         <HeartIcon />
       </LikeBtn>
     </Container>
@@ -114,7 +110,7 @@ export default PostLike;
 
 const Container = styled.div``;
 
-const LikeBtn = styled.button<{ $likestate: boolean }>`
+const LikeBtn = styled.button<{ likestate: boolean }>`
   width: 2.6rem;
   height: 2rem;
   background-color: ${(props) => props.theme.colors.white};
@@ -122,14 +118,14 @@ const LikeBtn = styled.button<{ $likestate: boolean }>`
   justify-content: center;
   align-items: center;
   border: 1px solid
-    ${(props) => (props.$likestate ? props.theme.colors.yellow : "#ababab")};
+    ${(props) => (props.likestate ? props.theme.colors.yellow : "#ababab")};
   border-radius: 3px;
   cursor: pointer;
   transition: border-color 0.15s ease;
   /* opacity: 85%; */
   &:hover {
     border-color: ${(props) =>
-      props.$likestate
+      props.likestate
         ? props.theme.colors.yellow
         : props.theme.colors.darkGray};
     /* opacity: 100%; */
@@ -140,12 +136,12 @@ const LikeBtn = styled.button<{ $likestate: boolean }>`
     height: 2rem;
     padding: 0.48rem;
     fill: ${(props) =>
-      props.$likestate ? props.theme.colors.yellow : props.theme.colors.gray};
+      props.likestate ? props.theme.colors.yellow : props.theme.colors.gray};
 
     transition: fill 0.15s ease;
     &:hover {
       fill: ${(props) =>
-        props.$likestate
+        props.likestate
           ? props.theme.colors.yellow
           : props.theme.colors.darkGray};
     }

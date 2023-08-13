@@ -17,7 +17,7 @@ const PreviewPost = ({ post }: Props) => {
   return (
     <Container onClick={() => openModal(post.id)}>
       <Overlay>
-        <LikeBtn $likestate={post.likeState}>
+        <LikeBtn likestate={post.likeState}>
           <HeartIcon />
         </LikeBtn>
         <Title>{post?.title}</Title>
@@ -53,7 +53,7 @@ const Overlay = styled.div`
   }
 `;
 
-const LikeBtn = styled.div<{ $likestate: boolean }>`
+const LikeBtn = styled.div<{ likestate: boolean }>`
   float: right;
   margin: 1rem 1rem 0 0;
 
@@ -62,7 +62,7 @@ const LikeBtn = styled.div<{ $likestate: boolean }>`
     height: 2rem;
     padding: 0.45rem;
     fill: ${(props) =>
-      props.$likestate ? "#ffdd00" : props.theme.colors.white};
+      props.likestate ? "#ffdd00" : props.theme.colors.white};
   }
 `;
 

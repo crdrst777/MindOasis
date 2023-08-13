@@ -8,7 +8,7 @@ const MyLikes = () => {
   return (
     <MyPageContainer>
       <Container>
-        <Sidebar />
+        <Sidebar linkTitle={"내 관심글"} />
         <MainContainer>
           <MyLikesList />
         </MainContainer>
@@ -36,7 +36,7 @@ const MainContainer = styled.section`
   align-items: center;
   width: 720px;
   min-height: 40rem;
-  padding: 3rem 5rem;
+  padding: 3rem 3rem;
   border: 1px solid ${(props) => props.theme.colors.borderGray};
   border-radius: 0.4rem;
   background-color: ${(props) => props.theme.colors.white};

@@ -35,68 +35,6 @@ const ModalHeader = ({ post, postId, userData }: Props) => {
   useEffect(() => {
     getCreatorData();
   }, [post, postId]);
-  // reload 이 값을 안 넣으면 좋아요 버튼 클릭 후 바로 또 클릭했을때 클릭이 안됨.
-
-  // const updateLikedUsers = async () => {
-  //   try {
-  //     if (post.likedUsers) {
-  //       await updateDoc(postDocRef, {
-  //         likedUsers: [...post.likedUsers, userInfo.uid],
-  //       });
-  //     } else {
-  //       await updateDoc(postDocRef, {
-  //         likedUsers: [userInfo.uid],
-  //       });
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  // // like 버튼 클릭시 실행되는 함수
-  // const onLikeBtnClick = async () => {
-  //   try {
-  //     let equalElArr = userData.myLikes.filter(
-  //       (item: string) => item === postId
-  //     );
-
-  //     // 내가 쓴 게시물이라면 alert창 뜨도록 하기
-  //     if (post.creatorId === userData.uid) {
-  //       alert("내가 작성한 게시물입니다");
-  //       // post의 id와 동일한 요소가 user의 myLikes 배열 안에 이미 있다면, 배열 안에서 제거한다.
-  //     } else if (equalElArr.length !== 0) {
-  //       const unequalElArr = userData.myLikes.filter(
-  //         (item: string) => item !== postId
-  //       );
-  //       const unequalLikedUsersArr = post.likedUsers.filter(
-  //         (item: string) => item !== userInfo.uid
-  //       );
-  //       await updateDoc(userDocRef, {
-  //         myLikes: unequalElArr,
-  //       });
-  //       await updateDoc(postDocRef, {
-  //         likedUsers: unequalLikedUsersArr,
-  //       });
-  //       setIsLiked(false);
-  //     } else {
-  //       // 기존에 좋아요 게시물이 있는 경우. 기존것에 추가
-  //       if (userData.myLikes) {
-  //         await updateDoc(userDocRef, {
-  //           myLikes: [...userData.myLikes, postId],
-  //         });
-  //         // 좋아요 게시물을 처음 누른 경우
-  //       } else {
-  //         await updateDoc(userDocRef, {
-  //           myLikes: [postId],
-  //         });
-  //       }
-  //       updateLikedUsers();
-  //       setIsLiked(true);
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
 
   return (
     <Header>
@@ -111,7 +49,6 @@ const ModalHeader = ({ post, postId, userData }: Props) => {
         <Nickname>{creatorData.displayName}</Nickname>
       </UserInfo>
 
-      {/* <PostLike post={post} postId={postId} userData={userData} /> */}
       {post.creatorId === userData.uid ? (
         <>
           <BtnContainer>
@@ -139,7 +76,6 @@ const Header = styled.header`
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
-  /* background-color: beige; */
 `;
 
 const AvatarContainer = styled.div`
@@ -174,5 +110,4 @@ const Nickname = styled.div`
 const BtnContainer = styled.div`
   display: flex;
   flex-direction: row;
-  /* justify-content: space-between; */
 `;
