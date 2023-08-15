@@ -24,6 +24,7 @@ const useBlocker = (blocker: () => {}, when = true): void => {
       if (result !== false) {
         push(...args);
 
+        // 글 작성 페이지(PostEditor.tsx)에서 이탈시, 유저가 선택했던 주소값을 초기화해준다. 그래야 다시 이 페이지를 열었을때 안떠있음.
         dispatch(
           setPlaceInfo({
             placeName: "",

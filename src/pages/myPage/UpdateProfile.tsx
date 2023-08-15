@@ -21,7 +21,6 @@ interface UpdateProfileProps {
 const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
   const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
   const [attachment, setAttachment] = useState<any>("");
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
   const [newDisplayName, setNewDisplayName] = useState<string>(
@@ -178,8 +177,6 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
               </>
             )}
           </FileContainer>
-
-          {/* <input type="text" value={newDisplayName} onChange={onChange} /> */}
 
           <NicknameContainer>
             <SubTitle>닉네임</SubTitle>
