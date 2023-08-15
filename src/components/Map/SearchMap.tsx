@@ -241,15 +241,15 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   margin: auto;
-  width: 43rem;
+  width: 38.7rem;
 `;
 
 const SelectedPlaceText = styled.div`
   display: flex;
   justify-content: center;
-  font-size: 1.1rem;
   font-weight: 500;
-  margin: 1.8rem 0;
+  margin: 1.7rem 0;
+  font-size: 0.95rem;
 `;
 
 const PlaceName = styled.span`
@@ -262,25 +262,25 @@ const PlaceAddr = styled.span`
 
 const Map = styled.div`
   width: 100%;
-  height: 16rem;
-  margin-bottom: 1rem;
+  height: 14.1rem;
+  margin-bottom: 0.9rem;
 `;
 
 const PlaceList = styled.div`
   width: 100%;
-  height: 14rem;
+  height: 12.5rem;
   /* box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px; */
   font-size: 1rem;
   color: ${(props) => props.theme.colors.darkGray};
   border-radius: 5px;
   border: ${(props) => props.theme.borders.gray};
   overflow: scroll;
-  padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+  padding: 0.4rem 1.4rem 1.4rem 1.4rem;
 `;
 
 const PlaceItem = styled.div`
   display: flex;
-  margin: 0.5rem 0;
+  margin: 0.4rem 0;
   padding: 0.5rem 0;
   cursor: pointer;
 `;
@@ -296,14 +296,14 @@ const ItemNameContainer = styled.div``;
 
 const ItemPlaceName = styled.div`
   color: ${(props) => props.theme.colors.darkGray};
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
   margin-bottom: 0.1rem;
 `;
 
 const ItemAddrName = styled.div`
   color: ${(props) => props.theme.colors.gray};
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 400;
 `;
 

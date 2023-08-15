@@ -62,19 +62,19 @@ const MyPageContainer = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 1000px;
+  width: 57rem;
   margin: auto;
-  padding: 5rem 0 7rem 0;
+  padding: 4rem 0 7rem 0;
 `;
 
 const MainContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 720px;
-  min-height: 40rem;
-  padding: 3rem 3rem;
-  border: 1px solid ${(props) => props.theme.colors.borderGray};
+  width: 40.6rem;
+  height: 37.5rem;
+  padding: 2.85rem;
+  border: ${(props) => props.theme.borders.lightGray};
   border-radius: 0.4rem;
   background-color: ${(props) => props.theme.colors.white};
 `;

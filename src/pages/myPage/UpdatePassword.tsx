@@ -77,9 +77,9 @@ const MyPageContainer = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 1000px;
+  width: 57rem;
   margin: auto;
-  padding: 5rem 0 7rem 0;
+  padding: 4rem 0 7rem 0;
 `;
 
 const MainContainer = styled.section`
@@ -87,10 +87,10 @@ const MainContainer = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 720px;
-  min-height: 40rem;
+  width: 40.6rem;
+  min-height: 37.5rem;
   padding: 3rem 3rem;
-  border: 1px solid ${(props) => props.theme.colors.borderGray};
+  border: ${(props) => props.theme.borders.lightGray};
   border-radius: 0.4rem;
   background-color: ${(props) => props.theme.colors.white};
 `;
@@ -107,34 +107,34 @@ const SubTitle = styled.div`
 `;
 
 const NewPasswordInput = styled.input`
-  width: 18rem;
-  min-height: 3.5rem;
-  font-size: 1rem;
+  width: 16rem;
+  min-height: 3.3rem;
+  font-size: 0.97rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
   padding: 0 1.2rem;
   border-radius: 5px;
-  border: ${(props) => props.theme.borders.gray};
+  border: ${(props) => props.theme.borders.lightGray};
   &:hover {
     outline: 1px solid #c9c9c9;
   }
   &:focus {
-    outline: 2px solid ${(props) => props.theme.colors.yellow};
+    outline: 1.8px solid ${(props) => props.theme.colors.yellow};
   }
 `;
 
 const CheckPasswordInput = styled.input`
-  width: 18rem;
-  min-height: 3.5rem;
-  font-size: 1rem;
+  width: 16rem;
+  min-height: 3.3rem;
+  font-size: 0.97rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
   padding: 0 1.2rem;
   border-radius: 5px;
-  border: ${(props) => props.theme.borders.gray};
+  border: ${(props) => props.theme.borders.lightGray};
   &:hover {
     outline: 1px solid #c9c9c9;
   }
   &:focus {
-    outline: 2px solid ${(props) => props.theme.colors.yellow};
+    outline: 1.8px solid ${(props) => props.theme.colors.yellow};
   }
 `;
 
@@ -143,13 +143,13 @@ const BtnContainer = styled.div`
 `;
 
 const PostBtn = styled.button`
-  width: 18rem;
-  height: 3rem;
+  width: 16rem;
+  height: 2.8rem;
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.lightBlack};
-  border-radius: 11px;
+  border-radius: 9px;
   padding: 0 1.25rem;
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 500;
   transition: background-color 0.2s ease;
   &:hover {

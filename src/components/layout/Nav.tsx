@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
-import avatar from "../../../assets/img/avatar-icon.png";
+import avatar from "../../assets/img/avatar-icon.png";
 {
 }
 interface NavProps {}
@@ -69,13 +69,13 @@ const Container = styled.nav`
   align-items: center;
   justify-content: space-between;
   margin: auto;
-  height: 4rem;
+  height: 3.8rem;
   padding: 0 6rem;
-  border-bottom: 1px solid ${(props) => props.theme.colors.borderGray};
+  border-bottom: ${(props) => props.theme.borders.lightGray};
 `;
 
 const NavbarLogo = styled.div`
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 600;
 `;
 
@@ -87,7 +87,6 @@ const NavbarMenu = styled.ul`
   li {
     display: flex;
     align-items: center;
-    font-size: 1.05rem;
     font-weight: 500;
     color: ${(props) => props.theme.colors.black};
     padding-left: 2rem;

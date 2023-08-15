@@ -5,7 +5,7 @@ import { updateProfile } from "firebase/auth";
 import AppRouter from "./Router";
 import Footer from "./components/Layout/Footer";
 import { UserInfoType } from "./types/types";
-import Nav from "./components/Layout/Nav/Nav";
+import Nav from "./components/Layout/Nav";
 
 function App() {
   const [init, setInit] = useState(false);

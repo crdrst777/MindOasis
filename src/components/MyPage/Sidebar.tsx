@@ -56,11 +56,11 @@ const Container = styled.aside`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 15rem;
-  height: 32rem;
-  border: 1px solid ${(props) => props.theme.colors.borderGray};
+  width: 14.5rem;
+  height: 30rem;
+  border: ${(props) => props.theme.borders.lightGray};
   border-radius: 0.4rem;
-  padding: 2.7rem 2.6rem;
+  padding: 2.3rem 2.4rem;
   background-color: ${(props) => props.theme.colors.white};
 `;
 
@@ -69,6 +69,7 @@ const SidebarHeader = styled.header`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-top: 0.3rem;
 `;
 
 const AvatarContainer = styled.div`
@@ -94,14 +95,14 @@ const BasicAvatarIcon = styled.img.attrs({
 `;
 
 const Nickname = styled.div`
-  margin-top: 1.7rem;
-  font-size: 1.4rem;
+  margin-top: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 500;
 `;
 
 const Email = styled.div`
-  margin-top: 1.3rem;
-  font-size: 1.1rem;
+  margin-top: 1rem;
+  font-size: 1.05rem;
   color: ${(props) => props.theme.colors.gray};
 `;
 
@@ -138,8 +139,7 @@ const StyledLink = styled(NavLink)`
   display: flex;
   align-items: center;
   float: right;
-  height: 2rem;
-  font-size: 1.1rem;
+  height: 1.9rem;
   font-weight: 400;
   color: ${(props) => props.theme.colors.darkGray};
 `;

@@ -30,15 +30,15 @@ const PreviewPost = ({ post }: Props) => {
 export default PreviewPost;
 
 const Container = styled.div`
-  width: 17rem;
-  height: 17rem;
+  width: 16rem;
+  height: 16rem;
   cursor: pointer;
 `;
 
 const Overlay = styled.div`
   opacity: 0;
-  width: 17rem;
-  height: 17rem;
+  width: 16rem;
+  height: 16rem;
   position: absolute;
   background-color: rgba(0, 0, 0, 0.184);
   /* z-index: 2000; */
@@ -67,14 +67,14 @@ const LikeBtn = styled.div<{ likestate: boolean }>`
 const Title = styled.div`
   display: inline-block;
   width: 11rem;
-  height: 2.7rem;
+  height: 2.55rem;
   overflow: hidden;
   color: ${(props) => props.theme.colors.white};
-  margin-top: 12.5rem;
+  margin-top: 8.3rem;
   margin-left: 2rem;
-  font-size: 1.02rem;
+  font-size: 0.98rem;
   font-weight: 400;
-  line-height: 1.3rem;
+  line-height: 1.2rem;
 `;
 
 const PreviewImg = styled.img`

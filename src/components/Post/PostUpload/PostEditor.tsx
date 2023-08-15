@@ -219,48 +219,48 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  width: 43rem;
+  width: 100%;
 `;
 
 const MapContainer = styled.section`
-  margin-top: 0.5rem;
+  margin-top: 0.45rem;
   width: 100%;
 `;
 
 const WriteContainer = styled.section`
-  margin-top: 3.5rem;
+  margin-top: 3.3rem;
   width: 100%;
 `;
 
 const SectionTitle = styled.div`
   display: flex;
   align-items: center;
-  padding: 1rem;
-  margin-bottom: 2.25rem;
+  padding: 0.7rem;
+  margin-bottom: 1.85rem;
   border-bottom: 3px solid ${(props) => props.theme.colors.lightGray};
 
   span {
     margin-right: 0.5rem;
-    width: 1.75rem;
-    height: 1.75rem;
+    width: 1.6rem;
+    height: 1.6rem;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
     background: ${(props) => props.theme.colors.yellow};
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 700;
     color: ${(props) => props.theme.colors.white};
   }
 
   h2 {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     font-weight: 700;
   }
 `;
 
 const SubTitle = styled.div`
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
   margin: 0 0 5px;
   color: ${(props) => props.theme.colors.darkGray};
@@ -268,8 +268,8 @@ const SubTitle = styled.div`
 
 const TitleInput = styled.input`
   width: 100%;
-  min-height: 3.5rem;
-  font-size: 1rem;
+  height: 3.3rem;
+  font-size: 0.95rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
   padding: 0 1.2rem;
   margin-bottom: 0.8rem;
@@ -279,16 +279,16 @@ const TitleInput = styled.input`
     outline: 1px solid #c9c9c9;
   }
   &:focus {
-    outline: 2px solid ${(props) => props.theme.colors.yellow};
+    outline: 1.8px solid ${(props) => props.theme.colors.yellow};
   }
 `;
 
 const TextInput = styled.textarea`
   width: 100%;
-  height: 10rem;
-  font-size: 1rem;
+  height: 9.3rem;
+  font-size: 0.95rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
-  padding: 1.2rem;
+  padding: 1.1rem 1.2rem;
   border-radius: 5px;
   border: ${(props) => props.theme.borders.gray};
   line-height: 1.5rem;
@@ -298,7 +298,7 @@ const TextInput = styled.textarea`
     outline: 1px solid #c9c9c9;
   }
   &:focus {
-    outline: 2px solid ${(props) => props.theme.colors.yellow};
+    outline: 1.8px solid ${(props) => props.theme.colors.yellow};
   }
 `;
 
@@ -310,7 +310,7 @@ const FileContainer = styled.section`
 const FileInput = styled.input`
   width: 100%;
   height: 5rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
   padding: 0 1.2rem;
   border-radius: 5px;
@@ -333,9 +333,9 @@ const CancelBtn = styled.button`
   color: black;
   background-color: ${(props) => props.theme.colors.lightGray};
   border-radius: 4px;
-  margin: 1.8rem 0.5rem;
+  margin: 1.6rem 0.5rem;
   padding: 0 1.25rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 400;
 
   @media ${(props) => props.theme.mobile} {

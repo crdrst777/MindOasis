@@ -16,7 +16,7 @@ export default UploadPost;
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  width: 45rem;
+  width: 38.7rem;
   /* flex-direction: column; */
-  margin: 3rem auto;
+  margin: 2.8rem auto;
 `;

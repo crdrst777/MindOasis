@@ -76,14 +76,14 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 6rem 7rem;
+  padding: 6rem 7.3rem;
 `;
 
 const PreviewContainer = styled.section`
   width: 100%;
   display: grid;
   justify-content: center;
-  grid-template-columns: repeat(auto-fill, 17rem);
-  column-gap: 2.2rem;
-  row-gap: 2.2rem;
+  grid-template-columns: repeat(auto-fill, 16rem);
+  column-gap: 2.1rem;
+  row-gap: 2.1rem;
 `;

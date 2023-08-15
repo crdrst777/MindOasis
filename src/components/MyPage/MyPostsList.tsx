@@ -45,9 +45,9 @@ const MyPostContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 1.6rem;
+  margin-bottom: 1.5rem;
   cursor: pointer;
-  padding: 1rem;
+  padding: 0.95rem;
   /* border-radius: 0.5rem; */
   border-left: 4px solid ${(props) => props.theme.colors.yellow};
   /* box-shadow: 0 8px 16px #00000019; */
@@ -62,21 +62,22 @@ const MyPostContainer = styled.div`
 `;
 
 const Img = styled.img`
-  width: 5rem;
-  height: 5rem;
+  width: 4.45rem;
+  height: 4.45rem;
   object-fit: cover;
   border-radius: 4px;
 `;
 
 const Title = styled.div`
-  width: 22rem;
+  width: 19rem;
   display: flex;
   align-items: center;
+  font-size: 0.94rem;
   font-weight: 400;
-  padding: 1rem;
+  padding: 0.8rem;
 `;
 
 const CreatedAt = styled.div`
   color: ${(props) => props.theme.colors.gray};
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 `;

@@ -42,7 +42,7 @@ const MapSection = ({ placeAddr }: Props) => {
 export default MapSection;
 
 const Container = styled.div`
-  width: 43rem;
+  width: 38.7rem;
 `;
 
 const SearchForm = styled.div`
@@ -55,15 +55,15 @@ const SearchIcon = styled.img.attrs({
   src: search,
 })`
   position: absolute;
-  width: 1.4rem;
-  top: 1.1rem;
+  width: 1.3rem;
+  top: 1rem;
   left: 1rem;
 `;
 
 const Search = styled.input`
   width: 100%;
-  min-height: 3.5rem;
-  font-size: 1rem;
+  height: 3.3rem;
+  font-size: 0.95rem;
   color: ${(props) => props.theme.colors.darkGray};
   /* background-color: #eff2f5; */
   background-color: ${(props) => props.theme.colors.lightGray};
@@ -76,7 +76,7 @@ const Search = styled.input`
     outline: 1px solid #c9c9c9;
   }
   &:focus {
-    outline: 2px solid ${(props) => props.theme.colors.yellow};
+    outline: 1.8px solid ${(props) => props.theme.colors.yellow};
   }
 `;
 
