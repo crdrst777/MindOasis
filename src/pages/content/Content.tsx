@@ -3,7 +3,7 @@ import { dbService } from "../../fbase";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { PostType } from "../../types/types";
 import { styled } from "styled-components";
-import { PathMatch, useMatch } from "react-router-dom";
+import { PathMatch, useMatch, useParams } from "react-router-dom";
 import Modal from "../../components/UI/Modal";
 import PreviewPost from "../../components/Post/PreviewPost";
 import { useSelector } from "react-redux";
@@ -12,14 +12,11 @@ import { getUserData } from "../../api/user";
 
 const Content = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const bigMatch: PathMatch<string> | null = useMatch(`content/detail/:id`);
+  // useMatch()의 인자로 url을 넘기면 해당 url과 일치할 경우 url의 정보를 반환하고, 일치하지 않을 경우 null을 반환한다.
+  const bigMatch: PathMatch<string> | null = useMatch(`content/:id`);
   const [posts, setPosts] = useState<PostType[]>([]);
   const [userData, setUserData] = useState<any>({});
   const { isLiked } = useSelector((state: RootState) => state.isLiked);
-
-  // const { placeKeyword } = useSelector(
-  //   (state: RootState) => state.placeKeyword
-  // );
 
   // const getPosts = async () => {
   //   // const q = query(collection(dbService, "posts"));
@@ -53,29 +50,9 @@ const Content = () => {
     getUserData(userInfo.uid, setUserData);
   }, [isLiked]); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
 
-  // const changeLikeState = async (myLikeId: string) => {
-  //   console.log("myLikeId", myLikeId);
-  //   const postDocRef = doc(dbService, "posts", `${myLikeId}`);
-  //   await updateDoc(postDocRef, {
-  //     likeState: true,
-  //   });
-  //   setCheckLike(true);
-  // };
-
-  // useEffect(() => {
-  //   if (userData.myLikes) {
-  //     for (let item of userData.myLikes) {
-  //       changeLikeState(item);
-  //     }
-  //   }
-  // }, [userData]);
-
-  // 버튼을 눌렀을때 user-myLikes에는 추가되지만, post-likeState는 새로고침을 해야 true로 바뀐다.
-  // 버튼을 또 다시 눌렀을때 아무 이벤트가 발생하지 않는다. 새로고침 하면 됨. -> 해결
-  // 좋아요 눌렀다가 취소하고서 모달창 닫고 다시 열어서 좋아요 누르면 post.likedUsers 배열에 같은 userId가 중복으로 추가됨;
-
   console.log(posts);
   console.log("userData", userData);
+  console.log("bigMatch", bigMatch);
 
   return (
     <Container>

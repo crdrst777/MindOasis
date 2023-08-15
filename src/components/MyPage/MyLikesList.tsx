@@ -1,53 +1,82 @@
-import { doc, getDoc } from "firebase/firestore";
-import { dbService } from "../../fbase";
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { PostType } from "../../types/types";
-import { getUserData } from "../../api/user";
+import { styled } from "styled-components";
 
-const MyLikesList = () => {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const [myLikes, setMyLikes] = useState<PostType[]>([]);
-  const [userData, setUserData] = useState<any>({});
+interface Props {
+  post: PostType;
+}
 
-  const getMyLikes = async () => {
-    try {
-      const myLikesArr: PostType[] = [];
-      if (userData.myLikes) {
-        for (let postId of userData.myLikes) {
-          const postDocRef = doc(dbService, "posts", `${postId}`);
-          const postDocSnap = await getDoc(postDocRef);
+const MyLikesList = ({ post }: Props) => {
+  const navigate = useNavigate();
+  const createdAt = post.createdAt;
+  const timestamp = new Intl.DateTimeFormat("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(createdAt);
 
-          if (postDocSnap.exists()) {
-            myLikesArr.push(postDocSnap.data());
-          } else {
-            console.log("Document does not exist");
-          }
-        }
-      }
-      setMyLikes(myLikesArr);
-    } catch (err) {
-      console.log(err);
-    }
+  const onPostClick = () => {
+    navigate(`/mypage/content/${post.id}`); // MyPageSinglePost.tsx 가 열림
   };
 
-  useEffect(() => {
-    getUserData(userInfo.uid, setUserData);
-  }, []);
-
-  useEffect(() => {
-    getMyLikes();
-  }, [userData]);
-
-  console.log("myLikes", myLikes);
-
   return (
-    <div>
-      {myLikes &&
-        myLikes.map((post: PostType) => (
-          <div key={post.createdAt}>{post.title}</div>
-        ))}
-    </div>
+    <Container>
+      {post ? (
+        <MyLikeContainer onClick={onPostClick}>
+          <Img src={post.attachmentUrl} alt="image" />
+          <Title>{post.title}</Title>
+          <CreatedAt>{timestamp}</CreatedAt>
+        </MyLikeContainer>
+      ) : null}
+    </Container>
   );
 };
 
 export default MyLikesList;
+
+const Container = styled.div`
+  width: 100%;
+`;
+
+const MyLikeContainer = styled.div`
+  max-height: 7rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1.6rem;
+  cursor: pointer;
+  padding: 1rem;
+  /* border-radius: 0.5rem; */
+  border-left: 4px solid ${(props) => props.theme.colors.yellow};
+  /* box-shadow: 0 8px 16px #00000019; */
+  box-shadow: rgba(0, 0, 0, 0.089) 0px 0px 15px 0px;
+  /* transition: all 0.5s ease 0s; */
+  transition: box-shadow 0.3s ease 0s;
+
+  &:hover {
+    /* box-shadow: 0 8px 16px #00000038; */
+    box-shadow: rgba(0, 0, 0, 0.223) 0px 0px 15px 0px;
+  }
+`;
+
+const Img = styled.img`
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover;
+  border-radius: 4px;
+`;
+
+const Title = styled.div`
+  width: 22rem;
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  padding: 1rem;
+`;
+
+const CreatedAt = styled.div`
+  color: ${(props) => props.theme.colors.gray};
+  font-size: 0.9rem;
+`;

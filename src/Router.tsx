@@ -11,6 +11,7 @@ import Footer from "./components/Layout/Footer";
 import Content from "./pages/content/Content";
 import UploadPost from "./pages/post/UploadPost";
 import EditPost from "./pages/post/EditPost";
+import MyPageSinglePost from "./pages/myPage/MyPageSinglePost";
 
 interface AppRouterProps {
   isLoggedIn: boolean;
@@ -46,7 +47,8 @@ const AppRouter = ({ isLoggedIn, refreshUser }: AppRouterProps) => {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/content" element={<Content />} />
-        <Route path="/content/detail/:id" element={<Content />} />
+        <Route path="/content/:id" element={<Content />} />
+        <Route path="/mypage/content/:id" element={<MyPageSinglePost />} />
       </Routes>
     </>
   );

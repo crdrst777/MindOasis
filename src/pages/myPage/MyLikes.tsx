@@ -1,16 +1,59 @@
 import { styled } from "styled-components";
 import MyLikesList from "../../components/MyPage/MyLikesList";
 import Sidebar from "../../components/MyPage/Sidebar";
-
-interface Props {}
+import { useEffect, useState } from "react";
+import { PostType } from "../../types/types";
+import { dbService } from "../../fbase";
+import { doc, getDoc } from "firebase/firestore";
+import { getUserData } from "../../api/user";
 
 const MyLikes = () => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const [myLikes, setMyLikes] = useState<PostType[]>([]);
+  const [userData, setUserData] = useState<any>({});
+
+  const getMyLikes = async () => {
+    try {
+      const myLikesArr: PostType[] = [];
+      if (userData.myLikes) {
+        for (let postId of userData.myLikes) {
+          const postDocRef = doc(dbService, "posts", `${postId}`);
+          const postDocSnap = await getDoc(postDocRef);
+
+          if (postDocSnap.exists()) {
+            // postDocSnap.data() -> post 데이터
+            // postId를 각각의 데이터에 넣어줬음
+            myLikesArr.push({ id: postId, ...postDocSnap.data() });
+          } else {
+            console.log("Document does not exist");
+          }
+        }
+      }
+      setMyLikes(myLikesArr);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getUserData(userInfo.uid, setUserData);
+  }, []);
+
+  useEffect(() => {
+    getMyLikes();
+  }, [userData]);
+
+  console.log("myLikes", myLikes);
+
   return (
     <MyPageContainer>
       <Container>
         <Sidebar linkTitle={"내 관심글"} />
+
         <MainContainer>
-          <MyLikesList />
+          {myLikes.map((post) => (
+            <MyLikesList key={post.id} post={post} />
+          ))}
         </MainContainer>
       </Container>
     </MyPageContainer>

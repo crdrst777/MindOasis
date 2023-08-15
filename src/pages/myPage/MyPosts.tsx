@@ -6,8 +6,6 @@ import { PostType } from "../../types/types";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { dbService } from "../../fbase";
 
-interface Props {}
-
 const MyPosts = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const [myPosts, setMyPosts] = useState<PostType[]>([]);

@@ -1,26 +1,22 @@
 import { styled } from "styled-components";
-import close from "../../assets/img/close-icon.png";
-import { useMatch, useNavigate } from "react-router-dom";
-import { PostType, UserDocType } from "../../types/types";
+import { useNavigate, useParams } from "react-router-dom";
+import { PostType } from "../../types/types";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
-import ModalHeader from "./ModalHeader";
-import ReadMap from "../Map/ReadMap";
-import PostKeyword from "../Post/PostKeyword";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import ModalHeader from "../../components/UI/ModalHeader";
+import PostKeyword from "../../components/Post/PostKeyword";
+import ReadMap from "../../components/Map/ReadMap";
+import { getUserData } from "../../api/user";
 
-interface Props {
-  userData: UserDocType;
-  postId?: string;
-}
-
-const Modal = ({ userData, postId }: Props) => {
-  const [post, setPost] = useState<PostType>({});
+const MyPageSinglePost = () => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
-  // const modalMatch = useMatch(`/content/detail/:id`);
-  // useMatch는 이 route 안에 있는지 다른 곳에 있는지 알려줌. -->  string | null
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const [post, setPost] = useState<PostType>({});
+  const [userData, setUserData] = useState<any>({});
+  const postId = useParams().id;
   const closeModal = () => navigate(-1);
   const { isLiked } = useSelector((state: RootState) => state.isLiked);
   const createdAt = post.createdAt;
@@ -31,6 +27,12 @@ const Modal = ({ userData, postId }: Props) => {
     hour: "2-digit",
     minute: "2-digit",
   }).format(createdAt);
+
+  useEffect(() => {
+    getUserData(userInfo.uid, setUserData);
+  }, []);
+
+  console.log("postId", postId);
 
   const getPost = async () => {
     try {
@@ -56,16 +58,12 @@ const Modal = ({ userData, postId }: Props) => {
     };
   }, [isLiked]);
 
-  // console.log("modalMatch", modalMatch);
-  console.log("post", post);
-
   return (
     <>
       <Container>
         <Overlay onClick={closeModal} />
 
         <ModalContainer>
-          {/* <CloseIcon onClick={closeModal} /> */}
           <Main>
             <ModalHeader post={post} postId={postId} userData={userData} />
             <ImgContainer>
@@ -89,7 +87,7 @@ const Modal = ({ userData, postId }: Props) => {
   );
 };
 
-export default Modal;
+export default MyPageSinglePost;
 
 const Container = styled.div`
   position: absolute;
@@ -134,35 +132,7 @@ const ModalContainer = styled.div`
   height: 50rem;
   overflow: scroll;
   z-index: 100;
-  /* animation: modal-show 0.6s;
-  @keyframes modal-show {
-    from {
-      opacity: 0;
-      margin-top: -50px;
-    }
-    to {
-      opacity: 1;
-      margin-top: 0;
-    }
-  } */
-  /* 
-  @media (max-width: 1120px) {
-    width: 50rem;
-  }
-  @media (max-width: 50rem) {
-    width: 80%;
-  } */
 `;
-
-// const CloseIcon = styled.img.attrs({
-//   src: close,
-// })`
-//   position: absolute;
-//   width: 1rem;
-//   right: 1.5rem;
-//   top: 1.5rem;
-//   cursor: pointer;
-// `;
 
 const Main = styled.article`
   display: flex;

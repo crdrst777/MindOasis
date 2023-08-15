@@ -16,7 +16,6 @@ const MapSection = ({ placeAddr }: Props) => {
   };
 
   const handleOnKeyPress = () => {
-    // e.preventDefault();
     setPlace(inputText);
     setInputText("");
   };

@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { PostType, UserDocType } from "../../types/types";
+import { PostType } from "../../types/types";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as HeartIcon } from "../../assets/icon/heart-icon.svg";
 
@@ -11,7 +11,7 @@ const PreviewPost = ({ post }: Props) => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
 
   const openModal = (id: any) => {
-    navigate(`/content/detail/${id}`); // 이 url로 바꿔줌.
+    navigate(`/content/${id}`); // 이 url로 바꿔줌.
   };
 
   return (
@@ -22,9 +22,7 @@ const PreviewPost = ({ post }: Props) => {
         </LikeBtn>
         <Title>{post?.title}</Title>
       </Overlay>
-      {/* {post.attachmentUrl && ( */}
       <PreviewImg src={post.attachmentUrl} alt="image" />
-      {/* )} */}
     </Container>
   );
 };

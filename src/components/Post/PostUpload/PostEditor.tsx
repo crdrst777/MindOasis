@@ -1,18 +1,21 @@
 import MapSection from "../../Map/MapSection";
 import { styled } from "styled-components";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { dbService, storageService } from "../../../fbase";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlaceInfo } from "../../../store/placeInfoSlice";
 import { PostType } from "../../../types/types";
 import CheckBox from "../../UI/CheckBox";
+import { usePrompt } from "../../../hooks/useBlocker";
+import { createBrowserHistory } from "history";
 
 const PostEditor = () => {
+  const history = createBrowserHistory();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -24,6 +27,21 @@ const PostEditor = () => {
   const { placeKeyword } = useSelector(
     (state: RootState) => state.placeKeyword
   );
+
+  usePrompt("현재 페이지를 벗어나시겠습니까?", true);
+
+  useEffect(() => {
+    // history.listen((location) => {
+    if (history.action === "POP") {
+      dispatch(
+        setPlaceInfo({
+          placeName: "",
+          placeAddr: "",
+        })
+      );
+    }
+    // });
+  }, []);
 
   const uploadData = (data: PostType) => {
     addDoc(collection(dbService, "posts"), data);

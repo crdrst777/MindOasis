@@ -1,14 +1,13 @@
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import { dbService } from "../../fbase";
-import { useEffect, useState } from "react";
 import { PostType } from "../../types/types";
 import { styled } from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   post: PostType;
 }
 
 const MyPostsList = ({ post }: Props) => {
+  const navigate = useNavigate();
   const createdAt = post.createdAt;
   const timestamp = new Intl.DateTimeFormat("ko-KR", {
     year: "numeric",
@@ -18,13 +17,19 @@ const MyPostsList = ({ post }: Props) => {
     minute: "2-digit",
   }).format(createdAt);
 
+  const onPostClick = () => {
+    navigate(`/mypage/content/${post.id}`); // MyPageSinglePost.tsx 가 열림
+  };
+
   return (
     <Container>
-      <MyPostContainer key={post.id}>
-        <Img src={post.attachmentUrl} alt="image" />
-        <Title>{post.title}</Title>
-        <CreatedAt>{timestamp}</CreatedAt>
-      </MyPostContainer>
+      {post ? (
+        <MyPostContainer onClick={onPostClick}>
+          <Img src={post.attachmentUrl} alt="image" />
+          <Title>{post.title}</Title>
+          <CreatedAt>{timestamp}</CreatedAt>
+        </MyPostContainer>
+      ) : null}
     </Container>
   );
 };
@@ -36,6 +41,7 @@ const Container = styled.div`
 `;
 
 const MyPostContainer = styled.div`
+  max-height: 7rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -47,14 +53,12 @@ const MyPostContainer = styled.div`
   /* box-shadow: 0 8px 16px #00000019; */
   box-shadow: rgba(0, 0, 0, 0.089) 0px 0px 15px 0px;
   /* transition: all 0.5s ease 0s; */
-  transition: box-shadow 0.4s ease 0s;
+  transition: box-shadow 0.3s ease 0s;
 
   &:hover {
     /* box-shadow: 0 8px 16px #00000038; */
     box-shadow: rgba(0, 0, 0, 0.223) 0px 0px 15px 0px;
   }
-
-  /* background-color: lightblue; */
 `;
 
 const Img = styled.img`
