@@ -6,13 +6,13 @@ import { useDispatch } from "react-redux";
 import { UNSAFE_NavigationContext as NavigationContext } from "react-router-dom";
 import { setPlaceInfo } from "../store/placeInfoSlice";
 
-const useBlocker = (blocker: () => {}, when = true): void => {
+const useBlocker = (blocker: () => {}, when: boolean): void => {
   const dispatch = useDispatch();
   const { navigator } = useContext(NavigationContext);
   console.log("navigator", navigator);
 
   useEffect(() => {
-    if (!when) return;
+    if (when === false) return;
 
     const push = navigator.push;
     console.log("push", push);
@@ -40,7 +40,7 @@ const useBlocker = (blocker: () => {}, when = true): void => {
   }, [navigator, blocker, when]);
 };
 
-export const usePrompt = (message: string, when = true) => {
+export const usePrompt = (message: string, when: boolean) => {
   // 사이트를 새로고침하시겠습니까? 묻는 알림창이 뜸
   useEffect(() => {
     if (when) {

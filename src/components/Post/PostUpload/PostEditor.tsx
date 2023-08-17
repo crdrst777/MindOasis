@@ -28,13 +28,12 @@ const PostEditor = () => {
   const { placeKeyword } = useSelector(
     (state: RootState) => state.placeKeyword
   );
-  // 이미지 리사이즈
   const [imageUpload, setImageUpload] = useState(null);
   const [uploadPreview, setUploadPreview] = useState<string>("");
 
-  const [test, setTest] = useState(true);
-
-  // usePrompt("현재 페이지를 벗어나시겠습니까?", test);
+  const [when, setWhen] = useState(true);
+  console.log("test", when);
+  usePrompt("현재 페이지를 벗어나시겠습니까?", when);
 
   // 뒤로가기를 할 경우
   useEffect(() => {
@@ -52,10 +51,8 @@ const PostEditor = () => {
 
   const uploadData = (data: PostType) => {
     addDoc(collection(dbService, "posts"), data);
-    setTest((prev) => !prev);
-
     alert("등록 완료");
-    navigate(`/content`);
+    setWhen((prev) => !prev);
 
     setTitle("");
     setText("");
@@ -110,6 +107,7 @@ const PostEditor = () => {
         likedUsers: [],
         likeState: false,
       };
+
       await uploadData(postObj);
     } else {
       const postObj: PostType = {
@@ -123,6 +121,7 @@ const PostEditor = () => {
         likedUsers: [],
         likeState: false,
       };
+
       await uploadData(postObj);
     }
   };
@@ -184,6 +183,12 @@ const PostEditor = () => {
     setImageUpload(null);
     fileInput.current!.value = ""; // 사진을 선택했다가 clear를 눌렀을때, 선택된 파일명을 지워줌.
   };
+
+  useEffect(() => {
+    if (when === false) {
+      navigate(`/content`);
+    }
+  }, [when]);
 
   return (
     <Container>

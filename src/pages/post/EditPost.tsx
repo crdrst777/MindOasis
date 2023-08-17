@@ -40,14 +40,14 @@ const EditPost = () => {
   const { placeKeyword } = useSelector(
     (state: RootState) => state.placeKeyword
   );
-
-  // 이미지 리사이즈
   const [imageUpload, setImageUpload] = useState({});
   const [uploadPreview, setUploadPreview] = useState<string>(
     post.attachmentUrl
   );
 
-  usePrompt("현재 페이지를 벗어나시겠습니까?", true);
+  const [when, setWhen] = useState(true);
+  console.log("test", when);
+  usePrompt("현재 페이지를 벗어나시겠습니까?", when);
 
   // 뒤로가기를 할 경우
   useEffect(() => {
@@ -63,14 +63,11 @@ const EditPost = () => {
     });
   }, []);
 
-  console.log("placeInfo", placeInfo);
-
   const uploadData = (data: PostType) => {
     const postDocRef = doc(dbService, "posts", `${postId}`);
     updateDoc(postDocRef, { ...data });
-
     alert("등록 완료");
-    navigate(`/content`);
+    setWhen((prev) => !prev);
 
     setTitle("");
     setText("");
@@ -201,8 +198,11 @@ const EditPost = () => {
     navigate(`/content`);
   };
 
-  console.log("uploadPreview", uploadPreview);
-  console.log("imageUpload", imageUpload);
+  useEffect(() => {
+    if (when === false) {
+      navigate(`/content`);
+    }
+  }, [when]);
 
   return (
     <Container>
