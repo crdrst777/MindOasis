@@ -140,6 +140,7 @@ const StyledLink = styled(NavLink)`
   align-items: center;
   float: right;
   height: 1.9rem;
+  font-size: 1.03rem;
   font-weight: 400;
   color: ${(props) => props.theme.colors.darkGray};
 `;

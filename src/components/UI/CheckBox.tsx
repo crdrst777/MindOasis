@@ -80,7 +80,7 @@ export default CheckBox;
 
 const Container = styled.div`
   width: 100%;
-  height: 7rem;
+  height: 6rem;
   display: flex;
   justify-content: space-between;
 `;
@@ -115,6 +115,6 @@ const CheckBoxLabel = styled.label`
   border-radius: 2rem;
   background-color: ${(props) => props.theme.colors.lightGray};
   font-size: 0.85rem;
-  font-weight: 410;
+  font-weight: 400;
   color: ${(props) => props.theme.colors.black};
 `;

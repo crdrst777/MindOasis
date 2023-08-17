@@ -5,9 +5,10 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { dbService, storageService } from "../../fbase";
 import { deleteObject, ref } from "firebase/storage";
 import { PostType } from "../../types/types";
-import { NavigateFunction, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { setPlaceInfo } from "../../store/placeInfoSlice";
+import { RootState } from "../../store";
 
 interface Props {
   post: PostType;
@@ -18,6 +19,7 @@ const DetailsDropdown = ({ post, postId }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   // const navigate: NavigateFunction = useNavigate();
   const postTextRef = doc(dbService, "posts", `${postId}`); // 파일을 가리키는 참조 생성
   const postUrlRef = ref(storageService, post.attachmentUrl); // 파일을 가리키는 참조 생성
@@ -90,32 +92,32 @@ const Container = styled.div`
   flex-direction: column;
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.35); */
   /* z-index: 4001; */
-  margin-left: 0.6rem;
+  margin-left: 0.5rem;
 `;
 
 const DropdownBtn = styled.button`
-  width: 2.6rem;
-  height: 2rem;
+  width: 2.25rem;
+  height: 1.8rem;
   background-color: ${(props) => props.theme.colors.white};
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #ababab;
+  border: 0.9px solid #c1c1c1;
   border-radius: 3px;
   cursor: pointer;
   transition: border-color 0.15s ease;
   &:hover {
-    border-color: ${(props) => props.theme.colors.darkGray};
+    border-color: #787878;
   }
 
   svg {
-    width: 2.6rem;
-    height: 2rem;
+    width: 2.25rem;
+    height: 1.8rem;
     padding: 0.45rem;
     fill: ${(props) => props.theme.colors.gray};
     transition: fill 0.15s ease;
     &:hover {
-      fill: ${(props) => props.theme.colors.darkGray};
+      fill: #616161;
     }
   }
 `;

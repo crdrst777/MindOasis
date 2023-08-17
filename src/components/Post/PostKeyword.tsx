@@ -25,12 +25,12 @@ const Container = styled.div`
 const Keyword = styled.div`
   display: flex;
   align-items: center;
-  height: 1.625rem;
+  height: 1.6rem;
   color: ${(props) => props.theme.colors.darkGray};
   background-color: #c7dbf5;
   border-radius: 2px;
   padding: 0 0.5rem;
   margin-right: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 400;
 `;

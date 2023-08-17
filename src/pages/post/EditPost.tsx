@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import {
   deleteObject,
@@ -16,8 +16,12 @@ import { PostType } from "../../types/types";
 import { setPlaceInfo } from "../../store/placeInfoSlice";
 import MapSection from "../../components/Map/MapSection";
 import CheckBox from "../../components/UI/CheckBox";
+import { createBrowserHistory } from "history";
+import { usePrompt } from "../../hooks/useBlocker";
+import imageCompression from "browser-image-compression";
 
 const EditPost = () => {
+  const history = createBrowserHistory();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -30,21 +34,47 @@ const EditPost = () => {
   // const [title, setTitle] = useState(post.placeInfo.placeAddr);
   const [title, setTitle] = useState("");
   const [text, setText] = useState(post.text);
-  const [attachment, setAttachment] = useState<any>(post.attachmentUrl);
+  // const [attachment, setAttachment] = useState<any>(post.attachmentUrl);
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
   const { placeInfo } = useSelector((state: RootState) => state.placeInfo);
   const { placeKeyword } = useSelector(
     (state: RootState) => state.placeKeyword
   );
 
+  // 이미지 리사이즈
+  const [imageUpload, setImageUpload] = useState({});
+  const [uploadPreview, setUploadPreview] = useState<string>(
+    post.attachmentUrl
+  );
+
+  usePrompt("현재 페이지를 벗어나시겠습니까?", true);
+
+  // 뒤로가기를 할 경우
+  useEffect(() => {
+    history.listen((location) => {
+      if (history.action === "POP") {
+        dispatch(
+          setPlaceInfo({
+            placeName: "",
+            placeAddr: "",
+          })
+        );
+      }
+    });
+  }, []);
+
+  console.log("placeInfo", placeInfo);
+
   const uploadData = (data: PostType) => {
-    // addDoc(collection(dbService, "posts"), data);
     const postDocRef = doc(dbService, "posts", `${postId}`);
     updateDoc(postDocRef, { ...data });
 
+    alert("등록 완료");
+    navigate(`/content`);
+
     setTitle("");
     setText("");
-    setAttachment(""); // 파일 미리보기 img src 비워주기
+    setUploadPreview(""); // 파일 미리보기 img src 비워주기
     fileInput.current!.value = "";
     dispatch(
       setPlaceInfo({
@@ -60,19 +90,23 @@ const EditPost = () => {
     let attachmentUrl: string = "";
 
     // 다른 파일을 새로 첨부하지 않고 기존 파일 그대로 업데이트 할 경우
-    if (attachment === post.attachmentUrl) {
-      attachmentUrl = attachment;
+    if (uploadPreview === post.attachmentUrl) {
+      attachmentUrl = uploadPreview;
+
+      console.log(
+        "다른 파일을 새로 첨부하지 않고 기존 파일 그대로 업데이트 할 경우"
+      );
     }
     // 다른 파일을 새로 첨부하는 경우
-    else {
+    else if (imageUpload !== null) {
       const attachmentRef = ref(storageService, `${userInfo.uid}/${uuidv4()}`); // 파일 경로 참조 생성
-      // 파일 업로드(이 경우는 url)
-      // ref정보가 data_url(format)으로 attachment(value)에 담겨 upload 되도록 함
+      // "https://firebasestorage.googleapis.com/v0/b/mind-oasis-66b9e.appspot.com/o/u1D7yAHTq4fOAXeIThoewbT9vYS2%2F070dbc05-c5be-4117-b944-99d620db1201?alt=media&token=ef68906f-49e7-44da-a42d-146caee97d2f"
+      // ref정보가 data_url(format)으로 uploadPreview(value)에 담겨 upload 되도록 함
       const response = await uploadString(
         attachmentRef,
-        attachment,
+        uploadPreview,
         "data_url"
-      );
+      ); // 파일 업로드(이 경우는 url)
       attachmentUrl = await getDownloadURL(response.ref);
       // 기존 파일을 스토리지에서 삭제
       const postUrlRef = ref(storageService, post.attachmentUrl);
@@ -85,10 +119,13 @@ const EditPost = () => {
       alert("지도에서 위치를 선택해주세요");
     } else if (text.replace(blankPattern, "") === "" || text === "") {
       alert("내용을 입력해주세요");
+    } else if (imageUpload === null) {
+      alert("사진을 선택해주세요");
+    } else if (placeKeyword.length === 0) {
+      alert("키워드를 선택해주세요");
 
       //  title인풋에 공백만 있거나 값이 없는 경우엔 장소이름을 넣어준다.
     } else if (title.replace(blankPattern, "") === "" || title === "") {
-      // setTitle(placeInfo.placeAddr); // 이 코드가 실행될때 리랜더링 되는데 이 리랜더링을 막아야 등록 버튼 눌렀을때 한번에 제출됨
       const postObj: PostType = {
         title: placeInfo.placeAddr,
         text: text,
@@ -101,8 +138,6 @@ const EditPost = () => {
         likeState: false,
       };
       await uploadData(postObj);
-      alert("등록 완료");
-      navigate(`/content`);
     } else {
       const postObj: PostType = {
         title: title,
@@ -116,8 +151,6 @@ const EditPost = () => {
         likeState: false,
       };
       await uploadData(postObj);
-      alert("등록 완료");
-      navigate(`/content`);
     }
   };
 
@@ -129,20 +162,36 @@ const EditPost = () => {
     setText(e.target.value);
   };
 
-  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const theFile = e.currentTarget.files![0];
-    // console.log("theFile", theFile);
-    const reader = new FileReader();
-    reader.onloadend = (finishedEvent) => {
-      console.log("finishedEvent", finishedEvent);
-      setAttachment(reader.result);
-    }; // 파일을 다 읽으면 finishedEvent를 받는다.
-    reader.readAsDataURL(theFile); // 그 다음 데이터를 얻는다.
+  // 이미지 리사이즈(압축) 함수
+  const handleImageCompress = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    let file = e.currentTarget?.files[0];
+
+    const options = {
+      maxSizeMB: 0.5, // 이미지 최대 용량
+      // maxWidthOrHeight: 1920, // 최대 넓이(혹은 높이)
+      useWebWorker: true,
+    };
+
+    try {
+      const compressedFile = await imageCompression(file, options);
+      setImageUpload(compressedFile);
+
+      const promise = imageCompression.getDataUrlFromFile(compressedFile);
+      promise.then((result) => {
+        // console.log("result", result);
+        setUploadPreview(result);
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // 파일을 첨부한 상태에서 clear 버튼을 누르는 경우
   const onClearAttachment = () => {
-    setAttachment("");
+    setUploadPreview("");
+    setImageUpload(null);
     // 선택된 파일명을 지워줌
     fileInput.current!.value = "";
   };
@@ -152,7 +201,8 @@ const EditPost = () => {
     navigate(`/content`);
   };
 
-  console.log("placeInfo", placeInfo);
+  console.log("uploadPreview", uploadPreview);
+  console.log("imageUpload", imageUpload);
 
   return (
     <Container>
@@ -195,15 +245,12 @@ const EditPost = () => {
           <FileInput
             type="file"
             accept="image/*"
-            onChange={onFileChange}
+            onChange={handleImageCompress}
             ref={fileInput}
           />
-          {attachment && (
-            <>
-              <img src={attachment} width="50px" height="50px" alt="preview" />
-              <button onClick={onClearAttachment}>Clear</button>
-            </>
-          )}
+
+          <img src={uploadPreview} width="50px" height="50px" alt="preview" />
+          <button onClick={onClearAttachment}>Clear</button>
         </FileContainer>
 
         <CheckBoxContainer>

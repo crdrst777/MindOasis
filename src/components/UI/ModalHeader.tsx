@@ -66,7 +66,7 @@ const ModalHeader = ({ post, postId, userData }: Props) => {
 export default ModalHeader;
 
 const Header = styled.header`
-  height: 4.5rem;
+  height: 3.9rem;
   padding: 0.6rem 1.8rem;
   display: flex;
   justify-content: space-between;
@@ -79,13 +79,13 @@ const UserInfo = styled.div`
 `;
 
 const AvatarContainer = styled.div`
-  width: 2.7rem;
-  height: 2.7rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
 
   img {
-    width: 2.7rem;
-    height: 2.7rem;
+    width: 2.5rem;
+    height: 2.5rem;
     object-fit: cover;
     border-radius: 50%;
   }

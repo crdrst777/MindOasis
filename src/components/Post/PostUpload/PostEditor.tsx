@@ -13,6 +13,7 @@ import { PostType } from "../../../types/types";
 import CheckBox from "../../UI/CheckBox";
 import { usePrompt } from "../../../hooks/useBlocker";
 import { createBrowserHistory } from "history";
+import imageCompression from "browser-image-compression";
 
 const PostEditor = () => {
   const history = createBrowserHistory();
@@ -21,33 +22,44 @@ const PostEditor = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
-  const [attachment, setAttachment] = useState<any>(""); // 사진 첨부 없이 텍스트만 업로드하고 싶을 때도 있으므로 기본 값을 ""로 해야한다. 업로드할 때 텍스트만 입력시 이미지 url ""로 비워두기 위함
+  // const [attachment, setAttachment] = useState<any>(""); // 사진 첨부 없이 텍스트만 업로드하고 싶을 때도 있으므로 기본 값을 ""로 해야한다. 업로드할 때 텍스트만 입력시 이미지 url ""로 비워두기 위함
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
   const { placeInfo } = useSelector((state: RootState) => state.placeInfo);
   const { placeKeyword } = useSelector(
     (state: RootState) => state.placeKeyword
   );
+  // 이미지 리사이즈
+  const [imageUpload, setImageUpload] = useState(null);
+  const [uploadPreview, setUploadPreview] = useState<string>("");
 
-  usePrompt("현재 페이지를 벗어나시겠습니까?", true);
+  const [test, setTest] = useState(true);
 
+  // usePrompt("현재 페이지를 벗어나시겠습니까?", test);
+
+  // 뒤로가기를 할 경우
   useEffect(() => {
-    // history.listen((location) => {
-    if (history.action === "POP") {
-      dispatch(
-        setPlaceInfo({
-          placeName: "",
-          placeAddr: "",
-        })
-      );
-    }
-    // });
+    history.listen((location) => {
+      if (history.action === "POP") {
+        dispatch(
+          setPlaceInfo({
+            placeName: "",
+            placeAddr: "",
+          })
+        );
+      }
+    });
   }, []);
 
   const uploadData = (data: PostType) => {
     addDoc(collection(dbService, "posts"), data);
+    setTest((prev) => !prev);
+
+    alert("등록 완료");
+    navigate(`/content`);
+
     setTitle("");
     setText("");
-    setAttachment(""); // 파일 미리보기 img src 비워주기
+    setUploadPreview(""); // 파일 미리보기 img src 비워주기
     fileInput.current!.value = "";
     dispatch(
       setPlaceInfo({
@@ -62,15 +74,15 @@ const PostEditor = () => {
     e.preventDefault();
     let attachmentUrl: string = "";
 
-    if (attachment) {
+    if (imageUpload !== null) {
       const attachmentRef = ref(storageService, `${userInfo.uid}/${uuidv4()}`); // 파일 경로 참조 생성
-      // ref정보가 data_url(format)으로 attachment(value)에 담겨 upload 되도록 함
+      // "https://firebasestorage.googleapis.com/v0/b/mind-oasis-66b9e.appspot.com/o/u1D7yAHTq4fOAXeIThoewbT9vYS2%2F070dbc05-c5be-4117-b944-99d620db1201?alt=media&token=ef68906f-49e7-44da-a42d-146caee97d2f"
+      // ref정보가 data_url(format)으로 uploadPreview(value)에 담겨 upload 되도록 함
       const response = await uploadString(
         attachmentRef,
-        attachment,
+        uploadPreview,
         "data_url"
       ); // 파일 업로드(이 경우는 url)
-      console.log("response.ref", response.ref);
       attachmentUrl = await getDownloadURL(response.ref);
     }
 
@@ -80,10 +92,13 @@ const PostEditor = () => {
       alert("지도에서 위치를 선택해주세요");
     } else if (text.replace(blankPattern, "") === "" || text === "") {
       alert("내용을 입력해주세요");
+    } else if (imageUpload === null) {
+      alert("사진을 선택해주세요");
+    } else if (placeKeyword.length === 0) {
+      alert("키워드를 선택해주세요");
 
       //  title인풋에 공백만 있거나 값이 없는 경우엔 장소이름을 넣어준다.
     } else if (title.replace(blankPattern, "") === "" || title === "") {
-      // setTitle(placeInfo.placeAddr); // 이 코드가 실행될때 리랜더링 되는데 이 리랜더링을 막아야 등록 버튼 눌렀을때 한번에 제출됨
       const postObj: PostType = {
         title: placeInfo.placeAddr,
         text: text,
@@ -96,8 +111,6 @@ const PostEditor = () => {
         likeState: false,
       };
       await uploadData(postObj);
-      alert("등록 완료");
-      navigate(`/content`);
     } else {
       const postObj: PostType = {
         title: title,
@@ -111,8 +124,6 @@ const PostEditor = () => {
         likeState: false,
       };
       await uploadData(postObj);
-      alert("등록 완료");
-      navigate(`/content`);
     }
   };
 
@@ -128,19 +139,49 @@ const PostEditor = () => {
     setText(e.target.value);
   };
 
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const theFile = e.currentTarget.files![0];
-    console.log(theFile);
-    const reader = new FileReader();
-    reader.onloadend = (finishedEvent) => {
-      console.log("finishedEvent", finishedEvent);
-      setAttachment(reader.result);
-    }; // 파일을 다 읽으면 finishedEvent를 받는다.
-    reader.readAsDataURL(theFile); // 그 다음 데이터를 얻는다.
+  // const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const theFile = e.currentTarget.files![0];
+  //   console.log("theFile", theFile);
+  //   const reader = new FileReader();
+  //   reader.onloadend = (finishedEvent) => {
+  //     console.log("finishedEvent", finishedEvent);
+  //     console.log("reader.result", reader.result);
+  //     setUploadPreview(reader.result);
+  //   }; // 파일을 다 읽으면 finishedEvent를 받는다.
+  //   reader.readAsDataURL(theFile); // 그 다음 데이터를 얻는다.
+  // };
+
+  // 이미지 리사이즈(압축) 함수
+  const handleImageCompress = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    let file = e.currentTarget?.files[0];
+
+    const options = {
+      maxSizeMB: 0.5, // 이미지 최대 용량
+      // maxWidthOrHeight: 1920, // 최대 넓이(혹은 높이)
+      useWebWorker: true,
+    };
+
+    try {
+      const compressedFile = await imageCompression(file, options);
+      console.log("compressedFile", compressedFile);
+      setImageUpload(compressedFile);
+
+      const promise = imageCompression.getDataUrlFromFile(compressedFile);
+      promise.then((result) => {
+        // console.log("result", result);
+        setUploadPreview(result);
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const onClearAttachment = () => {
-    setAttachment("");
+  // 파일을 첨부한 상태에서 clear 버튼을 누르는 경우
+  const onClearUploadPreview = () => {
+    setUploadPreview("");
+    setImageUpload(null);
     fileInput.current!.value = ""; // 사진을 선택했다가 clear를 눌렀을때, 선택된 파일명을 지워줌.
   };
 
@@ -184,13 +225,14 @@ const PostEditor = () => {
         <FileInput
           type="file"
           accept="image/*"
-          onChange={onFileChange}
+          onChange={handleImageCompress}
+          // onChange={onFileChange}
           ref={fileInput}
         />
-        {attachment && (
+        {uploadPreview && (
           <>
-            <img src={attachment} width="50px" height="50px" alt="preview" />
-            <button onClick={onClearAttachment}>Clear</button>
+            <img src={uploadPreview} width="50px" height="50px" alt="preview" />
+            <button onClick={onClearUploadPreview}>Clear</button>
           </>
         )}
       </FileContainer>
@@ -225,11 +267,13 @@ const Container = styled.div`
 const MapContainer = styled.section`
   margin-top: 0.45rem;
   width: 100%;
+  margin-bottom: 2rem;
 `;
 
 const WriteContainer = styled.section`
   margin-top: 3.3rem;
   width: 100%;
+  margin-bottom: 1.7rem;
 `;
 
 const SectionTitle = styled.div`
@@ -254,8 +298,8 @@ const SectionTitle = styled.div`
   }
 
   h2 {
-    font-size: 1.35rem;
-    font-weight: 700;
+    font-size: 1.43rem;
+    font-weight: 640;
   }
 `;
 
@@ -305,6 +349,7 @@ const TextInput = styled.textarea`
 const FileContainer = styled.section`
   margin-top: 3.5rem;
   width: 100%;
+  margin-bottom: 1.7rem;
 `;
 
 const FileInput = styled.input`
@@ -321,6 +366,7 @@ const FileInput = styled.input`
 const CheckBoxContainer = styled.section`
   margin-top: 3.5rem;
   width: 100%;
+  margin-bottom: 1.7rem;
 `;
 
 const BtnContainer = styled.div`
@@ -333,7 +379,7 @@ const CancelBtn = styled.button`
   color: black;
   background-color: ${(props) => props.theme.colors.lightGray};
   border-radius: 4px;
-  margin: 1.6rem 0.5rem;
+  margin: 0 0.5rem;
   padding: 0 1.25rem;
   font-size: 0.9rem;
   font-weight: 400;

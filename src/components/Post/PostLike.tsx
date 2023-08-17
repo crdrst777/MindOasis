@@ -111,39 +111,35 @@ export default PostLike;
 const Container = styled.div``;
 
 const LikeBtn = styled.button<{ likestate: boolean }>`
-  width: 2.6rem;
-  height: 2rem;
+  width: 2.25rem;
+  height: 1.8rem;
   background-color: ${(props) => props.theme.colors.white};
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid
-    ${(props) => (props.likestate ? props.theme.colors.yellow : "#ababab")};
+  border: 0.9px solid
+    ${(props) => (props.likestate ? props.theme.colors.yellow : "#c1c1c1")};
   border-radius: 3px;
   cursor: pointer;
   transition: border-color 0.15s ease;
   /* opacity: 85%; */
   &:hover {
     border-color: ${(props) =>
-      props.likestate
-        ? props.theme.colors.yellow
-        : props.theme.colors.darkGray};
+      props.likestate ? props.theme.colors.yellow : "#787878"};
     /* opacity: 100%; */
   }
 
   svg {
-    width: 2.6rem;
-    height: 2rem;
-    padding: 0.48rem;
+    width: 2.25rem;
+    height: 1.8rem;
+    padding: 0.47rem;
     fill: ${(props) =>
       props.likestate ? props.theme.colors.yellow : props.theme.colors.gray};
 
     transition: fill 0.15s ease;
     &:hover {
       fill: ${(props) =>
-        props.likestate
-          ? props.theme.colors.yellow
-          : props.theme.colors.darkGray};
+        props.likestate ? props.theme.colors.yellow : "#616161"};
     }
   }
 `;
