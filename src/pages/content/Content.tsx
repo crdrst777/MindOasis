@@ -83,7 +83,7 @@ const PreviewContainer = styled.section`
   width: 100%;
   display: grid;
   justify-content: center;
-  grid-template-columns: repeat(auto-fill, 16rem);
-  column-gap: 2.1rem;
-  row-gap: 2.1rem;
+  grid-template-columns: repeat(auto-fill, 15.3rem);
+  column-gap: 1.5rem;
+  row-gap: 1.5rem;
 `;

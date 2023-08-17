@@ -30,15 +30,15 @@ const PreviewPost = ({ post }: Props) => {
 export default PreviewPost;
 
 const Container = styled.div`
-  width: 16rem;
-  height: 16rem;
+  width: 15.3rem;
+  height: 15.3rem;
   cursor: pointer;
 `;
 
 const Overlay = styled.div`
   opacity: 0;
-  width: 16rem;
-  height: 16rem;
+  width: 15.3rem;
+  height: 15.3rem;
   position: absolute;
   background-color: rgba(0, 0, 0, 0.403);
   /* z-index: 2000; */
@@ -53,11 +53,11 @@ const Overlay = styled.div`
 
 const LikeBtn = styled.div<{ $likestate: any }>`
   float: right;
-  margin: 1rem 1rem 0 0;
+  margin: 0.8rem 0.8rem 0 0;
 
   svg {
-    width: 2rem;
-    height: 2rem;
+    width: 1.95rem;
+    height: 1.95rem;
     padding: 0.45rem;
     fill: ${(props) =>
       props.$likestate ? "#ffdd00" : props.theme.colors.white};
@@ -70,9 +70,9 @@ const Title = styled.div`
   height: 2.55rem;
   overflow: hidden;
   color: ${(props) => props.theme.colors.white};
-  margin-top: 11.4rem;
-  margin-left: 2rem;
-  font-size: 0.97rem;
+  margin-top: 7.8rem;
+  margin-left: 1.9rem;
+  font-size: 0.95rem;
   font-weight: 400;
   line-height: 1.3rem;
 `;

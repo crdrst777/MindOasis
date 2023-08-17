@@ -102,7 +102,7 @@ const BasicAvatarIcon = styled.img.attrs({
 
 const Nickname = styled.div`
   color: ${(props) => props.theme.colors.black};
-  font-size: 1.1rem;
+  font-size: 1.07rem;
   font-weight: 500;
   margin-left: 0.8rem;
 `;
