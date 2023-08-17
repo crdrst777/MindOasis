@@ -107,7 +107,6 @@ const PostEditor = () => {
         likedUsers: [],
         likeState: false,
       };
-
       await uploadData(postObj);
     } else {
       const postObj: PostType = {
@@ -121,7 +120,6 @@ const PostEditor = () => {
         likedUsers: [],
         likeState: false,
       };
-
       await uploadData(postObj);
     }
   };
@@ -164,12 +162,10 @@ const PostEditor = () => {
 
     try {
       const compressedFile = await imageCompression(file, options);
-      console.log("compressedFile", compressedFile);
       setImageUpload(compressedFile);
 
       const promise = imageCompression.getDataUrlFromFile(compressedFile);
       promise.then((result) => {
-        // console.log("result", result);
         setUploadPreview(result);
       });
     } catch (err) {

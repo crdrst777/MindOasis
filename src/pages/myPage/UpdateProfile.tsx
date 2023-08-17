@@ -13,6 +13,7 @@ import { styled } from "styled-components";
 import avatar from "../../assets/img/avatar-icon.png";
 import Sidebar from "../../components/MyPage/Sidebar";
 import { doc, updateDoc } from "firebase/firestore";
+import imageCompression from "browser-image-compression";
 
 interface UpdateProfileProps {
   refreshUser: () => any;
@@ -21,7 +22,8 @@ interface UpdateProfileProps {
 const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
   const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const [attachment, setAttachment] = useState<any>("");
+  const [imageUpload, setImageUpload] = useState(null);
+  const [uploadPreview, setUploadPreview] = useState<any>("");
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
   const [newDisplayName, setNewDisplayName] = useState<string>(
     userInfo.displayName
@@ -50,7 +52,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
     // let photoURL = "";
 
     // 파일 첨부시
-    if (attachment) {
+    if (uploadPreview) {
       // 기존 프로필 사진이 있는 경우 기존의 것을 스토리지에서 지워준다.
       if (userInfo.photoURL !== null) {
         try {
@@ -61,7 +63,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
       }
 
       const attachmentRef = ref(storageService, `${userInfo.uid}/${uuidv4()}`); // 파일 경로 참조 생성
-      await uploadString(attachmentRef, attachment, "data_url"); // 파일 업로드(이 경우는 url)
+      await uploadString(attachmentRef, uploadPreview, "data_url"); // 파일 업로드(이 경우는 url)
       await getDownloadURL(attachmentRef)
         .then((url) => {
           userObj.photoURL = url;
@@ -101,7 +103,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
     });
 
     refreshUser();
-    setAttachment(""); //파일 미리보기 img src 비워주기
+    setUploadPreview(""); //파일 미리보기 img src 비워주기
     fileInput.current!.value = "";
   };
 
@@ -109,19 +111,35 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
     setNewDisplayName(e.currentTarget.value);
   };
 
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const theFile = e.currentTarget.files![0];
-    console.log(theFile);
-    const reader = new FileReader();
-    reader.onloadend = (finishedEvent) => {
-      console.log("finishedEvent", finishedEvent);
-      setAttachment(reader.result);
-    }; // 파일을 다 읽으면 finishedEvent를 받는다.
-    reader.readAsDataURL(theFile); // 그 다음 데이터를 얻는다.
+  // 이미지 리사이즈(압축) 함수
+  const handleImageCompress = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    let file = e.currentTarget?.files[0];
+
+    const options = {
+      maxSizeMB: 0.2, // 이미지 최대 용량
+      // maxWidthOrHeight: 1920, // 최대 넓이(혹은 높이)
+      useWebWorker: true,
+    };
+
+    try {
+      const compressedFile = await imageCompression(file, options);
+      setImageUpload(compressedFile);
+
+      const promise = imageCompression.getDataUrlFromFile(compressedFile);
+      promise.then((result) => {
+        setUploadPreview(result);
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const onClearAttachment = () => {
-    setAttachment("");
+  // 파일을 첨부한 상태에서 clear 버튼을 누르는 경우
+  const onClearUploadPreview = () => {
+    setUploadPreview("");
+    setImageUpload(null);
     fileInput.current!.value = ""; // 사진을 선택했다가 clear를 눌렀을때, 선택된 파일명을 지워줌.
   };
 
@@ -162,18 +180,18 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
             <FileInput
               type="file"
               accept="image/*"
-              onChange={onFileChange}
+              onChange={handleImageCompress}
               ref={fileInput}
             />
-            {attachment && (
+            {uploadPreview && (
               <>
                 <img
-                  src={attachment}
+                  src={uploadPreview}
                   width="50px"
                   height="50px"
                   alt="preview"
                 />
-                <button onClick={onClearAttachment}>Clear</button>
+                <button onClick={onClearUploadPreview}>Clear</button>
               </>
             )}
           </FileContainer>

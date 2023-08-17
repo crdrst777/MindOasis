@@ -173,7 +173,7 @@ const Main = styled.article`
 
 const ImgContainer = styled.section`
   padding: 0rem 2rem;
-  height: 28.5rem;
+  height: 28.7rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -186,7 +186,7 @@ const Img = styled.img`
 `;
 
 const ContentsContainer = styled.section`
-  padding: 1.3rem 4.2rem;
+  padding: 1.2rem 4.2rem;
 `;
 
 const ContentInfo = styled.div`
@@ -201,7 +201,7 @@ const Title = styled.div`
   max-width: 32.5rem;
   overflow: hidden;
   color: ${(props) => props.theme.colors.moreDarkGray};
-  font-size: 1.17rem;
+  font-size: 1.1rem;
   font-weight: 500;
   line-height: 1.7rem;
 `;
@@ -217,8 +217,7 @@ const Text = styled.div`
   max-height: 15.5rem;
   overflow: hidden;
   padding: 0.5rem 0;
-  font-size: 1.02rem;
-  line-height: 1.42rem;
+  line-height: 1.46rem;
 `;
 
 const KeywordContainer = styled.div``;

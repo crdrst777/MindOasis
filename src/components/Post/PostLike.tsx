@@ -99,7 +99,7 @@ const PostLike = ({ post, postId, userData }: Props) => {
 
   return (
     <Container>
-      <LikeBtn onClick={onLikeBtnClick} likestate={post.likeState}>
+      <LikeBtn onClick={onLikeBtnClick} $likestate={post.likeState}>
         <HeartIcon />
       </LikeBtn>
     </Container>
@@ -110,7 +110,7 @@ export default PostLike;
 
 const Container = styled.div``;
 
-const LikeBtn = styled.button<{ likestate: boolean }>`
+const LikeBtn = styled.button<{ $likestate: boolean }>`
   width: 2.25rem;
   height: 1.8rem;
   background-color: ${(props) => props.theme.colors.white};
@@ -118,14 +118,14 @@ const LikeBtn = styled.button<{ likestate: boolean }>`
   justify-content: center;
   align-items: center;
   border: 0.9px solid
-    ${(props) => (props.likestate ? props.theme.colors.yellow : "#c1c1c1")};
+    ${(props) => (props.$likestate ? props.theme.colors.yellow : "#c1c1c1")};
   border-radius: 3px;
   cursor: pointer;
   transition: border-color 0.15s ease;
   /* opacity: 85%; */
   &:hover {
     border-color: ${(props) =>
-      props.likestate ? props.theme.colors.yellow : "#787878"};
+      props.$likestate ? props.theme.colors.yellow : "#787878"};
     /* opacity: 100%; */
   }
 
@@ -134,12 +134,12 @@ const LikeBtn = styled.button<{ likestate: boolean }>`
     height: 1.8rem;
     padding: 0.47rem;
     fill: ${(props) =>
-      props.likestate ? props.theme.colors.yellow : props.theme.colors.gray};
+      props.$likestate ? props.theme.colors.yellow : props.theme.colors.gray};
 
     transition: fill 0.15s ease;
     &:hover {
       fill: ${(props) =>
-        props.likestate ? props.theme.colors.yellow : "#616161"};
+        props.$likestate ? props.theme.colors.yellow : "#616161"};
     }
   }
 `;

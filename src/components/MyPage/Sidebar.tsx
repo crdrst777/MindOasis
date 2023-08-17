@@ -95,8 +95,8 @@ const BasicAvatarIcon = styled.img.attrs({
 `;
 
 const Nickname = styled.div`
-  margin-top: 1.5rem;
-  font-size: 1.3rem;
+  margin-top: 1.7rem;
+  font-size: 1.2rem;
   font-weight: 500;
 `;
 

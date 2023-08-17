@@ -60,7 +60,7 @@ const DetailsDropdown = ({ post, postId }: Props) => {
 
   return (
     <Container>
-      <DropdownBtn onClick={DropdownBtnClick}>
+      <DropdownBtn onClick={DropdownBtnClick} $isopen={isOpen}>
         <EllipsisIcon />
       </DropdownBtn>
       {!isOpen ? (
@@ -95,7 +95,7 @@ const Container = styled.div`
   margin-left: 0.5rem;
 `;
 
-const DropdownBtn = styled.button`
+const DropdownBtn = styled.button<{ $isopen: any }>`
   width: 2.25rem;
   height: 1.8rem;
   background-color: ${(props) => props.theme.colors.white};
@@ -114,7 +114,7 @@ const DropdownBtn = styled.button`
     width: 2.25rem;
     height: 1.8rem;
     padding: 0.45rem;
-    fill: ${(props) => props.theme.colors.gray};
+    fill: ${(props) => (props.$isopen ? "#616161" : props.theme.colors.gray)};
     transition: fill 0.15s ease;
     &:hover {
       fill: #616161;
@@ -129,13 +129,13 @@ const Hidden = styled.div`
 
 const DropdownContainer = styled.div`
   width: 8rem;
-  border: 1px solid #ababab;
+  border: 0.9px solid #c1c1c1;
   border-radius: 5px;
   background-color: ${(props) => props.theme.colors.white};
   box-shadow: 0 8px 16px #00000029;
   position: absolute;
   inset: auto 0px 0px auto;
-  transform: translate3d(-29px, -633px, 0px);
+  transform: translate3d(-27px, -568px, 0px);
   /* div {
     transition-duration: 200ms, 100ms;
     transition-timing-function: cubic-bezier(0.24, 0.22, 0.015, 1.56),
@@ -148,7 +148,7 @@ const DropdownContainer = styled.div`
 const Arrow = styled.div`
   position: absolute;
   left: 0px;
-  transform: translate3d(99px, -97px, 0px);
+  transform: translate3d(99px, -95px, 0px);
   top: calc(100% - 1px);
   z-index: 1;
   pointer-events: none;
@@ -164,7 +164,7 @@ const Arrow = styled.div`
 const ArrowBorder = styled.div`
   position: absolute;
   left: 0px;
-  transform: translate3d(99px, -98px, 0px);
+  transform: translate3d(99px, -96px, 0px);
   top: calc(100% - 1px);
   z-index: 0;
   pointer-events: none;
@@ -173,7 +173,7 @@ const ArrowBorder = styled.div`
     width: 1rem;
     height: 1rem;
     border: 8px solid #0000;
-    border-bottom-color: #ababab;
+    border-bottom-color: #c1c1c1;
   }
 `;
 
@@ -189,7 +189,7 @@ const DropdownItem = styled.li`
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
   font-weight: 400;
   color: ${(props) => props.theme.colors.darkGray};
   cursor: pointer;

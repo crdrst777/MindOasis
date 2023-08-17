@@ -17,7 +17,7 @@ const PreviewPost = ({ post }: Props) => {
   return (
     <Container onClick={() => openModal(post.id)}>
       <Overlay>
-        <LikeBtn likestate={post.likeState}>
+        <LikeBtn $likestate={post.likeState}>
           <HeartIcon />
         </LikeBtn>
         <Title>{post?.title}</Title>
@@ -40,27 +40,27 @@ const Overlay = styled.div`
   width: 16rem;
   height: 16rem;
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.184);
+  background-color: rgba(0, 0, 0, 0.403);
   /* z-index: 2000; */
   transition: opacity 0.2s ease;
-  border-radius: 4px;
+  /* border-radius: 4px; */
 
   &:hover {
     opacity: 1;
-    box-shadow: inset 0 2px 45px rgba(0, 0, 0, 0.209);
+    box-shadow: inset 0 2px 45px rgba(0, 0, 0, 0.383);
   }
 `;
 
-const LikeBtn = styled.div<{ likestate: boolean }>`
+const LikeBtn = styled.div<{ $likestate: any }>`
   float: right;
   margin: 1rem 1rem 0 0;
 
   svg {
-    width: 2.6rem;
+    width: 2rem;
     height: 2rem;
     padding: 0.45rem;
     fill: ${(props) =>
-      props.likestate ? "#ffdd00" : props.theme.colors.white};
+      props.$likestate ? "#ffdd00" : props.theme.colors.white};
   }
 `;
 
@@ -70,11 +70,11 @@ const Title = styled.div`
   height: 2.55rem;
   overflow: hidden;
   color: ${(props) => props.theme.colors.white};
-  margin-top: 8.3rem;
+  margin-top: 11.4rem;
   margin-left: 2rem;
-  font-size: 0.98rem;
+  font-size: 0.97rem;
   font-weight: 400;
-  line-height: 1.2rem;
+  line-height: 1.3rem;
 `;
 
 const PreviewImg = styled.img`
@@ -82,5 +82,5 @@ const PreviewImg = styled.img`
   height: 100%;
   /* box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px; */
   object-fit: cover;
-  border-radius: 4px;
+  /* border-radius: 4px; */
 `;
