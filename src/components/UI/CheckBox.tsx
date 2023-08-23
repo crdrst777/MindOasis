@@ -16,6 +16,7 @@ const checkBoxList = [
 interface Props {
   checkedListArr: string[];
 }
+// checkedListArr -> 수정페이지에서 기존 값을 가져오기 위해 필요한것임
 
 const CheckBox = ({ checkedListArr }: Props) => {
   const dispatch = useDispatch();

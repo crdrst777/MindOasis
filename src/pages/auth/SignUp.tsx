@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { authService, dbService } from "../../fbase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { UserDocType } from "../../types/types";
 
 const SignUp = () => {

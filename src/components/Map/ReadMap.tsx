@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { PlaceInfoType } from "../../types/types";
 
@@ -9,7 +9,8 @@ interface Props {
 }
 
 const ReadMap = ({ placeInfo }: Props) => {
-  const [mapLocation, setMapLocation] = useState({});
+  // const infowindowArrowInput = useRef<HTMLInputElement>(null);
+  // const [mapLocation, setMapLocation] = useState({});
 
   useEffect(() => {
     const mapContainer = document.getElementById("map"); // 지도를 표시할 div
@@ -28,7 +29,7 @@ const ReadMap = ({ placeInfo }: Props) => {
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
           const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-          setMapLocation([coords["Ma"], coords["La"]]);
+          // setMapLocation([coords["Ma"], coords["La"]]);
 
           // 결과값으로 받은 위치를 마커로 표시합니다
           const marker = new kakao.maps.Marker({
@@ -38,8 +39,10 @@ const ReadMap = ({ placeInfo }: Props) => {
 
           // 인포윈도우로 장소에 대한 설명을 표시합니다
           const infowindow = new kakao.maps.InfoWindow({
-            content: `<div class="infowindow"><span>${placeInfo?.placeName}</span><span>${placeInfo?.placeAddr}</span></div>`,
+            content: `<div class="infowindowArrow"></div><div class="infowindow"><span class="placename">${placeInfo?.placeName}</span><span class="placeaddr">${placeInfo?.placeAddr}</span></div>`,
           });
+          const infowindowArrow = infowindow.a.childNodes[0];
+          console.log("infowindowArrow", infowindowArrow);
           infowindow.open(map, marker);
 
           // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
@@ -69,36 +72,37 @@ const Container = styled.section`
   margin-bottom: 2rem;
 `;
 
-const PlaceText = styled.div`
-  display: flex;
-  justify-content: end;
-  font-weight: 400;
-  margin: 0 0 0.8rem 0;
-`;
-const PlaceName = styled.span`
-  color: ${(props) => props.theme.colors.darkGray};
-`;
-// const PlaceAddr = styled.span`
-//   color: ${(props) => props.theme.colors.blue};
-// `;
-
 const Map = styled.div`
   #map {
     width: 100%;
-    height: 16rem;
+    height: 16.3rem;
+
+    /* .infowindowArrow {
+      position: absolute;
+      width: 11px;
+      height: 9px;
+      background: url("http: ; //t1.daumcdn.net/localimg/localimages/07/mapjsapi/2x/triangle.png")
+        0% 0% / 20px 20px no-repeat;
+      left: 94px;
+      top: 56px;
+      background-color: white;
+    } */
 
     .infowindow {
-      width: 13.75rem;
-      padding: 0.6rem;
+      width: 13rem;
+      padding: 0.7rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       text-align: center;
+      font-size: 0.9rem;
       font-weight: 400;
-
-      span {
-        padding: 0.1rem 0;
-      }
+    }
+    .placename {
+      margin-bottom: 0.15rem;
+    }
+    .placeaddr {
+      color: #767676;
     }
   }
 `;
