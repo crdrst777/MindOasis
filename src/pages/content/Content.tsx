@@ -150,14 +150,13 @@ const Content = () => {
       }
       console.log("seq2: postsArr", postsArr);
 
-      // // 일치하는 게시물이 없는 경우 - 위의 작업 후, 일치하지 않으면 여전히 빈[]임
-      // if (postsArr.length === 0) {
-      //   console.log("일치하는 게시물이 없습니다");
-      //   // postsArr = matchingPosts;
-      //   // postsArr = postsArr;
-      //   // console.log("postsArr-일치하는 게시물이 없는 경우", postsArr);
-      //   setNoMatchingPosts(true);
-      // }
+      // 일치하는 게시물이 없는 경우 - 위의 작업 후, 일치하지 않으면 여전히 빈[]임
+      if (postsArr.length === 0) {
+        console.log("일치하는 게시물이 없습니다");
+        // postsArr = matchingPosts;
+        // console.log("postsArr-일치하는 게시물이 없는 경우", postsArr);
+        setNoMatchingPosts(true);
+      }
     }
     return postsArr;
   };
@@ -180,21 +179,13 @@ const Content = () => {
       temp = [...resultPostsArr];
       console.log("temp", temp);
 
+      // 반복문 돌면서 temp 값을 계속 바꿔줘서 이전에 추려진 matchingPosts를 계속 가져올 수 있음
       for (let i = 1; i < checkedList.length; i++) {
         //checkedList[checkedList.length - n]
-        postsArr = matchingSeq2(i, postsArr, temp); // checkedList[1]부터 조회
-
-        // 일치하는 게시물이 없는 경우 - 위의 작업 후, 일치하지 않으면 여전히 빈[]임
-        if (postsArr.length === 0) {
-          console.log("일치하는 게시물이 없습니다");
-          // postsArr = matchingPosts;
-          // postsArr = postsArr;
-          // console.log("postsArr-일치하는 게시물이 없는 경우", postsArr);
-          setNoMatchingPosts(true);
-        }
-
+        temp = matchingSeq2(i, postsArr, temp); // checkedList[1]부터 조회
         console.log("seq2: matchingPosts (get- 함수 내)", matchingPosts.length);
       }
+      postsArr = temp;
 
       // 1. 버튼 클릭해서 카테고리를 추가하는 경우
     } else {
