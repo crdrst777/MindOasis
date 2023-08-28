@@ -94,123 +94,125 @@ const Content = () => {
     // getMatchingPosts();
   };
 
+  // 카테고리 처음 클릭
   //
-  //
-
-  const matchingSeq1 = () => {
-    const matchingPostsArr: PostType[] = [];
+  const matchingSeq1 = (
+    postsArr: PostType[] // []
+    // matchingPosts: PostType[] // temp = [...matchingPosts];
+  ) => {
     // if (checkedList.length === 0) {
     //   setMatchingPosts([]);
     //   console.log("seq1 일치하는 게시물이 없습니다");
     // }
 
-    // if (checkedList.length === 1) {
     // 전체 post 중에 내가 클릭한 카테고리와 일치하는 post가 있는지 조회
     for (let post of posts) {
       const result = post.placeKeyword.filter(
         (item) => item === checkedList[0]
       );
-      // 일치하는 경우 matchingPostsArr배열에 추가함
+      // 일치하는 경우 postsArr배열에 추가함
       if (result.length === 1) {
         console.log("seq1: result", result);
-        matchingPostsArr.push(post);
-        // console.log("matchingPostsArr", matchingPostsArr);
-        // setMatchingPosts(matchingPostsArr);
-        //clBuffer.push(checkedList[0]);
-        // setCheckedListBuffer([checkedList[0]]);
+        postsArr.push(post);
+        // setMatchingPosts(postsArr);
         setNoMatchingPosts(false);
       }
-      //   }
-      // } else if (checkedList.length > 1) {
-      //   console.log("????");
     }
-    console.log("seq1: matchingPostsArr", matchingPostsArr);
-
-    // setMatchingPosts가 getMatchingPosts 함수 내부에선 갱신이 안되서 버그나는 중 (이 값을 이용한 다음 작업이 안됨)
-    setMatchingPosts(matchingPostsArr);
-    // 그치만 setRender는 갱신이 잘 되는 이상한 점;;
-    setRender(1);
+    return postsArr;
   };
 
   //
-  //
-  // 카테고리가 2개 클릭되있는 경우에 n -> 0 , 1
-  const matchingSeq2 = (n: number) => {
-    const matchingPostsArr: PostType[] = [];
+  // 카테고리가 2개 이상 클릭되있는 경우 (카테고리가 2개 클릭되있는 경우에 n -> 0 , 1)
+  const matchingSeq2 = (
+    n: number, // index // 빼는 경우엔 1
+    postsArr: PostType[], // []
+    matchingPosts: PostType[] // temp = [...matchingPosts];
+  ) => {
     // seq1에서 한 setMatchingPosts가 갱신이 안되어 값을(7개(자연)) 제대로 받아오지 못하고있음
-    console.log("seq2: matchingPosts", matchingPosts);
+    console.log("seq2: matchingPosts - 이전 값을 보여줌", matchingPosts);
 
-    // 카테고리가 2개 이상 클릭되있는 경우
+    postsArr = [];
+
+    // 일치하는 게시물이 있는 경우
+    // 이전에 추려진 값들을 갖고있는 matchingPosts에서 더 추려내는 작업
     if (checkedList.length > 1) {
-      console.log("seq2: 카테고리가 2개 이상 클릭되있는 경우");
-
-      // console.log("checkedList[i]", checkedList[checkedList.length - 1]);
+      // matchingPosts 중에 내가 클릭한 카테고리와 일치하는 post가 있는지 조회
       for (let matchingPost of matchingPosts) {
         const result = matchingPost.placeKeyword.filter(
-          (item) => item === checkedList[n]
+          (item) => item === checkedList[n] // 마지막으로 추가된 요소와 비교
         );
         console.log("seq2: result", result);
-
+        // 일치하는 경우 postsArr배열에 추가함
         if (result.length === 1) {
-          matchingPostsArr.push(matchingPost);
-          // setMatchingPosts(matchingPostsArr);
-          //console.log("seq2 : matchingPosts", matchingPosts.length);
-          // setCheckedListBuffer(checkedList);
+          postsArr.push(matchingPost);
           setNoMatchingPosts(false);
         }
       }
+      console.log("seq2: postsArr", postsArr);
 
-      if (matchingPostsArr.length === 0) {
-        console.log("일치하는 게시물이 없습니다");
-        setMatchingPosts(matchingPostsArr);
-        //console.log("seq2 - 0 : matchingPosts", matchingPosts.length);
-        // setCheckedListBuffer(checkedList);
-        setNoMatchingPosts(true);
-      }
+      // // 일치하는 게시물이 없는 경우 - 위의 작업 후, 일치하지 않으면 여전히 빈[]임
+      // if (postsArr.length === 0) {
+      //   console.log("일치하는 게시물이 없습니다");
+      //   // postsArr = matchingPosts;
+      //   // postsArr = postsArr;
+      //   // console.log("postsArr-일치하는 게시물이 없는 경우", postsArr);
+      //   setNoMatchingPosts(true);
+      // }
     }
-    console.log("seq2: matchingPostsArr", matchingPostsArr);
-
-    setMatchingPosts(matchingPostsArr);
+    return postsArr;
   };
 
   const getMatchingPosts = () => {
-    // const matchingPostsArr: PostType[] = [];
-    //setRender(0);
-    //
-    // 버튼 눌렀던걸 해제하는 경우
+    let postsArr: PostType[] = [];
+    let temp = [...matchingPosts];
+
+    // 2. 클릭했던 걸 해제. 빼는 경우
     if (!isChecked) {
       console.log("뺐음");
-      //지금까지 잘 됐던 동작을 반복한다.
-      //seq1->seq2
-      //setRender(1);
-      //setMatchingPosts([]);
-      //setRender(2);
+      // 추가할때 했던 동작을 반복
+      // seq1->seq2
 
-      matchingSeq1();
-      // setRender(1);
+      // matchingSeq1의 리턴값을 가져온다.
+      let resultPostsArr = matchingSeq1(postsArr);
+      console.log("seq1: postsArr (get- 함수 내)", postsArr.length);
       console.log("seq1: matchingPosts (get- 함수 내)", matchingPosts.length); // 갱신 안됨
-      console.log("render", render); // 이건 갱신이 됨;;
 
-      //let count = checkedList.length-1;
-      for (let i = 0; i < checkedList.length; i++) {
+      temp = [...resultPostsArr];
+      console.log("temp", temp);
+
+      for (let i = 1; i < checkedList.length; i++) {
         //checkedList[checkedList.length - n]
-        matchingSeq2(i);
+        postsArr = matchingSeq2(i, postsArr, temp); // checkedList[1]부터 조회
+
+        // 일치하는 게시물이 없는 경우 - 위의 작업 후, 일치하지 않으면 여전히 빈[]임
+        if (postsArr.length === 0) {
+          console.log("일치하는 게시물이 없습니다");
+          // postsArr = matchingPosts;
+          // postsArr = postsArr;
+          // console.log("postsArr-일치하는 게시물이 없는 경우", postsArr);
+          setNoMatchingPosts(true);
+        }
+
         console.log("seq2: matchingPosts (get- 함수 내)", matchingPosts.length);
       }
 
-      // 버튼 눌러서 카테고리를 추가하는 경우
+      // 1. 버튼 클릭해서 카테고리를 추가하는 경우
     } else {
+      // 1-1. 첫번째 추가 - matchingSeq1 실행
       if (checkedList.length === 1) {
-        matchingSeq1();
+        postsArr = matchingSeq1(postsArr);
+        console.log("seq1: postsArr", postsArr);
         console.log("seq1: matchingPosts (get- 함수 내)", matchingPosts.length);
       } else if (checkedList.length > 1) {
-        //
-        // 2번째 이상 클릭할때마다 이게 실행됨
-        matchingSeq2(checkedList.length - 1);
-        console.log("seq2: matchingPosts (get- 함수 내)", matchingPosts.length);
+        // 1-2. 두번째 이상 추가 - matchingSeq2 실행
+        postsArr = matchingSeq2(checkedList.length - 1, postsArr, temp);
+        console.log(
+          "??? seq2: matchingPosts (get- 함수 내)",
+          matchingPosts.length
+        );
       }
     }
-
+    setMatchingPosts(postsArr);
     //setRender(3);
   };
 
@@ -219,13 +221,11 @@ const Content = () => {
   // }, [render]);
   useEffect(() => {
     getMatchingPosts();
-  }, [checkedList, render]);
-
-  // getMatchingPosts(); 이 함수를 빠져나와야 matchingPosts가 갱신됨.
+  }, [checkedList]);
 
   console.log("matchingPosts (get- 함수 밖", matchingPosts);
   console.log("matchingPosts.length (get- 함수 밖", matchingPosts.length);
-  console.log("checkedList (get- 함수 밖", checkedList);
+  console.log("checkedList", checkedList);
 
   return (
     <Container>
