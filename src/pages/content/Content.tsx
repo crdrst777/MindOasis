@@ -9,7 +9,6 @@ import PreviewPost from "../../components/Post/PreviewPost";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { getUserData } from "../../api/user";
-import Category from "../../components/UI/Category";
 
 const checkBoxList = [
   "자연",
@@ -32,13 +31,11 @@ const Content = () => {
   // 클릭한 카테고리에 해당되는 게시물들이 들어가는 배열
   const [matchingPosts, setMatchingPosts] = useState<PostType[]>([]);
   const [isChecked, setIsChecked] = useState(false);
-  // const [checkValue, setCheckValue] = useState("");
   const [noMatchingPosts, setNoMatchingPosts] = useState(false);
   // checkBoxList 배열 중 check된 요소가 담기는 배열
   // 수정하는 페이지에서, 기존값에 체크되어있게 하기 위해 기존값을 넣어준다.
   const [checkedList, setCheckedList] = useState<string[]>([]);
   // const [checkedListBuffer, setCheckedListBuffer] = useState<string[]>([]);
-  const [render, setRender] = useState(0);
 
   // const getPosts = async () => {
   //   // const q = query(collection(dbService, "posts"));
@@ -89,28 +86,18 @@ const Content = () => {
     value: string
   ) => {
     setIsChecked(e.target.checked);
-    // setCheckValue(value);
     checkedItemHandler(value, e.target.checked);
-    // getMatchingPosts();
   };
 
   // 카테고리 처음 클릭
-  //
+  // 전체 post 중에 내가 클릭한 카테고리와 일치하는 post가 있는지 조회 -> 일치하는 경우 postsArr배열에 post를 추가함
   const matchingSeq1 = (
     postsArr: PostType[] // []
-    // matchingPosts: PostType[] // temp = [...matchingPosts];
   ) => {
-    // if (checkedList.length === 0) {
-    //   setMatchingPosts([]);
-    //   console.log("seq1 일치하는 게시물이 없습니다");
-    // }
-
-    // 전체 post 중에 내가 클릭한 카테고리와 일치하는 post가 있는지 조회
     for (let post of posts) {
       const result = post.placeKeyword.filter(
         (item) => item === checkedList[0]
       );
-      // 일치하는 경우 postsArr배열에 추가함
       if (result.length === 1) {
         console.log("seq1: result", result);
         postsArr.push(post);
@@ -121,7 +108,6 @@ const Content = () => {
     return postsArr;
   };
 
-  //
   // 카테고리가 2개 이상 클릭되있는 경우 (카테고리가 2개 클릭되있는 경우에 n -> 0 , 1)
   const matchingSeq2 = (
     n: number, // index // 빼는 경우엔 1
@@ -129,7 +115,7 @@ const Content = () => {
     matchingPosts: PostType[] // temp = [...matchingPosts];
   ) => {
     // seq1에서 한 setMatchingPosts가 갱신이 안되어 값을(7개(자연)) 제대로 받아오지 못하고있음
-    console.log("seq2: matchingPosts - 이전 값을 보여줌", matchingPosts);
+    console.log("seq2: matchingPosts", matchingPosts);
 
     postsArr = [];
 
@@ -163,7 +149,7 @@ const Content = () => {
 
   const getMatchingPosts = () => {
     let postsArr: PostType[] = [];
-    let temp = [...matchingPosts];
+    let temp = matchingPosts;
 
     // 2. 클릭했던 걸 해제. 빼는 경우
     if (!isChecked) {
@@ -173,8 +159,8 @@ const Content = () => {
 
       // matchingSeq1의 리턴값을 가져온다.
       let resultPostsArr = matchingSeq1(postsArr);
-      console.log("seq1: postsArr (get- 함수 내)", postsArr.length);
-      console.log("seq1: matchingPosts (get- 함수 내)", matchingPosts.length); // 갱신 안됨
+      // console.log("seq1: postsArr (get- 함수 내)", postsArr.length);
+      // console.log("seq1: matchingPosts (get- 함수 내)", matchingPosts.length); // 갱신 안됨
 
       temp = [...resultPostsArr];
       console.log("temp", temp);
@@ -183,7 +169,7 @@ const Content = () => {
       for (let i = 1; i < checkedList.length; i++) {
         //checkedList[checkedList.length - n]
         temp = matchingSeq2(i, postsArr, temp); // checkedList[1]부터 조회
-        console.log("seq2: matchingPosts (get- 함수 내)", matchingPosts.length);
+        // console.log("seq2: matchingPosts (get- 함수 내)", matchingPosts.length);
       }
       postsArr = temp;
 
@@ -193,29 +179,22 @@ const Content = () => {
       if (checkedList.length === 1) {
         postsArr = matchingSeq1(postsArr);
         console.log("seq1: postsArr", postsArr);
-        console.log("seq1: matchingPosts (get- 함수 내)", matchingPosts.length);
+        // console.log("seq1: matchingPosts (get- 함수 내)", matchingPosts.length);
       } else if (checkedList.length > 1) {
-        // 1-2. 두번째 이상 추가 - matchingSeq2 실행
+        // 1-2. 두번째 추가부터 - matchingSeq2 실행
         postsArr = matchingSeq2(checkedList.length - 1, postsArr, temp);
-        console.log(
-          "??? seq2: matchingPosts (get- 함수 내)",
-          matchingPosts.length
-        );
+        // console.log("seq2: matchingPosts (get- 함수 내)", matchingPosts.length);
       }
     }
     setMatchingPosts(postsArr);
-    //setRender(3);
   };
 
-  // useEffect(() => {
-  //   getMatchingPosts();
-  // }, [render]);
   useEffect(() => {
     getMatchingPosts();
   }, [checkedList]);
 
-  console.log("matchingPosts (get- 함수 밖", matchingPosts);
-  console.log("matchingPosts.length (get- 함수 밖", matchingPosts.length);
+  // console.log("matchingPosts (get- 함수 밖", matchingPosts);
+  // console.log("matchingPosts.length (get- 함수 밖", matchingPosts.length);
   console.log("checkedList", checkedList);
 
   return (
