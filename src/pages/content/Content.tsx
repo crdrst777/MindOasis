@@ -33,9 +33,7 @@ const Content = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [noMatchingPosts, setNoMatchingPosts] = useState(false);
   // checkBoxList 배열 중 check된 요소가 담기는 배열
-  // 수정하는 페이지에서, 기존값에 체크되어있게 하기 위해 기존값을 넣어준다.
   const [checkedList, setCheckedList] = useState<string[]>([]);
-  // const [checkedListBuffer, setCheckedListBuffer] = useState<string[]>([]);
 
   // const getPosts = async () => {
   //   // const q = query(collection(dbService, "posts"));
@@ -66,8 +64,15 @@ const Content = () => {
 
   useEffect(() => {
     getPosts();
+  }, []); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
+
+  useEffect(() => {
+    setMatchingPosts([...posts]);
+  }, [posts]);
+
+  useEffect(() => {
     getUserData(userInfo.uid, setUserData);
-  }, [isLiked]); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
+  }, [isLiked]);
 
   // input을 클릭했을때 checkedList라는 useState 배열에 해당 element가 포함되어있지 않다면 추가하고,
   // checkedList 배열에 이미 포함되어 있다면 해당 배열에서 제거하는 함수
@@ -77,7 +82,6 @@ const Content = () => {
     } else if (!isChecked && checkedList.includes(value)) {
       setCheckedList(checkedList.filter((item) => item !== value));
     }
-    // setRender((prev) => prev + 1);
   };
 
   // input을 클릭했을때 실행되는 함수
@@ -101,7 +105,6 @@ const Content = () => {
       if (result.length === 1) {
         console.log("seq1: result", result);
         postsArr.push(post);
-        // setMatchingPosts(postsArr);
         setNoMatchingPosts(false);
       }
     }
@@ -112,7 +115,7 @@ const Content = () => {
   const matchingSeq2 = (
     n: number, // index // 빼는 경우엔 1
     postsArr: PostType[], // []
-    matchingPosts: PostType[] // temp = [...matchingPosts];
+    matchingPosts: PostType[] // temp = [...matchingPosts]
   ) => {
     // seq1에서 한 setMatchingPosts가 갱신이 안되어 값을(7개(자연)) 제대로 받아오지 못하고있음
     console.log("seq2: matchingPosts", matchingPosts);
@@ -139,8 +142,6 @@ const Content = () => {
       // 일치하는 게시물이 없는 경우 - 위의 작업 후, 일치하지 않으면 여전히 빈[]임
       if (postsArr.length === 0) {
         console.log("일치하는 게시물이 없습니다");
-        // postsArr = matchingPosts;
-        // console.log("postsArr-일치하는 게시물이 없는 경우", postsArr);
         setNoMatchingPosts(true);
       }
     }
@@ -149,7 +150,7 @@ const Content = () => {
 
   const getMatchingPosts = () => {
     let postsArr: PostType[] = [];
-    let temp = matchingPosts;
+    let temp = [...matchingPosts];
 
     // 2. 클릭했던 걸 해제. 빼는 경우
     if (!isChecked) {
@@ -159,17 +160,13 @@ const Content = () => {
 
       // matchingSeq1의 리턴값을 가져온다.
       let resultPostsArr = matchingSeq1(postsArr);
-      // console.log("seq1: postsArr (get- 함수 내)", postsArr.length);
-      // console.log("seq1: matchingPosts (get- 함수 내)", matchingPosts.length); // 갱신 안됨
 
       temp = [...resultPostsArr];
       console.log("temp", temp);
 
       // 반복문 돌면서 temp 값을 계속 바꿔줘서 이전에 추려진 matchingPosts를 계속 가져올 수 있음
       for (let i = 1; i < checkedList.length; i++) {
-        //checkedList[checkedList.length - n]
         temp = matchingSeq2(i, postsArr, temp); // checkedList[1]부터 조회
-        // console.log("seq2: matchingPosts (get- 함수 내)", matchingPosts.length);
       }
       postsArr = temp;
 
@@ -179,11 +176,9 @@ const Content = () => {
       if (checkedList.length === 1) {
         postsArr = matchingSeq1(postsArr);
         console.log("seq1: postsArr", postsArr);
-        // console.log("seq1: matchingPosts (get- 함수 내)", matchingPosts.length);
       } else if (checkedList.length > 1) {
         // 1-2. 두번째 추가부터 - matchingSeq2 실행
         postsArr = matchingSeq2(checkedList.length - 1, postsArr, temp);
-        // console.log("seq2: matchingPosts (get- 함수 내)", matchingPosts.length);
       }
     }
     setMatchingPosts(postsArr);
@@ -193,7 +188,6 @@ const Content = () => {
     getMatchingPosts();
   }, [checkedList]);
 
-  // console.log("matchingPosts (get- 함수 밖", matchingPosts);
   // console.log("matchingPosts.length (get- 함수 밖", matchingPosts.length);
   console.log("checkedList", checkedList);
 
