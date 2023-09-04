@@ -8,7 +8,7 @@ import { addDoc, collection } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
-import { setPlaceInfo } from "../../../store/placeInfoSlice";
+import { setPlaceInfoReducer } from "../../../store/placeInfoSlice";
 import { PostType } from "../../../types/types";
 import CheckBox from "../../UI/CheckBox";
 import { usePrompt } from "../../../hooks/useBlocker";
@@ -40,7 +40,7 @@ const PostEditor = () => {
     history.listen((location) => {
       if (history.action === "POP") {
         dispatch(
-          setPlaceInfo({
+          setPlaceInfoReducer({
             placeName: "",
             placeAddr: "",
           })
@@ -59,7 +59,7 @@ const PostEditor = () => {
     setUploadPreview(""); // 파일 미리보기 img src 비워주기
     fileInput.current!.value = "";
     dispatch(
-      setPlaceInfo({
+      setPlaceInfoReducer({
         placeName: "",
         placeAddr: "",
       })

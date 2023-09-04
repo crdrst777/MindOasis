@@ -18,11 +18,11 @@ const placeInfoSlice = createSlice({
   name: "placeInfo",
   initialState,
   reducers: {
-    setPlaceInfo: (state, action) => {
+    setPlaceInfoReducer: (state, action) => {
       state.placeInfo = action.payload;
     },
   },
 });
 
-export const { setPlaceInfo } = placeInfoSlice.actions;
+export const { setPlaceInfoReducer } = placeInfoSlice.actions;
 export default placeInfoSlice.reducer;

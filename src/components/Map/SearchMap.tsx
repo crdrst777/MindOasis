@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { PlaceType, PaginaionType } from "../../types/map";
 import { useDispatch, useSelector } from "react-redux";
-import { setPlaceInfo } from "../../store/placeInfoSlice";
+import { setPlaceInfoReducer } from "../../store/placeInfoSlice";
 import { RootState } from "../../store";
 
 const { kakao }: any = window; // 카카오맵을 쓰기 위한 코드
@@ -56,7 +56,7 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
           // 마커 클릭시 실행되는 함수 - 클릭한 마커의 장소정보를 저장
           kakao.maps.event.addListener(marker, "click", function () {
             dispatch(
-              setPlaceInfo({
+              setPlaceInfoReducer({
                 placeName: data[i].place_name,
                 placeAddr: data[i].address_name,
               })
@@ -103,7 +103,7 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
                     console.log("result", result[0]);
 
                     dispatch(
-                      setPlaceInfo({
+                      setPlaceInfoReducer({
                         placeName: "",
                         placeAddr: result[0].address.address_name,
                       })
@@ -189,7 +189,7 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
 
   const onPlaceItemClick = (placeName: string, placeAddr: string) => {
     dispatch(
-      setPlaceInfo({
+      setPlaceInfoReducer({
         placeName: placeName,
         placeAddr: placeAddr,
       })

@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { styled } from "styled-components";
-import { PostType } from "../../types/types";
+import {
+  setCheckedListReducer,
+  setIsCheckedReducer,
+} from "../../store/categorySlice";
 
 const checkBoxList = [
   "자연",
@@ -13,18 +16,11 @@ const checkBoxList = [
   "예시3",
 ];
 
-interface Props {
-  posts: PostType[];
-}
-
-const Category = ({ posts }: Props) => {
-  // 클릭한 카테고리에 해당되는 게시물들이 들어가는 배열
-  const [matchingPosts, setMatchingPosts] = useState<PostType[]>([]);
-  const [noMatchingPosts, setNoMatchingPosts] = useState(false);
-  // checkBoxList 배열 중 check된 요소가 담기는 배열
-  // 수정하는 페이지에서, 기존값에 체크되어있게 하기 위해 기존값을 넣어준다.
-  const [checkedList, setCheckedList] = useState<string[]>([]);
+const Category = () => {
+  const dispatch = useDispatch();
   const [isChecked, setIsChecked] = useState(false);
+  // checkBoxList 배열 중 check된 요소가 담기는 배열
+  const [checkedList, setCheckedList] = useState<string[]>([]);
 
   // input을 클릭했을때 checkedList라는 useState 배열에 해당 element가 포함되어있지 않다면 추가하고,
   // checkedList 배열에 이미 포함되어 있다면 해당 배열에서 제거하는 함수
@@ -41,133 +37,14 @@ const Category = ({ posts }: Props) => {
     e: React.ChangeEvent<HTMLInputElement>,
     value: string
   ) => {
-    setIsChecked((prev) => !prev);
+    setIsChecked(e.target.checked);
     checkedItemHandler(value, e.target.checked);
   };
 
-  // const getMatchingPosts = () => {
-  //   if (checkedList.length === 0) return;
-
-  //   if (checkedList.length === 1) {
-  //     const matchingPostsArr: PostType[] = [];
-
-  //     for (let post of posts) {
-  //       const result = post.placeKeyword.filter(
-  //         (item) => item === checkedList[0]
-  //       );
-  //       if (result.length === 1) {
-  //         matchingPostsArr.push(post);
-  //         setMatchingPosts(matchingPostsArr);
-  //       }
-  //     }
-  //   } else {
-  //     const matchingPostsArr: PostType[] = [];
-
-  //     for (let i = 1; i < checkedList.length; i++) {
-  //       console.log("두번째 클릭");
-  //       for (let matchingPost of matchingPosts) {
-  //         const result = matchingPost.placeKeyword.filter(
-  //           (item) => item === checkedList[i]
-  //         );
-  //         if (result.length === 1) {
-  //           matchingPostsArr.push(matchingPost);
-  //           setMatchingPosts(matchingPostsArr);
-  //         }
-  //       }
-  //     }
-  //     // if (matchingPostsArr.length === 0) {
-  //     //   console.log("일치하는 게시물이 없습니다");
-  //     // }
-  //   }
-  // };
-
-  const getMatchingPosts = () => {
-    for (let i = 0; i < checkedList.length; i++) {
-      if (checkedList.length === 0) return;
-      if (checkedList.length === 1) {
-        const matchingPostsArr: PostType[] = [];
-
-        for (let post of posts) {
-          const result = post.placeKeyword.filter(
-            (item) => item === checkedList[0]
-          );
-          if (result.length === 1) {
-            matchingPostsArr.push(post);
-            setMatchingPosts(matchingPostsArr);
-            setNoMatchingPosts(false);
-          }
-        }
-      } else {
-        const matchingPostsArr: PostType[] = [];
-        console.log("두번째 클릭");
-        for (let matchingPost of matchingPosts) {
-          const result = matchingPost.placeKeyword.filter(
-            (item) => item === checkedList[i]
-          );
-          if (result.length === 1) {
-            matchingPostsArr.push(matchingPost);
-            setMatchingPosts(matchingPostsArr);
-            setNoMatchingPosts(false);
-          }
-        }
-
-        if (matchingPostsArr.length === 0) {
-          console.log("일치하는 게시물이 없습니다");
-          // setMatchingPosts([]);
-          setNoMatchingPosts(true);
-        }
-        // 빈 배열이 된 다음 다시 취소했을때 그 전으로 돌아와야 되는데 여전히 []임. 당연함.
-        // --> setNoMatchingPosts(true); 이런식으로 바꿈
-      }
-    }
-  };
-
-  console.log("matchingPosts", matchingPosts);
-  console.log("matchingPosts.length", matchingPosts.length);
-
-  // 클릭한 카테고리에 해당되는 게시물을 찾아주는 함수
-  // const getMatchingPosts = async () => {
-  //   const matchingPostsArr: PostType[] = [];
-
-  //   const q = query(
-  //     collection(dbService, "posts"),
-  //     where("placeKeyword", "==", checkedList), // where -> 필터링하는 방법을 알려줌
-  //     orderBy("createdAt", "desc") // document를 글을 쓴 순서대로 차례대로 내림차순으로 정렬하기
-  //   );
-
-  //   // getDocs()메서드로 쿼리 결과 값 가져오기
-  //   const querySnapshot = await getDocs(q);
-  //   querySnapshot.forEach((doc) => {
-  //     matchingPostsArr.push(
-  //       (doc.id,
-  //       "=>",
-  //       {
-  //         id: doc.id,
-  //         ...doc.data(),
-  //       })
-  //     );
-  //   });
-  //   setMatchingPosts(matchingPostsArr);
-
-  //   // 아래 방식으로 해도됨
-  //   querySnapshot.forEach((doc) => {
-  //     const docData = (doc.id, " => ", doc.data());
-  //     const postsArr: PostType[] = [
-  //       {
-  //         id: doc.id,
-  //         ...docData,
-  //       },
-  //     ];
-  //     setMatchingPosts(postsArr);
-  //   });
-  // };
-
   useEffect(() => {
-    getMatchingPosts();
-  }, [checkedList]);
-
-  console.log("checkedList", checkedList);
-  // console.log("posts", posts);
+    dispatch(setCheckedListReducer(checkedList)); // dispatch(state변경함수())
+    dispatch(setIsCheckedReducer(isChecked));
+  }, [dispatch, checkedList, isChecked]);
 
   return (
     <Container>
@@ -189,8 +66,6 @@ const Category = ({ posts }: Props) => {
           ))}
         </>
       ) : null}
-
-      {noMatchingPosts ? "일치하는 게시물이 없습니다" : null}
     </Container>
   );
 };

@@ -7,7 +7,7 @@ import { deleteObject, ref } from "firebase/storage";
 import { PostType } from "../../types/types";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setPlaceInfo } from "../../store/placeInfoSlice";
+import { setPlaceInfoReducer } from "../../store/placeInfoSlice";
 import { RootState } from "../../store";
 
 interface Props {
@@ -30,7 +30,7 @@ const DetailsDropdown = ({ post, postId }: Props) => {
 
   const onEditClick = () => {
     dispatch(
-      setPlaceInfo({
+      setPlaceInfoReducer({
         placeName: post.placeInfo.placeName,
         placeAddr: post.placeInfo.placeAddr,
       })

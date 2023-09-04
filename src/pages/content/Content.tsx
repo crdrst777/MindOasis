@@ -6,21 +6,13 @@ import { styled } from "styled-components";
 import { PathMatch, useMatch } from "react-router-dom";
 import Modal from "../../components/UI/Modal";
 import PreviewPost from "../../components/Post/PreviewPost";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { getUserData } from "../../api/user";
-
-const checkBoxList = [
-  "자연",
-  "도시",
-  "뷰가 좋은",
-  "인적이 드문",
-  "예시1",
-  "예시2",
-  "예시3",
-];
+import Category from "../../components/UI/Category";
 
 const Content = () => {
+  const dispatch = useDispatch();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   // useMatch()의 인자로 url을 넘기면 해당 url과 일치할 경우 url의 정보를 반환하고, 일치하지 않을 경우 null을 반환한다.
   const bigMatch: PathMatch<string> | null = useMatch(`content/:id`);
@@ -30,10 +22,15 @@ const Content = () => {
 
   // 클릭한 카테고리에 해당되는 게시물들이 들어가는 배열
   const [matchingPosts, setMatchingPosts] = useState<PostType[]>([]);
-  const [isChecked, setIsChecked] = useState(false);
-  const [noMatchingPosts, setNoMatchingPosts] = useState(false);
-  // checkBoxList 배열 중 check된 요소가 담기는 배열
-  const [checkedList, setCheckedList] = useState<string[]>([]);
+  // 클릭한 카테고리에 해당되는 게시물이 없는지 여부
+  const [isUnmatched, setIsUnmatched] = useState(false);
+
+  const checkedList: string[] = useSelector(
+    (state: RootState) => state.category.checkedList
+  );
+  const isChecked: boolean = useSelector(
+    (state: RootState) => state.category.isChecked
+  );
 
   // const getPosts = async () => {
   //   // const q = query(collection(dbService, "posts"));
@@ -74,25 +71,6 @@ const Content = () => {
     getUserData(userInfo.uid, setUserData);
   }, [isLiked]);
 
-  // input을 클릭했을때 checkedList라는 useState 배열에 해당 element가 포함되어있지 않다면 추가하고,
-  // checkedList 배열에 이미 포함되어 있다면 해당 배열에서 제거하는 함수
-  const checkedItemHandler = (value: string, isChecked: boolean) => {
-    if (isChecked) {
-      setCheckedList((prev) => [...prev, value]);
-    } else if (!isChecked && checkedList.includes(value)) {
-      setCheckedList(checkedList.filter((item) => item !== value));
-    }
-  };
-
-  // input을 클릭했을때 실행되는 함수
-  const checkHandler = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    value: string
-  ) => {
-    setIsChecked(e.target.checked);
-    checkedItemHandler(value, e.target.checked);
-  };
-
   // 카테고리 처음 클릭
   // 전체 post 중에 내가 클릭한 카테고리와 일치하는 post가 있는지 조회 -> 일치하는 경우 postsArr배열에 post를 추가함
   const matchingSeq1 = (
@@ -105,7 +83,7 @@ const Content = () => {
       if (result.length === 1) {
         console.log("seq1: result", result);
         postsArr.push(post);
-        setNoMatchingPosts(false);
+        setIsUnmatched(false);
       }
     }
     return postsArr;
@@ -134,7 +112,7 @@ const Content = () => {
         // 일치하는 경우 postsArr배열에 추가함
         if (result.length === 1) {
           postsArr.push(matchingPost);
-          setNoMatchingPosts(false);
+          setIsUnmatched(false);
         }
       }
       console.log("seq2: postsArr", postsArr);
@@ -142,7 +120,7 @@ const Content = () => {
       // 일치하는 게시물이 없는 경우 - 위의 작업 후, 일치하지 않으면 여전히 빈[]임
       if (postsArr.length === 0) {
         console.log("일치하는 게시물이 없습니다");
-        setNoMatchingPosts(true);
+        setIsUnmatched(true);
       }
     }
     return postsArr;
@@ -194,30 +172,11 @@ const Content = () => {
   return (
     <Container>
       <CategoryContainer>
-        <CategoryWrapper>
-          {checkedList ? (
-            <>
-              {checkBoxList.map((item, idx) => (
-                <CheckBoxWrapper key={idx}>
-                  <CheckBoxInput
-                    type="checkbox"
-                    id={item}
-                    // Array.prototype.includes() -> 내부에 해당 요소(element)가 존재할 경우 true를 반환
-                    checked={checkedList.includes(item)}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      checkHandler(e, item)
-                    }
-                  />
-                  <CheckBoxLabel htmlFor={item}>{item}</CheckBoxLabel>
-                </CheckBoxWrapper>
-              ))}
-            </>
-          ) : null}
-        </CategoryWrapper>
+        <Category />
       </CategoryContainer>
 
       <PreviewContainer>
-        {noMatchingPosts ? (
+        {isUnmatched ? (
           <div>일치하는 게시물이 없습니다</div>
         ) : (
           matchingPosts &&
@@ -247,48 +206,6 @@ const CategoryContainer = styled.section`
   margin-bottom: 3rem;
   width: 40rem;
   height: 3rem;
-  /* background-color: aqua; */
-`;
-
-const CategoryWrapper = styled.div`
-  width: 100%;
-  height: 6rem;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const CheckBoxWrapper = styled.div`
-  margin-top: 0.9rem;
-`;
-
-// 원래의 인풋을 보이지 않는것처럼 멀리 보내버리고, 체크가 되었을 경우 라벨의 배경색, 글자색을 변경
-const CheckBoxInput = styled.input`
-  display: none;
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-
-  &:checked + label {
-    background-color: ${(props) => props.theme.colors.violet};
-    color: ${(props) => props.theme.colors.white};
-  }
-`;
-
-const CheckBoxLabel = styled.label`
-  padding: 0.5rem 1rem;
-  height: 2.25rem;
-  cursor: pointer;
-  border-radius: 2rem;
-  background-color: ${(props) => props.theme.colors.lightGray};
-  font-size: 0.85rem;
-  font-weight: 400;
-  color: ${(props) => props.theme.colors.black};
 `;
 
 const PreviewContainer = styled.section`

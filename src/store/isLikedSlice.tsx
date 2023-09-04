@@ -12,11 +12,11 @@ const isLikedSlice = createSlice({
   name: "isLiked",
   initialState,
   reducers: {
-    setIsLiked: (state, action) => {
+    setIsLikedReducer: (state, action) => {
       state.isLiked = action.payload;
     },
   },
 });
 
-export const { setIsLiked } = isLikedSlice.actions;
+export const { setIsLikedReducer } = isLikedSlice.actions;
 export default isLikedSlice.reducer;

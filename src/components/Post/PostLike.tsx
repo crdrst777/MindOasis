@@ -4,7 +4,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { PostType, UserDocType } from "../../types/types";
 import { dbService } from "../../fbase";
 import { useDispatch } from "react-redux";
-import { setIsLiked } from "../../store/isLikedSlice";
+import { setIsLikedReducer } from "../../store/isLikedSlice";
 
 interface Props {
   post: PostType;
@@ -78,7 +78,7 @@ const PostLike = ({ post, postId, userData }: Props) => {
         });
       }
     }
-    dispatch(setIsLiked((prev: any) => !prev));
+    dispatch(setIsLikedReducer((prev: any) => !prev));
   };
 
   // if (equalUserId !== 0 ) {

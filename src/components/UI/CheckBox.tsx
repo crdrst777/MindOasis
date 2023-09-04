@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { styled } from "styled-components";
-import { setPlaceKeyword } from "../../store/checkedListSlice";
+import { setPlaceKeywordReducer } from "../../store/checkedListSlice";
 
 const checkBoxList = [
   "자연",
@@ -49,7 +49,9 @@ const CheckBox = ({ checkedListArr }: Props) => {
     checkedItemHandler(value, e.target.checked);
   };
 
-  dispatch(setPlaceKeyword(checkedList));
+  useEffect(() => {
+    dispatch(setPlaceKeywordReducer(checkedList));
+  }, [dispatch, checkedList]);
 
   console.log("checkedList", checkedList);
 
