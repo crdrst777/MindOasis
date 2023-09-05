@@ -13,6 +13,7 @@ const MyPosts = () => {
   const getMyPosts = async () => {
     const myPostsArr: PostType[] = [];
 
+    // query 함수를 사용하면서 여기에 인자로 orderBy 함수나 where 함수 등을 사용
     // dbService의 컬렉션 중 "posts" Docs에서 userInfo의 uid와 동일한 creatorID를 가진 모든 문서를 내림차순으로 가져오는 쿼리(요청) 생성
     const q = query(
       collection(dbService, "posts"),

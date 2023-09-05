@@ -6,6 +6,10 @@ import {
   setIsCheckedReducer,
 } from "../../store/categorySlice";
 
+interface Props {
+  isAllPostBtnClicked: boolean;
+}
+
 const checkBoxList = [
   "자연",
   "도시",
@@ -16,7 +20,7 @@ const checkBoxList = [
   "예시3",
 ];
 
-const Category = () => {
+const Category = ({ isAllPostBtnClicked }: Props) => {
   const dispatch = useDispatch();
   const [isChecked, setIsChecked] = useState(false);
   // checkBoxList 배열 중 check된 요소가 담기는 배열
@@ -40,6 +44,12 @@ const Category = () => {
     setIsChecked(e.target.checked);
     checkedItemHandler(value, e.target.checked);
   };
+
+  useEffect(() => {
+    if (isAllPostBtnClicked) {
+      setCheckedList([]);
+    }
+  }, [isAllPostBtnClicked]);
 
   useEffect(() => {
     dispatch(setCheckedListReducer(checkedList)); // dispatch(state변경함수())

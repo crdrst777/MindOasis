@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { getUserData } from "../../api/user";
 import Category from "../../components/UI/Category";
+import Pagination from "../../components/UI/Pagination";
+import { setCheckedListReducer } from "../../store/categorySlice";
 
 const Content = () => {
   const dispatch = useDispatch();
@@ -19,18 +21,23 @@ const Content = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
   const [userData, setUserData] = useState<any>({});
   const { isLiked } = useSelector((state: RootState) => state.isLiked);
-
+  const [isAllPostBtnClicked, setIsAllPostBtnClicked] = useState(true);
   // 클릭한 카테고리에 해당되는 게시물들이 들어가는 배열
   const [matchingPosts, setMatchingPosts] = useState<PostType[]>([]);
   // 클릭한 카테고리에 해당되는 게시물이 없는지 여부
   const [isUnmatched, setIsUnmatched] = useState(false);
-
   const checkedList: string[] = useSelector(
     (state: RootState) => state.category.checkedList
   );
   const isChecked: boolean = useSelector(
     (state: RootState) => state.category.isChecked
   );
+  // pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(12);
+  const lastPostIdx = currentPage * postsPerPage;
+  const firstPostIdx = lastPostIdx - postsPerPage;
+  const currentPosts = matchingPosts.slice(firstPostIdx, lastPostIdx);
 
   // const getPosts = async () => {
   //   // const q = query(collection(dbService, "posts"));
@@ -46,10 +53,12 @@ const Content = () => {
   // };
 
   const getPosts = () => {
+    // query 함수를 사용하면서 여기에 인자로 orderBy 함수 등을 사용. dbService의 컬렉션 중 "posts" Docs에서 찾음
     const q = query(
       collection(dbService, "posts"),
       orderBy("createdAt", "desc") // document를 글을 쓴 순서대로 차례대로 내림차순으로 정렬하기
     );
+    // 실시간으로 문서 업데이트 가져오기 (onSnapshot) - 사용자가 새로고침을 하지 않고도 데이터 변경이 실시간으로 반영된다.
     onSnapshot(q, (querySnapshot) => {
       const postsArr: PostType[] = querySnapshot.docs.map((doc) => ({
         id: doc.id,
@@ -64,7 +73,9 @@ const Content = () => {
   }, []); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
 
   useEffect(() => {
+    // if (checkedList.length === 0) {
     setMatchingPosts([...posts]);
+    // }
   }, [posts]);
 
   useEffect(() => {
@@ -140,7 +151,6 @@ const Content = () => {
       let resultPostsArr = matchingSeq1(postsArr);
 
       temp = [...resultPostsArr];
-      console.log("temp", temp);
 
       // 반복문 돌면서 temp 값을 계속 바꿔줘서 이전에 추려진 matchingPosts를 계속 가져올 수 있음
       for (let i = 1; i < checkedList.length; i++) {
@@ -164,26 +174,51 @@ const Content = () => {
 
   useEffect(() => {
     getMatchingPosts();
+    setCurrentPage(1);
+
+    if (checkedList.length !== 0) {
+      setIsAllPostBtnClicked(false);
+    } else {
+      setIsAllPostBtnClicked(true);
+      setMatchingPosts([...posts]);
+    }
   }, [checkedList]);
 
-  // console.log("matchingPosts.length (get- 함수 밖", matchingPosts.length);
+  const AllPostBtnClick = () => {
+    setMatchingPosts([...posts]);
+    setIsAllPostBtnClicked(true);
+    setIsUnmatched(false);
+  };
+
+  console.log("matchingPosts.length (get- 함수 밖", matchingPosts.length);
   console.log("checkedList", checkedList);
 
   return (
     <Container>
       <CategoryContainer>
-        <Category />
+        <AllPostBtn
+          onClick={AllPostBtnClick}
+          isAllPostBtnClicked={isAllPostBtnClicked}
+        >
+          전체
+        </AllPostBtn>
+        <Category isAllPostBtnClicked={isAllPostBtnClicked} />
       </CategoryContainer>
 
       <PreviewContainer>
         {isUnmatched ? (
           <div>일치하는 게시물이 없습니다</div>
         ) : (
-          matchingPosts &&
-          matchingPosts.map((post) => <PreviewPost key={post.id} post={post} />)
+          currentPosts &&
+          currentPosts.map((post) => <PreviewPost key={post.id} post={post} />)
         )}
       </PreviewContainer>
-
+      <Pagination
+        totalPosts={matchingPosts.length}
+        postsPerPage={postsPerPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
       {bigMatch ? (
         <Modal userData={userData} postId={bigMatch?.params.id}></Modal>
       ) : null}
@@ -206,6 +241,28 @@ const CategoryContainer = styled.section`
   margin-bottom: 3rem;
   width: 40rem;
   height: 3rem;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const AllPostBtn = styled.button<{ isAllPostBtnClicked: boolean }>`
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+  margin-right: 1rem;
+  width: 3.7rem;
+  height: 2.031rem;
+  cursor: pointer;
+  border-radius: 2rem;
+  background-color: ${(props) =>
+    props.isAllPostBtnClicked
+      ? props.theme.colors.violet
+      : props.theme.colors.lightGray};
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: ${(props) =>
+    props.isAllPostBtnClicked
+      ? props.theme.colors.white
+      : props.theme.colors.black};
 `;
 
 const PreviewContainer = styled.section`
