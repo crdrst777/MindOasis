@@ -1,4 +1,6 @@
 import { styled } from "styled-components";
+import { ReactComponent as RightArrowIcon } from "../../assets/icon/right-arrow-icon.svg";
+import { ReactComponent as LeftArrowIcon } from "../../assets/icon/left-arrow-icon.svg";
 
 interface Props {
   totalPosts: number;
@@ -34,26 +36,32 @@ const Pagination = ({
 
   return (
     <Container>
-      {pageNumList.length === 0 ? null : (
-        <>
-          <button onClick={goToPrevPage} disabled={currentPage === 1}>
-            prev
-          </button>
+      <BtnContainer>
+        {pageNumList.length === 0 ? null : (
+          <>
+            <ArrowBtn onClick={goToPrevPage} $disabled={currentPage === 1}>
+              <LeftArrowIcon />
+            </ArrowBtn>
 
-          {pageNumList.map((page, idx) => (
-            <Btn key={idx} onClick={() => setCurrentPage(page)}>
-              {page}
-            </Btn>
-          ))}
+            {pageNumList.map((page, idx) => (
+              <Btn
+                key={idx}
+                onClick={() => setCurrentPage(page)}
+                $active={currentPage === page}
+              >
+                {page}
+              </Btn>
+            ))}
 
-          <button
-            onClick={goToNextPage}
-            disabled={currentPage === pageNumList.length}
-          >
-            next
-          </button>
-        </>
-      )}
+            <ArrowBtn
+              onClick={goToNextPage}
+              $disabled={currentPage === pageNumList.length}
+            >
+              <RightArrowIcon />
+            </ArrowBtn>
+          </>
+        )}
+      </BtnContainer>
     </Container>
   );
 };
@@ -61,16 +69,47 @@ const Pagination = ({
 export default Pagination;
 
 const Container = styled.div`
-  /* width: 60%; */
-  /* height: 2rem; */
   /* background-color: aqua; */
-  margin: 2.5rem auto 1rem;
+  margin: 2.5rem 1rem;
+  display: flex;
+  justify-content: center;
+`;
+
+const BtnContainer = styled.nav`
   display: flex;
   justify-content: space-between;
 `;
 
-const Btn = styled.button`
-  padding: 0.4rem 0.9rem;
-  margin: 0 0.7rem;
-  background-color: ${(props) => props.theme.colors.yellow};
+const Btn = styled.button<{ $active: boolean }>`
+  width: 2rem;
+  height: 2rem;
+  margin: 0 0.3rem;
+  border-radius: 50%;
+  background-color: ${(props) => props.$active && "#ffe371"};
+  transition: background-color 0.25s ease;
+  &:hover {
+    background-color: ${(props) =>
+      !props.$active && props.theme.colors.lightGray};
+  }
+`;
+
+const ArrowBtn = styled.button<{ $disabled: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  margin: 0 0.3rem;
+  border-radius: 50%;
+  transition: background-color 0.25s ease;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.lightGray};
+  }
+
+  svg {
+    width: 1.4rem;
+    height: 1.4rem;
+    fill: ${(props) =>
+      props.$disabled ? "#9f9f9f" : props.theme.colors.black};
+  }
 `;

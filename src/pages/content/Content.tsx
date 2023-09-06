@@ -11,10 +11,8 @@ import { RootState } from "../../store";
 import { getUserData } from "../../api/user";
 import Category from "../../components/UI/Category";
 import Pagination from "../../components/UI/Pagination";
-import { setCheckedListReducer } from "../../store/categorySlice";
 
 const Content = () => {
-  const dispatch = useDispatch();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   // useMatch()의 인자로 url을 넘기면 해당 url과 일치할 경우 url의 정보를 반환하고, 일치하지 않을 경우 null을 반환한다.
   const bigMatch: PathMatch<string> | null = useMatch(`content/:id`);
@@ -73,9 +71,7 @@ const Content = () => {
   }, []); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
 
   useEffect(() => {
-    // if (checkedList.length === 0) {
     setMatchingPosts([...posts]);
-    // }
   }, [posts]);
 
   useEffect(() => {
@@ -172,6 +168,13 @@ const Content = () => {
     setMatchingPosts(postsArr);
   };
 
+  const AllPostBtnClick = () => {
+    setMatchingPosts([...posts]);
+    setIsAllPostBtnClicked(true);
+    setIsUnmatched(false);
+  };
+
+  // 카테고리를 클릭할떼
   useEffect(() => {
     getMatchingPosts();
     setCurrentPage(1);
@@ -184,13 +187,7 @@ const Content = () => {
     }
   }, [checkedList]);
 
-  const AllPostBtnClick = () => {
-    setMatchingPosts([...posts]);
-    setIsAllPostBtnClicked(true);
-    setIsUnmatched(false);
-  };
-
-  console.log("matchingPosts.length (get- 함수 밖", matchingPosts.length);
+  console.log("matchingPosts.length", matchingPosts.length);
   console.log("checkedList", checkedList);
 
   return (
@@ -198,7 +195,7 @@ const Content = () => {
       <CategoryContainer>
         <AllPostBtn
           onClick={AllPostBtnClick}
-          isAllPostBtnClicked={isAllPostBtnClicked}
+          $isallpostbtnclicked={isAllPostBtnClicked}
         >
           전체
         </AllPostBtn>
@@ -245,7 +242,7 @@ const CategoryContainer = styled.section`
   justify-content: space-between;
 `;
 
-const AllPostBtn = styled.button<{ isAllPostBtnClicked: boolean }>`
+const AllPostBtn = styled.button<{ $isallpostbtnclicked: boolean }>`
   padding: 0.5rem 1rem;
   margin-top: 0.5rem;
   margin-right: 1rem;
@@ -254,13 +251,13 @@ const AllPostBtn = styled.button<{ isAllPostBtnClicked: boolean }>`
   cursor: pointer;
   border-radius: 2rem;
   background-color: ${(props) =>
-    props.isAllPostBtnClicked
+    props.$isallpostbtnclicked
       ? props.theme.colors.violet
       : props.theme.colors.lightGray};
   font-size: 0.85rem;
   font-weight: 400;
   color: ${(props) =>
-    props.isAllPostBtnClicked
+    props.$isallpostbtnclicked
       ? props.theme.colors.white
       : props.theme.colors.black};
 `;
