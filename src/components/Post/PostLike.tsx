@@ -5,6 +5,7 @@ import { PostType, UserDocType } from "../../types/types";
 import { dbService } from "../../fbase";
 import { useDispatch } from "react-redux";
 import { setIsLikedReducer } from "../../store/isLikedSlice";
+import { useEffect, useState } from "react";
 
 interface Props {
   post: PostType;
@@ -15,6 +16,7 @@ interface Props {
 const PostLike = ({ post, postId, userData }: Props) => {
   const dispatch = useDispatch();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const [isLiked, setIsLiked] = useState(false);
   const postDocRef = doc(dbService, "posts", `${postId}`); // 현재 게시물을 가리키는 참조 생성
   const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 현재 로그인한 유저를 가리키는 참조 생성
 
@@ -78,8 +80,24 @@ const PostLike = ({ post, postId, userData }: Props) => {
         });
       }
     }
-    dispatch(setIsLikedReducer((prev: any) => !prev));
+    // dispatch(setIsLikedReducer((prev: any) => !prev));
+    setIsLiked((prev: any) => !prev);
   };
+
+  // useEffect(() => {
+  //   if (post.creatorId === userData.uid) {
+  //     const test = async () => {
+  //       await updateDoc(postDocRef, {
+  //         likeState: false,
+  //       });
+  //     };
+  //     test();
+  //   }
+  // }, [post, postId, userData]);
+
+  useEffect(() => {
+    dispatch(setIsLikedReducer(isLiked));
+  }, [isLiked]);
 
   // if (equalUserId !== 0 ) {
   //   likedUsers: likedUsersArr,

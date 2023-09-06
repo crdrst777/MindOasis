@@ -5,14 +5,20 @@ import { useEffect, useState } from "react";
 import { PostType } from "../../types/types";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { dbService } from "../../fbase";
+import Pagination from "../../components/UI/Pagination";
 
 const MyPosts = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const [myPosts, setMyPosts] = useState<PostType[]>([]);
+  // pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(5);
+  const lastPostIdx = currentPage * postsPerPage;
+  const firstPostIdx = lastPostIdx - postsPerPage;
+  const currentPosts = myPosts.slice(firstPostIdx, lastPostIdx);
 
   const getMyPosts = async () => {
     const myPostsArr: PostType[] = [];
-
     // query 함수를 사용하면서 여기에 인자로 orderBy 함수나 where 함수 등을 사용
     // dbService의 컬렉션 중 "posts" Docs에서 userInfo의 uid와 동일한 creatorID를 가진 모든 문서를 내림차순으로 가져오는 쿼리(요청) 생성
     const q = query(
@@ -46,9 +52,16 @@ const MyPosts = () => {
       <Container>
         <Sidebar linkTitle={"내 작성글"} />
         <MainContainer>
-          {myPosts.map((post) => (
+          {currentPosts.map((post) => (
             <MyPostList key={post.id} post={post} />
           ))}
+
+          <Pagination
+            totalPosts={myPosts.length}
+            postsPerPage={postsPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </MainContainer>
       </Container>
     </MyPageContainer>
@@ -73,7 +86,6 @@ const MainContainer = styled.section`
   flex-direction: column;
   align-items: center;
   width: 40.6rem;
-  height: 37.5rem;
   padding: 2.85rem;
   border: ${(props) => props.theme.borders.lightGray};
   border-radius: 0.4rem;

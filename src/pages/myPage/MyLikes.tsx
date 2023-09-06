@@ -6,11 +6,18 @@ import { PostType } from "../../types/types";
 import { dbService } from "../../fbase";
 import { doc, getDoc } from "firebase/firestore";
 import { getUserData } from "../../api/user";
+import Pagination from "../../components/UI/Pagination";
 
 const MyLikes = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const [myLikes, setMyLikes] = useState<PostType[]>([]);
   const [userData, setUserData] = useState<any>({});
+  // pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(5);
+  const lastPostIdx = currentPage * postsPerPage;
+  const firstPostIdx = lastPostIdx - postsPerPage;
+  const currentPosts = myLikes.slice(firstPostIdx, lastPostIdx);
 
   const getMyLikes = async () => {
     try {
@@ -51,9 +58,16 @@ const MyLikes = () => {
         <Sidebar linkTitle={"내 관심글"} />
 
         <MainContainer>
-          {myLikes.map((post) => (
+          {currentPosts.map((post) => (
             <MyLikesList key={post.id} post={post} />
           ))}
+
+          <Pagination
+            totalPosts={myLikes.length}
+            postsPerPage={postsPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </MainContainer>
       </Container>
     </MyPageContainer>
@@ -78,7 +92,6 @@ const MainContainer = styled.section`
   flex-direction: column;
   align-items: center;
   width: 40.6rem;
-  height: 37.5rem;
   padding: 2.85rem;
   border: ${(props) => props.theme.borders.lightGray};
   border-radius: 0.4rem;

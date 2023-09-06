@@ -269,4 +269,5 @@ const PreviewContainer = styled.section`
   grid-template-columns: repeat(auto-fill, 15.3rem);
   column-gap: 1.5rem;
   row-gap: 1.5rem;
+  margin-bottom: 2rem;
 `;

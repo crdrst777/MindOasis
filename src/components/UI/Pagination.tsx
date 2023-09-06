@@ -39,7 +39,11 @@ const Pagination = ({
       <BtnContainer>
         {pageNumList.length === 0 ? null : (
           <>
-            <ArrowBtn onClick={goToPrevPage} $disabled={currentPage === 1}>
+            <ArrowBtn
+              onClick={goToPrevPage}
+              disabled={currentPage === 1}
+              $disabled={currentPage === 1}
+            >
               <LeftArrowIcon />
             </ArrowBtn>
 
@@ -55,6 +59,7 @@ const Pagination = ({
 
             <ArrowBtn
               onClick={goToNextPage}
+              disabled={currentPage === pageNumList.length}
               $disabled={currentPage === pageNumList.length}
             >
               <RightArrowIcon />
@@ -70,7 +75,7 @@ export default Pagination;
 
 const Container = styled.div`
   /* background-color: aqua; */
-  margin: 2.5rem 1rem;
+  margin-top: 0.5rem;
   display: flex;
   justify-content: center;
 `;
@@ -97,13 +102,14 @@ const ArrowBtn = styled.button<{ $disabled: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 2rem;
+  height: 2rem;
   margin: 0 0.3rem;
   border-radius: 50%;
   transition: background-color 0.25s ease;
   &:hover {
-    background-color: ${(props) => props.theme.colors.lightGray};
+    background-color: ${(props) =>
+      !props.$disabled && props.theme.colors.lightGray};
   }
 
   svg {
