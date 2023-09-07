@@ -48,15 +48,11 @@ const MyLikeContainer = styled.div`
   margin-bottom: 1.5rem;
   cursor: pointer;
   padding: 0.95rem;
-  /* border-radius: 0.5rem; */
   border-left: 4px solid ${(props) => props.theme.colors.yellow};
-  /* box-shadow: 0 8px 16px #00000019; */
   box-shadow: rgba(0, 0, 0, 0.089) 0px 0px 15px 0px;
-  /* transition: all 0.5s ease 0s; */
   transition: box-shadow 0.3s ease 0s;
 
   &:hover {
-    /* box-shadow: 0 8px 16px #00000038; */
     box-shadow: rgba(0, 0, 0, 0.223) 0px 0px 15px 0px;
   }
 `;

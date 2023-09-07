@@ -6,15 +6,19 @@ import AppRouter from "./Router";
 import Footer from "./components/Layout/Footer";
 import { UserInfoType } from "./types/types";
 import Nav from "./components/Layout/Nav";
+import Loading from "./components/UI/Loading";
+import { styled } from "styled-components";
 
 function App() {
   const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [userInfo, setUserInfo] = useState<UserInfoType | null>(null);
   // userInfo는 파이어베이스에서 getFirestore.currentUser.[ 필요한키 ] 이렇게 가져올 수 있는 데이터이지만, userInfo라는 변수를 만들어 속성에 넣고 여기저기서 전달받아 사용하는 이유는 소스를 통합하여 확장성 있게 사용하고 싶기 때문이다.
   // userInfo 하나만 변경해도 통합되어 변경되기 때문에 더 직관적으로 변경,저장하기 쉬워진다.
 
   useEffect(() => {
+    setLoading(true);
     authService.onAuthStateChanged(async (user) => {
       // 여기서 받아오는 user는 authService.currentUser 와 같음. 이걸 userInfo에 넣어준다.
       if (user) {
@@ -38,6 +42,7 @@ function App() {
         setIsLoggedIn(false);
       }
       setInit(true); // init이 false라면 router를 숨길거임. true일때 나타나게.
+      setLoading(false);
     });
   }, []);
 
@@ -60,11 +65,13 @@ function App() {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Nav />
-
-      {init ? (
+      {loading ? (
+        <LoadingWrapper>
+          <Loading />
+        </LoadingWrapper>
+      ) : null}
+      {init && (
         <AppRouter isLoggedIn={Boolean(userInfo)} refreshUser={refreshUser} />
-      ) : (
-        "Initializing..."
       )}
       <Footer />
     </BrowserRouter>
@@ -72,3 +79,11 @@ function App() {
 }
 
 export default App;
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 35.4rem;
+`;

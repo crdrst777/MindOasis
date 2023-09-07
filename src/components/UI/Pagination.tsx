@@ -75,7 +75,7 @@ export default Pagination;
 
 const Container = styled.div`
   /* background-color: aqua; */
-  margin-top: 0.5rem;
+  /* margin-top: 0.9rem; */
   display: flex;
   justify-content: center;
 `;

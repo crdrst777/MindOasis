@@ -6,10 +6,12 @@ import { PostType } from "../../types/types";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import Pagination from "../../components/UI/Pagination";
+import Loading from "../../components/UI/Loading";
 
 const MyPosts = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const [myPosts, setMyPosts] = useState<PostType[]>([]);
+  const [loading, setLoading] = useState(true);
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
@@ -39,9 +41,11 @@ const MyPosts = () => {
       );
     });
     setMyPosts(myPostsArr);
+    setLoading(false);
   };
 
   useEffect(() => {
+    setLoading(true);
     getMyPosts();
   }, []);
 
@@ -52,6 +56,8 @@ const MyPosts = () => {
       <Container>
         <Sidebar linkTitle={"내 작성글"} />
         <MainContainer>
+          {loading ? <Loading /> : null}
+
           {currentPosts.map((post) => (
             <MyPostList key={post.id} post={post} />
           ))}
@@ -86,7 +92,7 @@ const MainContainer = styled.section`
   flex-direction: column;
   align-items: center;
   width: 40.6rem;
-  padding: 2.85rem;
+  padding: 3.85rem 2.85rem 2.35rem 2.85rem;
   border: ${(props) => props.theme.borders.lightGray};
   border-radius: 0.4rem;
   background-color: ${(props) => props.theme.colors.white};

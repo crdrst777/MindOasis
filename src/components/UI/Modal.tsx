@@ -124,7 +124,6 @@ const Overlay = styled.div`
 `;
 
 const ModalContainer = styled.div`
-  /* position: absolute; */
   position: fixed;
   width: 49rem;
   top: 2.1rem;
@@ -167,7 +166,6 @@ const ModalContainer = styled.div`
 const Main = styled.article`
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   width: 100%;
 `;
 

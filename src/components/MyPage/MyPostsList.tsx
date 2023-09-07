@@ -41,7 +41,7 @@ const Container = styled.div`
 `;
 
 const MyPostContainer = styled.div`
-  max-height: 7rem;
+  max-height: 8rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -62,8 +62,8 @@ const MyPostContainer = styled.div`
 `;
 
 const Img = styled.img`
-  width: 4.45rem;
-  height: 4.45rem;
+  width: 4.46rem;
+  height: 4.46rem;
   object-fit: cover;
   border-radius: 4px;
 `;

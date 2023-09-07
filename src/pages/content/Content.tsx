@@ -11,6 +11,7 @@ import { RootState } from "../../store";
 import { getUserData } from "../../api/user";
 import Category from "../../components/UI/Category";
 import Pagination from "../../components/UI/Pagination";
+import Loading from "../../components/UI/Loading";
 
 const Content = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -72,6 +73,7 @@ const Content = () => {
 
   useEffect(() => {
     setMatchingPosts([...posts]);
+    setIsUnmatched(false);
   }, [posts]);
 
   useEffect(() => {
@@ -189,6 +191,7 @@ const Content = () => {
 
   console.log("matchingPosts.length", matchingPosts.length);
   console.log("checkedList", checkedList);
+  console.log("isUnmatched", isUnmatched);
 
   return (
     <Container>
@@ -202,14 +205,19 @@ const Content = () => {
         <Category isAllPostBtnClicked={isAllPostBtnClicked} />
       </CategoryContainer>
 
-      <PreviewContainer>
+      <ContentContainer>
         {isUnmatched ? (
-          <div>일치하는 게시물이 없습니다</div>
+          <AlertText>일치하는 게시물이 없습니다.</AlertText>
         ) : (
-          currentPosts &&
-          currentPosts.map((post) => <PreviewPost key={post.id} post={post} />)
+          <PreviewContainer>
+            {currentPosts &&
+              currentPosts.map((post) => (
+                <PreviewPost key={post.id} post={post} />
+              ))}
+          </PreviewContainer>
         )}
-      </PreviewContainer>
+      </ContentContainer>
+
       <Pagination
         totalPosts={matchingPosts.length}
         postsPerPage={postsPerPage}
@@ -262,8 +270,25 @@ const AllPostBtn = styled.button<{ $isallpostbtnclicked: boolean }>`
       : props.theme.colors.black};
 `;
 
-const PreviewContainer = styled.section`
+const ContentContainer = styled.section`
   width: 100%;
+  min-height: 20rem;
+`;
+
+const AlertText = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 20rem;
+  padding-top: 2rem;
+  font-size: 1.1rem;
+  /* background-color: beige; */
+`;
+
+const PreviewContainer = styled.div`
+  width: 100%;
+  height: 100%;
   display: grid;
   justify-content: center;
   grid-template-columns: repeat(auto-fill, 15.3rem);

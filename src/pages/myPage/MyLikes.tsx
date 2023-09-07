@@ -7,11 +7,13 @@ import { dbService } from "../../fbase";
 import { doc, getDoc } from "firebase/firestore";
 import { getUserData } from "../../api/user";
 import Pagination from "../../components/UI/Pagination";
+import Loading from "../../components/UI/Loading";
 
 const MyLikes = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const [myLikes, setMyLikes] = useState<PostType[]>([]);
   const [userData, setUserData] = useState<any>({});
+  const [loading, setLoading] = useState(true);
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
@@ -37,6 +39,7 @@ const MyLikes = () => {
         }
       }
       setMyLikes(myLikesArr);
+      setLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -47,6 +50,7 @@ const MyLikes = () => {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     getMyLikes();
   }, [userData]);
 
@@ -58,10 +62,11 @@ const MyLikes = () => {
         <Sidebar linkTitle={"내 관심글"} />
 
         <MainContainer>
+          {loading ? <Loading /> : null}
+
           {currentPosts.map((post) => (
             <MyLikesList key={post.id} post={post} />
           ))}
-
           <Pagination
             totalPosts={myLikes.length}
             postsPerPage={postsPerPage}
@@ -92,7 +97,7 @@ const MainContainer = styled.section`
   flex-direction: column;
   align-items: center;
   width: 40.6rem;
-  padding: 2.85rem;
+  padding: 3.85rem 2.85rem 2.35rem 2.85rem;
   border: ${(props) => props.theme.borders.lightGray};
   border-radius: 0.4rem;
   background-color: ${(props) => props.theme.colors.white};

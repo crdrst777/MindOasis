@@ -122,14 +122,13 @@ const Overlay = styled.div`
 `;
 
 const ModalContainer = styled.div`
-  /* position: absolute; */
   position: fixed;
-  width: 52rem;
-  top: 2.3rem;
+  width: 49rem;
+  top: 2.1rem;
   margin: auto 0;
   border-radius: 0.2rem;
   background-color: white;
-  height: 50rem;
+  height: 45.2rem;
   overflow: scroll;
   z-index: 100;
 `;
@@ -137,13 +136,12 @@ const ModalContainer = styled.div`
 const Main = styled.article`
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   width: 100%;
 `;
 
 const ImgContainer = styled.section`
   padding: 0rem 2rem;
-  height: 32rem;
+  height: 28.7rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -156,11 +154,11 @@ const Img = styled.img`
 `;
 
 const ContentsContainer = styled.section`
-  padding: 1.25rem 4rem;
+  padding: 1.2rem 4.2rem;
 `;
 
 const ContentInfo = styled.div`
-  padding: 0.9rem 0;
+  padding: 0.6rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -171,7 +169,7 @@ const Title = styled.div`
   max-width: 32.5rem;
   overflow: hidden;
   color: ${(props) => props.theme.colors.moreDarkGray};
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 500;
   line-height: 1.7rem;
 `;
@@ -186,9 +184,8 @@ const Text = styled.div`
   min-height: 4rem;
   max-height: 15.5rem;
   overflow: hidden;
-  padding: 0.6rem 0;
-  font-size: 1.1rem;
-  line-height: 1.6rem;
+  padding: 0.5rem 0;
+  line-height: 1.46rem;
 `;
 
 const KeywordContainer = styled.div``;
