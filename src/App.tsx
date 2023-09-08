@@ -65,14 +65,16 @@ function App() {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Nav />
-      {loading ? (
-        <LoadingWrapper>
-          <Loading />
-        </LoadingWrapper>
-      ) : null}
-      {init && (
-        <AppRouter isLoggedIn={Boolean(userInfo)} refreshUser={refreshUser} />
-      )}
+      <ContentWrapper>
+        {loading ? (
+          <LoadingWrapper>
+            <Loading />
+          </LoadingWrapper>
+        ) : null}
+        {init && (
+          <AppRouter isLoggedIn={Boolean(userInfo)} refreshUser={refreshUser} />
+        )}
+      </ContentWrapper>
       <Footer />
     </BrowserRouter>
   );
@@ -80,10 +82,14 @@ function App() {
 
 export default App;
 
+const ContentWrapper = styled.div`
+  min-height: calc(100vh - 10.8rem); /* footer 높이를 빼준다. */
+`;
+
 const LoadingWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 35.4rem;
+  height: 38.5rem;
 `;

@@ -11,9 +11,10 @@ import { RootState } from "../../store";
 import { getUserData } from "../../api/user";
 import Category from "../../components/UI/Category";
 import Pagination from "../../components/UI/Pagination";
-import Loading from "../../components/UI/Loading";
+import { setPlaceKeywordReducer } from "../../store/checkedListSlice";
 
 const Content = () => {
+  const dispatch = useDispatch();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   // useMatch()의 인자로 url을 넘기면 해당 url과 일치할 경우 url의 정보를 반환하고, 일치하지 않을 경우 null을 반환한다.
   const bigMatch: PathMatch<string> | null = useMatch(`content/:id`);
@@ -69,6 +70,7 @@ const Content = () => {
 
   useEffect(() => {
     getPosts();
+    dispatch(setPlaceKeywordReducer([]));
   }, []); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
 
   useEffect(() => {
@@ -242,7 +244,7 @@ const Container = styled.div`
 `;
 
 const CategoryContainer = styled.section`
-  margin: auto;
+  margin: 0 auto;
   margin-bottom: 3rem;
   width: 40rem;
   height: 3rem;
@@ -272,7 +274,8 @@ const AllPostBtn = styled.button<{ $isallpostbtnclicked: boolean }>`
 
 const ContentContainer = styled.section`
   width: 100%;
-  min-height: 20rem;
+  height: 100%;
+  margin-bottom: 1.2rem;
 `;
 
 const AlertText = styled.div`
@@ -280,10 +283,9 @@ const AlertText = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 20rem;
-  padding-top: 2rem;
+  height: 100%;
+  padding-top: 11.2rem;
   font-size: 1.1rem;
-  /* background-color: beige; */
 `;
 
 const PreviewContainer = styled.div`
@@ -294,5 +296,5 @@ const PreviewContainer = styled.div`
   grid-template-columns: repeat(auto-fill, 15.3rem);
   column-gap: 1.5rem;
   row-gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
 `;
