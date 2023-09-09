@@ -1,9 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import avatar from "../../assets/img/avatar-icon.png";
-{
-}
-interface NavProps {}
 
 const Nav = () => {
   const navigate = useNavigate();
@@ -38,13 +35,13 @@ const Nav = () => {
           {userInfo ? (
             <li>
               <Link to="/mypage/updateprofile">
-                <AvatarContainer>
+                <AvatarWrapper>
                   {userInfo.photoURL ? (
-                    <img src={userInfo.photoURL} alt="profile photo" />
+                    <img src={userInfo.photoURL} alt="profile" />
                   ) : (
                     <BasicAvatarIcon />
                   )}
-                </AvatarContainer>
+                </AvatarWrapper>
               </Link>
             </li>
           ) : (
@@ -60,9 +57,7 @@ const Nav = () => {
 
 export default Nav;
 
-const NavContainer = styled.div`
-  /* width: 100vw; */
-`;
+const NavContainer = styled.div``;
 
 const Container = styled.nav`
   display: flex;
@@ -75,7 +70,7 @@ const Container = styled.nav`
 `;
 
 const NavbarLogo = styled.div`
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 600;
 `;
 
@@ -93,7 +88,7 @@ const NavbarMenu = styled.ul`
   }
 `;
 
-const AvatarContainer = styled.div`
+const AvatarWrapper = styled.div`
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;

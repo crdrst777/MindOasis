@@ -74,8 +74,6 @@ const Pagination = ({
 export default Pagination;
 
 const Container = styled.div`
-  /* background-color: aqua; */
-  /* margin-top: 0.9rem; */
   display: flex;
   justify-content: center;
 `;
@@ -90,6 +88,7 @@ const Btn = styled.button<{ $active: boolean }>`
   height: 2rem;
   margin: 0 0.3rem;
   border-radius: 50%;
+  font-weight: 500;
   background-color: ${(props) => props.$active && "#ffe371"};
   transition: background-color 0.25s ease;
   &:hover {

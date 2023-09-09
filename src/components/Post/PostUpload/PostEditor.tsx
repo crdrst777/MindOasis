@@ -201,7 +201,7 @@ const PostEditor = () => {
           <span>2</span>
           <h2>장소에 대해 알려주세요</h2>
         </SectionTitle>
-        <SubTitle>제목</SubTitle>
+        <InputTitle>제목</InputTitle>
         <TitleInput
           type="text"
           value={title}
@@ -305,7 +305,7 @@ const SectionTitle = styled.div`
   }
 `;
 
-const SubTitle = styled.div`
+const InputTitle = styled.div`
   font-size: 0.95rem;
   font-weight: 500;
   margin: 0 0 5px;

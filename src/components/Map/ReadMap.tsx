@@ -9,9 +9,6 @@ interface Props {
 }
 
 const ReadMap = ({ placeInfo }: Props) => {
-  // const infowindowArrowInput = useRef<HTMLInputElement>(null);
-  // const [mapLocation, setMapLocation] = useState({});
-
   useEffect(() => {
     const mapContainer = document.getElementById("map"); // 지도를 표시할 div
     const mapOption = {
@@ -67,10 +64,7 @@ const ReadMap = ({ placeInfo }: Props) => {
 
 export default ReadMap;
 
-const Container = styled.section`
-  padding: 0 4rem 1.25rem 4rem;
-  margin-bottom: 2rem;
-`;
+const Container = styled.div``;
 
 const Map = styled.div`
   #map {

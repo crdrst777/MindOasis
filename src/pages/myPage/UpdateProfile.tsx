@@ -197,7 +197,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
           </FileContainer>
 
           <NicknameContainer>
-            <SubTitle>닉네임</SubTitle>
+            <InputTitle>닉네임</InputTitle>
             <NicknameInput
               type="text"
               value={newDisplayName}
@@ -286,7 +286,7 @@ const NicknameContainer = styled.div`
   margin-top: 2rem;
 `;
 
-const SubTitle = styled.div`
+const InputTitle = styled.div`
   font-size: 1rem;
   font-weight: 500;
   margin: 0 0 5px;
