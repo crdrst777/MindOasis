@@ -6,8 +6,6 @@ import UpdatePassword from "./pages/myPage/UpdatePassword";
 import MyPosts from "./pages/myPage/MyPosts";
 import MyLikes from "./pages/myPage/MyLikes";
 import SignUp from "./pages/auth/SignUp";
-import Nav from "./components/Layout/Nav";
-import Footer from "./components/Layout/Footer";
 import Content from "./pages/content/Content";
 import UploadPost from "./pages/post/UploadPost";
 import EditPost from "./pages/post/EditPost";

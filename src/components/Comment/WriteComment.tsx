@@ -1,9 +1,11 @@
 import { styled } from "styled-components";
-import { CommentType, PostType, UserDocType } from "../../types/types";
+import { CommentType, UserDocType } from "../../types/types";
 import avatar from "../../assets/img/avatar-icon.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
 import { dbService } from "../../fbase";
+import { setTriggerRenderReducer } from "../../store/triggerRenderSlice";
+import { useDispatch } from "react-redux";
 
 interface Props {
   userData: UserDocType;
@@ -11,7 +13,9 @@ interface Props {
 }
 
 const WriteComment = ({ userData, postId }: Props) => {
+  const dispatch = useDispatch();
   const [text, setText] = useState("");
+  const [triggerRender, setTriggerRender] = useState(false);
 
   const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -25,12 +29,20 @@ const WriteComment = ({ userData, postId }: Props) => {
       postId,
     };
 
-    addDoc(collection(dbService, "comments"), commentData);
+    if (text !== "") {
+      addDoc(collection(dbService, "comments"), commentData);
+      setTriggerRender((prev: any) => !prev);
+      setText("");
+    }
   };
 
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
+
+  useEffect(() => {
+    dispatch(setTriggerRenderReducer(triggerRender));
+  }, [triggerRender]);
 
   return (
     <Container>

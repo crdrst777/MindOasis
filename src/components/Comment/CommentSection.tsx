@@ -6,6 +6,8 @@ import { UserDocType } from "../../types/types";
 import { CommentType } from "../../types/types";
 import WriteComment from "./WriteComment";
 import CommentItem from "./CommentItem";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface Props {
   userData: UserDocType;
@@ -14,6 +16,9 @@ interface Props {
 
 const CommentSection = ({ userData, postId }: Props) => {
   const [comments, setComments] = useState<CommentType[]>([]);
+  const { triggerRender } = useSelector(
+    (state: RootState) => state.triggerRender
+  );
 
   const getComments = async () => {
     const commentsArr: CommentType[] = [];
@@ -38,7 +43,7 @@ const CommentSection = ({ userData, postId }: Props) => {
 
   useEffect(() => {
     getComments();
-  }, [userData, postId]);
+  }, [userData, postId, triggerRender]);
 
   return (
     <Container>

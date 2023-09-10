@@ -211,7 +211,7 @@ const PostEditor = () => {
         />
 
         <TextInput
-          maxLength={500}
+          maxLength={700}
           value={text}
           onChange={onTextChange}
           placeholder="자유롭게 장소에 대해 적어주세요!"

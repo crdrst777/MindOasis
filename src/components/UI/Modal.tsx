@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import close from "../../assets/img/close-icon.png";
-import { useMatch, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { PostType, UserDocType } from "../../types/types";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
@@ -19,6 +19,7 @@ interface Props {
 
 const Modal = ({ userData, postId }: Props) => {
   const [post, setPost] = useState<PostType>({});
+
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
   // const modalMatch = useMatch(`/content/detail/:id`);
   // useMatch는 이 route 안에 있는지 다른 곳에 있는지 알려줌. -->  string | null
@@ -215,7 +216,7 @@ const RegisteredDate = styled.div`
 const Text = styled.div`
   display: inline-block;
   min-height: 4rem;
-  max-height: 15.5rem;
+  max-height: 16.5rem;
   overflow: hidden;
   padding: 0.5rem 0;
   font-size: 1.05rem;
