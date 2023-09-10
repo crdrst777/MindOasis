@@ -30,3 +30,13 @@ export interface UserInfoType {
   displayName: string;
   photoURL: string;
 }
+
+export interface CommentType {
+  id?: string;
+  userId?: string;
+  userPhotoURL?: string;
+  userDisplayName?: string;
+  createdAt?: number;
+  text?: string;
+  postId?: string;
+}

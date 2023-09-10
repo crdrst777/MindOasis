@@ -10,7 +10,7 @@ import ReadMap from "../Map/ReadMap";
 import PostKeyword from "../Post/PostKeyword";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import avatar from "../../assets/img/avatar-icon.png";
+import CommentSection from "../Comment/CommentSection";
 
 interface Props {
   userData: UserDocType;
@@ -24,14 +24,13 @@ const Modal = ({ userData, postId }: Props) => {
   // useMatch는 이 route 안에 있는지 다른 곳에 있는지 알려줌. -->  string | null
   const closeModal = () => navigate(-1);
   const { isLiked } = useSelector((state: RootState) => state.isLiked);
-  const createdAt = post.createdAt;
   const timestamp = new Intl.DateTimeFormat("ko-KR", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
-  }).format(createdAt);
+  }).format(post.createdAt);
 
   const getPost = async () => {
     try {
@@ -57,9 +56,6 @@ const Modal = ({ userData, postId }: Props) => {
     };
   }, [isLiked]);
 
-  console.log("post", post);
-  console.log("userData", userData);
-
   return (
     <>
       <Container>
@@ -75,7 +71,7 @@ const Modal = ({ userData, postId }: Props) => {
             <ContentsContainer>
               <ContentInfo>
                 <Title>{post.title}</Title>
-                <CreatedAt>{timestamp}</CreatedAt>
+                <RegisteredDate>{timestamp}</RegisteredDate>
               </ContentInfo>
               <Text>{post.text}</Text>
               <PostKeyword placeKeyword={post.placeKeyword} />
@@ -83,29 +79,8 @@ const Modal = ({ userData, postId }: Props) => {
             <ReadMapWrapper>
               <ReadMap placeInfo={post.placeInfo} />
             </ReadMapWrapper>
-            <Comment>
-              <CommentInput>
-                <CITitle>
-                  댓글
-                  <span></span>
-                </CITitle>
-                <CIContainer>
-                  <CIAvatarWrapper>
-                    {userData.photoURL ? (
-                      <img src={userData.photoURL} alt="profile" />
-                    ) : (
-                      <BasicAvatarIcon />
-                    )}
-                  </CIAvatarWrapper>
-                  <CIText placeholder="댓글을 입력하세요." />
-                </CIContainer>
-                <CIBtnWrapper>
-                  <CIBtn>댓글 등록</CIBtn>
-                </CIBtnWrapper>
-              </CommentInput>
 
-              <CommentList></CommentList>
-            </Comment>
+            <CommentSection userData={userData} postId={postId} />
           </Main>
         </ModalContainer>
       </Container>
@@ -226,13 +201,15 @@ const Title = styled.div`
   overflow: hidden;
   color: ${(props) => props.theme.colors.moreDarkGray};
   font-size: 1.1rem;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.7rem;
 `;
 
-const CreatedAt = styled.div`
-  color: ${(props) => props.theme.colors.gray};
+const RegisteredDate = styled.div`
   font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: ${(props) => props.theme.colors.gray1};
 `;
 
 const Text = styled.div`
@@ -241,99 +218,12 @@ const Text = styled.div`
   max-height: 15.5rem;
   overflow: hidden;
   padding: 0.5rem 0;
-  line-height: 1.5rem;
+  font-size: 1.05rem;
   font-weight: 400;
+  line-height: 1.55rem;
 `;
 
 const ReadMapWrapper = styled.section`
   padding: 0 3.8rem;
   /* box-shadow: inset 0 2px 45px rgba(0, 0, 0, 0.383); */
 `;
-
-const Comment = styled.section`
-  height: 20rem;
-  padding: 5rem 3.8rem 3.8rem 3.8rem;
-  /* border-top: ${(props) => props.theme.borders.lightGray}; */
-`;
-
-const CommentInput = styled.div``;
-
-const CITitle = styled.div`
-  font-size: 1.15rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-
-  span {
-  }
-`;
-const CIContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const CIAvatarWrapper = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  img {
-    width: 2.5rem;
-    height: 2.5rem;
-    object-fit: cover;
-    border-radius: 50%;
-  }
-`;
-
-const BasicAvatarIcon = styled.img.attrs({
-  src: avatar,
-})`
-  width: 2.5rem;
-  height: 2.5rem;
-  object-fit: cover;
-  border-radius: 50%;
-`;
-
-const CIText = styled.textarea`
-  margin-left: 1rem;
-  width: 100%;
-  height: 6.5rem;
-  font-size: 0.95rem;
-  color: ${(props) => props.theme.colors.moreDarkGray};
-  /* padding: 1.1rem 1.2rem; */
-  padding: 0.9rem 1rem;
-  border-radius: 1rem;
-  border: 2px solid ${(props) => props.theme.colors.borderGray};
-  line-height: 1.5rem;
-  word-spacing: -0.3rem;
-  resize: none;
-  outline: none;
-
-  /* &:hover {
-    outline: 1px solid #c9c9c9;
-  }
-  &:focus {
-    outline: 1px solid #c9c9c9;
-  } */
-`;
-
-const CIBtnWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin: 1rem 0;
-`;
-
-const CIBtn = styled.button`
-  color: black;
-  background-color: ${(props) => props.theme.colors.lightGray};
-  border-radius: 3rem;
-  padding: 0.74rem 1.3rem 0.7rem 1.3rem;
-  font-size: 0.95rem;
-  font-weight: 400;
-  color: ${(props) => props.theme.colors.white};
-  background-color: ${(props) => props.theme.colors.lightBlack};
-  font-weight: 500;
-  &:hover {
-    background-color: ${(props) => props.theme.colors.darkGray};
-  }
-`;
-
-const CommentList = styled.ul``;

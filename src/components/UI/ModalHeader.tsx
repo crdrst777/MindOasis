@@ -36,8 +36,6 @@ const ModalHeader = ({ post, postId, userData }: Props) => {
     getCreatorData();
   }, [post, postId]);
 
-  console.log("userData", userData);
-
   return (
     <Header>
       <UserInfo>
