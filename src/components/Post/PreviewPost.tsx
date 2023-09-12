@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 import { PostType } from "../../types/types";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as HeartIcon } from "../../assets/icon/heart-icon.svg";
+import { useEffect, useState } from "react";
 
 interface Props {
   post: PostType;
@@ -9,18 +10,30 @@ interface Props {
 
 const PreviewPost = ({ post }: Props) => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const openModal = (id: any) => {
     navigate(`/content/${id}`); // 이 url로 바꿔줌.
   };
 
+  useEffect(() => {
+    if (userInfo === null) {
+      setIsLoggedIn(false);
+    } else {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   return (
     <Container onClick={() => openModal(post.id)}>
       <Overlay>
-        <LikeBtn $likestate={post.likeState}>
-          <HeartIcon />
-        </LikeBtn>
-        <Title>{post?.title}</Title>
+        {isLoggedIn && (
+          <LikeBtn $likestate={post.likeState}>
+            <HeartIcon />
+          </LikeBtn>
+        )}
+        <Title $isLoggedIn={isLoggedIn}>{post?.title}</Title>
       </Overlay>
       <PreviewImg src={post.attachmentUrl} alt="image" />
     </Container>
@@ -64,13 +77,13 @@ const LikeBtn = styled.div<{ $likestate: any }>`
   }
 `;
 
-const Title = styled.div`
+const Title = styled.div<{ $isLoggedIn: any }>`
   display: inline-block;
   width: 11rem;
   height: 2.55rem;
   overflow: hidden;
   color: ${(props) => props.theme.colors.white};
-  margin-top: 7.8rem;
+  margin-top: ${(props) => (props.$isLoggedIn ? "7.8rem" : "11rem")};
   margin-left: 1.9rem;
   font-size: 0.95rem;
   font-weight: 400;

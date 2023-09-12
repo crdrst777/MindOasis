@@ -31,5 +31,6 @@ const LoadingWrapper = styled.div`
   h3 {
     margin-bottom: 0.65rem;
     font-size: 1.1rem;
+    font-weight: 400;
   }
 `;

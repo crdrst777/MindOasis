@@ -18,6 +18,7 @@ const ModalHeader = ({ post, postId, userData }: Props) => {
   // `${post.creatorId}` ->  users db의 documentId와 동일. documentId로 해당 user 데이터 찾기
   const creatorDocRef = doc(dbService, "users", `${post.creatorId}`); // 게시물 작성자를 가리키는 참조 생성
   const [creatorData, setCreatorData] = useState<any>({});
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const getCreatorData = async () => {
     try {
@@ -36,6 +37,14 @@ const ModalHeader = ({ post, postId, userData }: Props) => {
     getCreatorData();
   }, [post, postId]);
 
+  useEffect(() => {
+    if (Object.keys(userData).length === 0) {
+      setIsLoggedIn(false);
+    } else {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   return (
     <Header>
       <UserInfo>
@@ -49,15 +58,19 @@ const ModalHeader = ({ post, postId, userData }: Props) => {
         <Nickname>{creatorData.displayName}</Nickname>
       </UserInfo>
 
-      {post.creatorId === userData.uid ? (
+      {isLoggedIn && (
         <>
-          <BtnContainer>
+          {post.creatorId === userData.uid ? (
+            <>
+              <BtnContainer>
+                <PostLike post={post} postId={postId} userData={userData} />
+                <DetailsDropdown post={post} postId={postId}></DetailsDropdown>
+              </BtnContainer>
+            </>
+          ) : (
             <PostLike post={post} postId={postId} userData={userData} />
-            <DetailsDropdown post={post} postId={postId}></DetailsDropdown>
-          </BtnContainer>
+          )}
         </>
-      ) : (
-        <PostLike post={post} postId={postId} userData={userData} />
       )}
     </Header>
   );

@@ -26,13 +26,12 @@ const MapSection = ({ placeAddr }: Props) => {
     <Container>
       <SearchForm>
         <SearchIcon />
-        <Search
+        <SearchInput
           placeholder="검색어를 입력하세요"
           onChange={onChange}
           value={inputText}
           onKeyPress={handleOnKeyPress}
         />
-        {/* <SearchBtn onClick={onSubmit}>검색</SearchBtn> */}
       </SearchForm>
       <SearchMap searchPlace={place} />
     </Container>
@@ -60,7 +59,7 @@ const SearchIcon = styled.img.attrs({
   left: 1rem;
 `;
 
-const Search = styled.input`
+const SearchInput = styled.input`
   width: 100%;
   height: 3.3rem;
   font-size: 0.95rem;
@@ -69,7 +68,7 @@ const Search = styled.input`
   background-color: ${(props) => props.theme.colors.lightGray};
   padding: 0 3.3rem;
   border-radius: 5px;
-  border: 0px solid black;
+  border: none;
   /* border: ${(props) => props.theme.borders.gray}; */
 
   &:hover {
@@ -79,5 +78,3 @@ const Search = styled.input`
     outline: 1.8px solid ${(props) => props.theme.colors.yellow};
   }
 `;
-
-const SearchBtn = styled.button``;

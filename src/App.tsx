@@ -1,5 +1,5 @@
 import { BrowserRouter } from "react-router-dom";
-import { authService, dbService } from "./fbase";
+import { authService } from "./fbase";
 import { useEffect, useState } from "react";
 import { updateProfile } from "firebase/auth";
 import AppRouter from "./Router";
@@ -41,8 +41,8 @@ function App() {
       } else {
         setIsLoggedIn(false);
       }
-      setInit(true); // init이 false라면 router를 숨길거임. true일때 나타나게.
       setLoading(false);
+      setInit(true); // init이 false라면 router를 숨길거임. true일때 나타나게.
     });
   }, []);
 

@@ -26,7 +26,6 @@ const Keyword = styled.div`
   display: flex;
   align-items: center;
   color: #5f5f5f;
-  /* background-color: #ffe371; */
   background-color: #ffe787;
   border-radius: 1rem;
   padding: 0.5rem 0.72rem 0.41rem 0.72rem;

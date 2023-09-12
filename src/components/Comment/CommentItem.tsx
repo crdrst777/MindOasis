@@ -1,12 +1,20 @@
 import { styled } from "styled-components";
 import { CommentType } from "../../types/types";
 import avatar from "../../assets/img/avatar-icon.png";
+import { deleteDoc, doc } from "firebase/firestore";
+import { dbService } from "../../fbase";
+import { useEffect, useState } from "react";
 
 interface Props {
   comment?: CommentType;
+  userId: string;
+  delRenderingHandler: (triggerRender: boolean) => void;
 }
 
-const CommentItem = ({ comment }: Props) => {
+const CommentItem = ({ comment, userId, delRenderingHandler }: Props) => {
+  const commentRef = doc(dbService, "comments", `${comment.id}`); // 파일을 가리키는 참조 생성
+  const [triggerRender, setTriggerRender] = useState(false);
+
   const timestamp = new Intl.DateTimeFormat("ko-KR", {
     year: "numeric",
     month: "2-digit",
@@ -15,23 +23,44 @@ const CommentItem = ({ comment }: Props) => {
     minute: "2-digit",
   }).format(comment.createdAt);
 
+  const onDeleteClick = async () => {
+    const ok = window.confirm("정말 이 댓글을 삭제하시겠습니까?");
+    if (ok) {
+      await deleteDoc(commentRef);
+      console.log("삭제함");
+      setTriggerRender((prev) => !prev);
+    }
+  };
+
+  useEffect(() => {
+    delRenderingHandler(triggerRender);
+  }, [comment, userId, triggerRender]);
+
+  console.log("del-triggerRender", triggerRender);
+
   return (
     <>
       <Container>
         {comment && (
           <>
             <CommentHeader>
-              <AvatarWrapper>
-                {comment.userPhotoURL ? (
-                  <img src={comment.userPhotoURL} alt="profile" />
-                ) : (
-                  <BasicAvatarIcon />
-                )}
-              </AvatarWrapper>
-              <Info>
-                <Nickname>{comment.userDisplayName}</Nickname>
-                <RegisteredDate>{timestamp}</RegisteredDate>
-              </Info>
+              <InfoContainer>
+                <AvatarWrapper>
+                  {comment.userPhotoURL ? (
+                    <img src={comment.userPhotoURL} alt="profile" />
+                  ) : (
+                    <BasicAvatarIcon />
+                  )}
+                </AvatarWrapper>
+                <Info>
+                  <Nickname>{comment.userDisplayName}</Nickname>
+                  <RegisteredDate>{timestamp}</RegisteredDate>
+                </Info>
+              </InfoContainer>
+
+              {userId === comment.userId && (
+                <DeleteBtn onClick={onDeleteClick}>삭제</DeleteBtn>
+              )}
             </CommentHeader>
 
             <CommentText>
@@ -53,7 +82,12 @@ const Container = styled.li`
 
 const CommentHeader = styled.div`
   display: flex;
+  justify-content: space-between;
   margin-bottom: 1.3rem;
+`;
+
+const InfoContainer = styled.div`
+  display: flex;
 `;
 
 const AvatarWrapper = styled.div`
@@ -95,6 +129,23 @@ const RegisteredDate = styled.div`
   letter-spacing: -0.01em;
   color: ${(props) => props.theme.colors.gray1};
   margin-top: 0.1rem;
+`;
+
+const DeleteBtn = styled.button`
+  width: 2.25rem;
+  height: 1.8rem;
+  padding-top: 0.13rem;
+  background-color: ${(props) => props.theme.colors.white};
+  border: 0.9px solid #c1c1c1;
+  border-radius: 3px;
+  color: ${(props) => props.theme.colors.gray};
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.moreLightGray};
+    border-color: #787878;
+    color: #616161;
+  }
 `;
 
 const CommentText = styled.div`

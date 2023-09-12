@@ -107,18 +107,23 @@ const CheckBoxInput = styled.input`
   border: 0;
 
   &:checked + label {
-    background-color: ${(props) => props.theme.colors.violet};
-    color: ${(props) => props.theme.colors.white};
+    background-color: #ffe787;
+    color: ${(props) => props.theme.colors.black};
   }
 `;
 
 const CheckBoxLabel = styled.label`
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem 0.54rem 1rem;
   height: 2.25rem;
   cursor: pointer;
   border-radius: 2rem;
   background-color: ${(props) => props.theme.colors.lightGray};
   font-size: 0.85rem;
-  font-weight: 400;
+  font-weight: 500;
   color: ${(props) => props.theme.colors.black};
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: #fff5cf;
+  }
 `;

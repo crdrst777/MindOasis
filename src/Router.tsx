@@ -1,15 +1,16 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/home/Home";
+import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
 import UpdateProfile from "./pages/myPage/UpdateProfile";
 import UpdatePassword from "./pages/myPage/UpdatePassword";
 import MyPosts from "./pages/myPage/MyPosts";
 import MyLikes from "./pages/myPage/MyLikes";
 import SignUp from "./pages/auth/SignUp";
-import Content from "./pages/content/Content";
+import Content from "./pages/Content";
 import UploadPost from "./pages/post/UploadPost";
 import EditPost from "./pages/post/EditPost";
 import MyPageSinglePost from "./pages/myPage/MyPageSinglePost";
+import Search from "./pages/Search";
 
 interface AppRouterProps {
   isLoggedIn: boolean;
@@ -44,6 +45,7 @@ const AppRouter = ({ isLoggedIn, refreshUser }: AppRouterProps) => {
 
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/content" element={<Content />} />
         <Route path="/content/:id" element={<Content />} />
         <Route path="/mypage/content/:id" element={<MyPageSinglePost />} />

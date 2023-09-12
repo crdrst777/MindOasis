@@ -39,7 +39,7 @@ const ReadMap = ({ placeInfo }: Props) => {
             content: `<div class="infowindowArrow"></div><div class="infowindow"><span class="placename">${placeInfo?.placeName}</span><span class="placeaddr">${placeInfo?.placeAddr}</span></div>`,
           });
           const infowindowArrow = infowindow.a.childNodes[0];
-          console.log("infowindowArrow", infowindowArrow);
+          // console.log("infowindowArrow", infowindowArrow);
           infowindow.open(map, marker);
 
           // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
@@ -52,9 +52,6 @@ const ReadMap = ({ placeInfo }: Props) => {
 
   return (
     <Container>
-      {/* <PlaceText>
-        <PlaceName>{placeInfo?.placeName}</PlaceName>
-      </PlaceText> */}
       <Map>
         <div id="map"></div>
       </Map>
@@ -91,6 +88,7 @@ const Map = styled.div`
       text-align: center;
       font-size: 0.9rem;
       font-weight: 400;
+      border-radius: 9px;
     }
     .placename {
       margin-bottom: 0.15rem;

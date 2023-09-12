@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { dbService } from "../../fbase";
+import { dbService } from "../fbase";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
-import { PostType } from "../../types/types";
+import { PostType } from "../types/types";
 import { styled } from "styled-components";
 import { PathMatch, useMatch } from "react-router-dom";
-import Modal from "../../components/UI/Modal";
-import PreviewPost from "../../components/Post/PreviewPost";
+import Modal from "../components/UI/Modal";
+import PreviewPost from "../components/Post/PreviewPost";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { getUserData } from "../../api/user";
-import Category from "../../components/UI/Category";
-import Pagination from "../../components/UI/Pagination";
-import { setPlaceKeywordReducer } from "../../store/checkedListSlice";
+import { RootState } from "../store";
+import { getUserData } from "../api/user";
+import Category from "../components/UI/Category";
+import Pagination from "../components/UI/Pagination";
+import { setPlaceKeywordReducer } from "../store/checkedListSlice";
 
 const Content = () => {
   const dispatch = useDispatch();
@@ -20,12 +20,15 @@ const Content = () => {
   const bigMatch: PathMatch<string> | null = useMatch(`content/:id`);
   const [posts, setPosts] = useState<PostType[]>([]);
   const [userData, setUserData] = useState<any>({});
-  const { isLiked } = useSelector((state: RootState) => state.isLiked);
   const [isAllPostBtnClicked, setIsAllPostBtnClicked] = useState(true);
-  // 클릭한 카테고리에 해당되는 게시물들이 들어가는 배열
-  const [matchingPosts, setMatchingPosts] = useState<PostType[]>([]);
-  // 클릭한 카테고리에 해당되는 게시물이 없는지 여부
-  const [isUnmatched, setIsUnmatched] = useState(false);
+  const { isLiked } = useSelector((state: RootState) => state.isLiked);
+  const { searchedPosts } = useSelector(
+    (state: RootState) => state.searchedPosts
+  );
+
+  // category
+  const [matchingPosts, setMatchingPosts] = useState<PostType[]>([]); // 클릭한 카테고리에 해당되는 게시물들이 들어가는 배열
+  const [isUnmatched, setIsUnmatched] = useState(false); // 클릭한 카테고리에 해당되는 게시물이 없는지 여부
   const checkedList: string[] = useSelector(
     (state: RootState) => state.category.checkedList
   );
@@ -68,6 +71,10 @@ const Content = () => {
     });
   };
 
+  // useEffect(() => {
+  //   setMatchingPosts(searchedPosts);
+  // }, [searchedPosts]);
+
   useEffect(() => {
     getPosts();
     dispatch(setPlaceKeywordReducer([]));
@@ -79,7 +86,9 @@ const Content = () => {
   }, [posts]);
 
   useEffect(() => {
-    getUserData(userInfo.uid, setUserData);
+    if (userInfo) {
+      getUserData(userInfo.uid, setUserData);
+    }
   }, [isLiked]);
 
   // 카테고리 처음 클릭
@@ -192,8 +201,8 @@ const Content = () => {
   }, [checkedList]);
 
   console.log("matchingPosts.length", matchingPosts.length);
-  console.log("checkedList", checkedList);
-  console.log("isUnmatched", isUnmatched);
+  // console.log("checkedList", checkedList);
+  console.log("searchedPosts", searchedPosts);
 
   return (
     <Container>
@@ -253,23 +262,24 @@ const CategoryContainer = styled.section`
 `;
 
 const AllPostBtn = styled.button<{ $isallpostbtnclicked: boolean }>`
-  padding: 0.5rem 1rem;
-  margin-top: 0.5rem;
+  padding: 0.6rem 1rem 0.54rem 1rem;
+  margin-top: 0.42rem;
   margin-right: 1rem;
   width: 3.7rem;
-  height: 2.031rem;
+  height: 2.17rem;
   cursor: pointer;
   border-radius: 2rem;
   background-color: ${(props) =>
-    props.$isallpostbtnclicked
-      ? props.theme.colors.violet
-      : props.theme.colors.lightGray};
+    props.$isallpostbtnclicked ? "#ffe787" : props.theme.colors.lightGray};
   font-size: 0.85rem;
-  font-weight: 400;
+  font-weight: 500;
   color: ${(props) =>
     props.$isallpostbtnclicked
-      ? props.theme.colors.white
+      ? props.theme.colors.black
       : props.theme.colors.black};
+  /* &:hover {
+    background-color: #fff5cf;
+  } */
 `;
 
 const ContentContainer = styled.section`

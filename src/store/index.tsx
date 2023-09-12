@@ -4,6 +4,7 @@ import checkedListSlice from "./checkedListSlice";
 import isLikedSlice from "./isLikedSlice";
 import categorySlice from "./categorySlice";
 import triggerRenderSlice from "./triggerRenderSlice";
+import searchedPostsSlice from "./searchedPostsSlice";
 
 // configureStore는 여러 개의 slice들을 모아주는 역할
 const store = configureStore({
@@ -13,6 +14,7 @@ const store = configureStore({
     isLiked: isLikedSlice,
     category: categorySlice,
     triggerRender: triggerRenderSlice,
+    searchedPosts: searchedPostsSlice,
   },
 });
 

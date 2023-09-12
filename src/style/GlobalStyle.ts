@@ -8,7 +8,7 @@ ${reset}
 }
 body {
   font-weight: 300;
-  font-family: "Pretendard", serif;
+  font-family: "Pretendard", sans-serif;
   color: black;
   line-height: 1.2;
   background-color: white;

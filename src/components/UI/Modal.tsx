@@ -219,12 +219,9 @@ const Text = styled.div`
   max-height: 16.5rem;
   overflow: hidden;
   padding: 0.5rem 0;
-  font-size: 1.05rem;
+  font-size: 1.01rem;
   font-weight: 400;
   line-height: 1.55rem;
 `;
 
-const ReadMapWrapper = styled.section`
-  padding: 0 3.8rem;
-  /* box-shadow: inset 0 2px 45px rgba(0, 0, 0, 0.383); */
-`;
+const ReadMapWrapper = styled.section``;

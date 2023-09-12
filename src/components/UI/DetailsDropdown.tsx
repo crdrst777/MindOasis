@@ -8,7 +8,6 @@ import { PostType } from "../../types/types";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlaceInfoReducer } from "../../store/placeInfoSlice";
-import { RootState } from "../../store";
 
 interface Props {
   post: PostType;
@@ -21,7 +20,7 @@ const DetailsDropdown = ({ post, postId }: Props) => {
   const dispatch = useDispatch();
 
   // const navigate: NavigateFunction = useNavigate();
-  const postTextRef = doc(dbService, "posts", `${postId}`); // 파일을 가리키는 참조 생성
+  const postRef = doc(dbService, "posts", `${postId}`); // 파일을 가리키는 참조 생성
   const postUrlRef = ref(storageService, post.attachmentUrl); // 파일을 가리키는 참조 생성
 
   const DropdownBtnClick = () => {
@@ -47,7 +46,7 @@ const DetailsDropdown = ({ post, postId }: Props) => {
   const onDeleteClick = async () => {
     const ok = window.confirm("정말 이 게시물을 삭제하시겠습니까?");
     if (ok) {
-      await deleteDoc(postTextRef);
+      await deleteDoc(postRef);
       // 삭제하려는 게시물에 이미지 파일이 있는 경우 이미지 파일 스토리지에서 삭제
       if (post.attachmentUrl) {
         await deleteObject(postUrlRef);
@@ -55,8 +54,6 @@ const DetailsDropdown = ({ post, postId }: Props) => {
       navigate(`/content`);
     }
   };
-
-  console.log(isOpen);
 
   return (
     <Container>

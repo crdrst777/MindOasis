@@ -4,45 +4,59 @@ import avatar from "../../assets/img/avatar-icon.png";
 import { useEffect, useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
 import { dbService } from "../../fbase";
-import { setTriggerRenderReducer } from "../../store/triggerRenderSlice";
-import { useDispatch } from "react-redux";
 
 interface Props {
   userData: UserDocType;
   postId?: string;
+  submitRenderingHandler: (triggerRender: boolean) => void;
 }
 
-const WriteComment = ({ userData, postId }: Props) => {
-  const dispatch = useDispatch();
+const WriteComment = ({ userData, postId, submitRenderingHandler }: Props) => {
   const [text, setText] = useState("");
   const [triggerRender, setTriggerRender] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    const commentData: CommentType = {
-      userId: userData.uid,
-      userPhotoURL: userData.photoURL,
-      userDisplayName: userData.displayName,
-      createdAt: Date.now(),
-      text: text,
-      postId,
-    };
+    if (!isLoggedIn) {
+      alert("로그인을 해주세요.");
+    } else {
+      const commentData: CommentType = {
+        userId: userData.uid,
+        userPhotoURL: userData.photoURL,
+        userDisplayName: userData.displayName,
+        createdAt: Date.now(),
+        text: text,
+        postId,
+      };
 
-    if (text !== "") {
-      addDoc(collection(dbService, "comments"), commentData);
-      setTriggerRender((prev: any) => !prev);
-      setText("");
+      if (text !== "") {
+        console.log(`등록-${text}`);
+        await addDoc(collection(dbService, "comments"), commentData);
+        setTriggerRender((prev) => !prev);
+        setText("");
+      }
     }
   };
 
-  const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
 
   useEffect(() => {
-    dispatch(setTriggerRenderReducer(triggerRender));
+    if (Object.keys(userData).length === 0) {
+      setIsLoggedIn(false);
+    } else {
+      setIsLoggedIn(true);
+    }
+  }, [userData, postId]);
+
+  useEffect(() => {
+    submitRenderingHandler(triggerRender);
   }, [triggerRender]);
+
+  console.log("sub-triggerRender", triggerRender);
 
   return (
     <Container>
@@ -61,12 +75,12 @@ const WriteComment = ({ userData, postId }: Props) => {
         <TextInput
           maxLength={500}
           value={text}
-          onChange={onTextChange}
+          onChange={onChange}
           placeholder="댓글을 입력하세요."
         />
       </InputContainer>
       <BtnWrapper>
-        <Btn onClick={onSubmit}>댓글 등록</Btn>
+        <SubmitBtn onClick={onSubmit}>댓글 등록</SubmitBtn>
       </BtnWrapper>
     </Container>
   );
@@ -139,7 +153,7 @@ const BtnWrapper = styled.div`
   margin: 0.85rem 0;
 `;
 
-const Btn = styled.button`
+const SubmitBtn = styled.button`
   color: black;
   background-color: ${(props) => props.theme.colors.lightGray};
   border-radius: 4rem;
