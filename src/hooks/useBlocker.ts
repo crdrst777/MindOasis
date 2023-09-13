@@ -1,7 +1,7 @@
 // 페이지 이탈 시 경고창 띄우는 로직
 // 뒤로가기 할때는 해당 안됨
 
-import { useContext, useEffect, useCallback, useState } from "react";
+import { useContext, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { UNSAFE_NavigationContext as NavigationContext } from "react-router-dom";
 import { setPlaceInfoReducer } from "../store/placeInfoSlice";

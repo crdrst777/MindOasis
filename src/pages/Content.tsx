@@ -3,7 +3,7 @@ import { dbService } from "../fbase";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { PostType } from "../types/types";
 import { styled } from "styled-components";
-import { PathMatch, useMatch } from "react-router-dom";
+import { PathMatch, useLocation, useMatch } from "react-router-dom";
 import Modal from "../components/UI/Modal";
 import PreviewPost from "../components/Post/PreviewPost";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,7 @@ import { getUserData } from "../api/user";
 import Category from "../components/UI/Category";
 import Pagination from "../components/UI/Pagination";
 import { setPlaceKeywordReducer } from "../store/checkedListSlice";
+import { setSearchedPostsReducer } from "../store/searchedPostsSlice";
 
 const Content = () => {
   const dispatch = useDispatch();
@@ -19,12 +20,12 @@ const Content = () => {
   // useMatch()의 인자로 url을 넘기면 해당 url과 일치할 경우 url의 정보를 반환하고, 일치하지 않을 경우 null을 반환한다.
   const bigMatch: PathMatch<string> | null = useMatch(`content/:id`);
   const [posts, setPosts] = useState<PostType[]>([]);
-  const [userData, setUserData] = useState<any>({});
-  const [isAllPostBtnClicked, setIsAllPostBtnClicked] = useState(true);
+  const [userData, setUserData] = useState<any>({}); // userInfo의 userId를 통해 얻은 userData
+  const [isAllPostBtnClicked, setIsAllPostBtnClicked] = useState(false); // '전체' 버튼 클릭 여부
   const { isLiked } = useSelector((state: RootState) => state.isLiked);
   const { searchedPosts } = useSelector(
     (state: RootState) => state.searchedPosts
-  );
+  ); // 검색한 결과값
 
   // category
   const [matchingPosts, setMatchingPosts] = useState<PostType[]>([]); // 클릭한 카테고리에 해당되는 게시물들이 들어가는 배열
@@ -71,23 +72,24 @@ const Content = () => {
     });
   };
 
-  // useEffect(() => {
-  //   setMatchingPosts(searchedPosts);
-  // }, [searchedPosts]);
-
   useEffect(() => {
     getPosts();
     dispatch(setPlaceKeywordReducer([]));
   }, []); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
 
   useEffect(() => {
-    setMatchingPosts([...posts]);
-    setIsUnmatched(false);
+    if (searchedPosts.length > 0) {
+      setMatchingPosts(searchedPosts);
+      setIsAllPostBtnClicked(false);
+    } else {
+      setMatchingPosts(posts);
+      setIsUnmatched(false);
+    }
   }, [posts]);
 
   useEffect(() => {
     if (userInfo) {
-      getUserData(userInfo.uid, setUserData);
+      getUserData(userInfo.uid, setUserData); // 리턴값 -> setUserData(userDocSnap.data());
     }
   }, [isLiked]);
 
@@ -185,6 +187,7 @@ const Content = () => {
     setMatchingPosts([...posts]);
     setIsAllPostBtnClicked(true);
     setIsUnmatched(false);
+    dispatch(setSearchedPostsReducer([]));
   };
 
   // 카테고리를 클릭할떼
@@ -192,11 +195,16 @@ const Content = () => {
     getMatchingPosts();
     setCurrentPage(1);
 
-    if (checkedList.length !== 0) {
+    if (checkedList.length > 0) {
       setIsAllPostBtnClicked(false);
     } else {
-      setIsAllPostBtnClicked(true);
-      setMatchingPosts([...posts]);
+      if (searchedPosts.length > 0) {
+        setMatchingPosts([...searchedPosts]);
+        setIsAllPostBtnClicked(false);
+      } else {
+        setMatchingPosts([...posts]);
+        setIsAllPostBtnClicked(true);
+      }
     }
   }, [checkedList]);
 
@@ -277,9 +285,6 @@ const AllPostBtn = styled.button<{ $isallpostbtnclicked: boolean }>`
     props.$isallpostbtnclicked
       ? props.theme.colors.black
       : props.theme.colors.black};
-  /* &:hover {
-    background-color: #fff5cf;
-  } */
 `;
 
 const ContentContainer = styled.section`
@@ -296,6 +301,7 @@ const AlertText = styled.div`
   height: 100%;
   padding-top: 11.2rem;
   font-size: 1.1rem;
+  font-weight: 400;
 `;
 
 const PreviewContainer = styled.div`
