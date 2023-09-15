@@ -277,6 +277,7 @@ const AllPostBtn = styled.button<{ $isallpostbtnclicked: boolean }>`
   height: 2.17rem;
   cursor: pointer;
   border-radius: 2rem;
+  transition: background-color 0.2s ease;
   background-color: ${(props) =>
     props.$isallpostbtnclicked ? "#ffe787" : props.theme.colors.lightGray};
   font-size: 0.85rem;

@@ -121,7 +121,7 @@ const CheckBoxLabel = styled.label`
   font-size: 0.85rem;
   font-weight: 500;
   color: ${(props) => props.theme.colors.black};
-  transition: background-color 0.15s ease;
+  transition: background-color 0.2s ease;
 
   &:hover {
     background-color: #fff5cf;

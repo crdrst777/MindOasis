@@ -27,13 +27,11 @@ const UpdatePasswordPage = () => {
     }
   };
 
-  const onNewPasswordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeNewPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewPassword(e.currentTarget.value);
   };
 
-  const onCheckPasswordInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const onChangeCheckPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCheckPassword(e.currentTarget.value);
   };
 
@@ -42,26 +40,26 @@ const UpdatePasswordPage = () => {
       <Container>
         <Sidebar linkTitle={"비밀번호 변경"} />
         <MainContainer>
-          <PasswordContainer>
-            <SubTitle>새로운 비밀번호</SubTitle>
+          <InputBlock>
+            <InputLabel>새로운 비밀번호</InputLabel>
             <NewPasswordInput
               type="password"
               value={newPassword}
-              onChange={onNewPasswordInputChange}
+              onChange={onChangeNewPassword}
               maxLength={8}
             />
-          </PasswordContainer>
-          <PasswordContainer>
-            <SubTitle>비밀번호 확인</SubTitle>
+          </InputBlock>
+          <InputBlock>
+            <InputLabel>비밀번호 확인</InputLabel>
             <CheckPasswordInput
               type="password"
               value={checkPassword}
-              onChange={onCheckPasswordInputChange}
+              onChange={onChangeCheckPassword}
               maxLength={8}
             />
-          </PasswordContainer>
+          </InputBlock>
           <BtnContainer>
-            <PostBtn onClick={onSubmit}>저장하기</PostBtn>
+            <SubmitBtn onClick={onSubmit}>저장하기</SubmitBtn>
           </BtnContainer>
         </MainContainer>
       </Container>
@@ -95,23 +93,25 @@ const MainContainer = styled.section`
   background-color: ${(props) => props.theme.colors.white};
 `;
 
-const PasswordContainer = styled.div`
+const InputBlock = styled.div`
+  display: flex;
+  flex-direction: column;
   margin-top: 2rem;
 `;
 
-const SubTitle = styled.div`
+const InputLabel = styled.label`
   font-size: 1rem;
   font-weight: 500;
-  margin: 0 0 5px;
+  margin: 0 0 0.315rem;
   color: ${(props) => props.theme.colors.darkGray};
 `;
 
 const NewPasswordInput = styled.input`
   width: 16rem;
-  min-height: 3.3rem;
+  height: 3rem;
   font-size: 0.97rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
-  padding: 0 1.2rem;
+  padding: 0 0.8rem;
   border-radius: 5px;
   border: ${(props) => props.theme.borders.lightGray};
   &:hover {
@@ -124,10 +124,10 @@ const NewPasswordInput = styled.input`
 
 const CheckPasswordInput = styled.input`
   width: 16rem;
-  min-height: 3.3rem;
+  min-height: 3rem;
   font-size: 0.97rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
-  padding: 0 1.2rem;
+  padding: 0 0.8rem;
   border-radius: 5px;
   border: ${(props) => props.theme.borders.lightGray};
   &:hover {
@@ -142,9 +142,9 @@ const BtnContainer = styled.div`
   margin: 2rem 0;
 `;
 
-const PostBtn = styled.button`
+const SubmitBtn = styled.button`
   width: 16rem;
-  height: 2.8rem;
+  height: 3rem;
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.lightBlack};
   border-radius: 9px;

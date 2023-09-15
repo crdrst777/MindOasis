@@ -24,10 +24,7 @@ const SocialLogin = () => {
   return (
     <div>
       <button name="google" onClick={onSocialClick}>
-        Continue with Google
-      </button>
-      <button name="github" onClick={onSocialClick}>
-        Continue with Github
+        구글 로그인
       </button>
     </div>
   );

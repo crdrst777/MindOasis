@@ -89,7 +89,7 @@ const Container = styled.div`
 `;
 
 const CheckBoxWrapper = styled.div`
-  margin-top: 1rem;
+  margin-top: 0.9rem;
 `;
 
 // 원래의 인풋을 보이지 않는것처럼 멀리 보내버리고, 체크가 되었을 경우 라벨의 배경색, 글자색을 변경
@@ -106,18 +106,23 @@ const CheckBoxInput = styled.input`
   border: 0;
 
   &:checked + label {
-    background-color: ${(props) => props.theme.colors.violet};
-    color: ${(props) => props.theme.colors.white};
+    background-color: #ffe787;
+    color: ${(props) => props.theme.colors.black};
   }
 `;
 
 const CheckBoxLabel = styled.label`
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem 0.54rem 1rem;
   height: 2.25rem;
   cursor: pointer;
   border-radius: 2rem;
   background-color: ${(props) => props.theme.colors.lightGray};
   font-size: 0.85rem;
-  font-weight: 400;
+  font-weight: 500;
   color: ${(props) => props.theme.colors.black};
+  transition: background-color 0.17s ease;
+
+  &:hover {
+    background-color: #fff5cf;
+  }
 `;

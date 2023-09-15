@@ -196,18 +196,18 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
             )}
           </FileContainer>
 
-          <NicknameContainer>
-            <InputTitle>닉네임</InputTitle>
+          <InputBlock>
+            <InputLabel>닉네임</InputLabel>
             <NicknameInput
               type="text"
               value={newDisplayName}
               onChange={onChange}
               maxLength={30}
             />
-          </NicknameContainer>
+          </InputBlock>
 
           <BtnContainer>
-            <PostBtn onClick={onSubmit}>저장하기</PostBtn>
+            <SubmitBtn onClick={onSubmit}>저장하기</SubmitBtn>
           </BtnContainer>
 
           <button onClick={onLogOutClick}>Log Out</button>
@@ -282,23 +282,25 @@ const FileInput = styled.input`
   cursor: pointer;
 `;
 
-const NicknameContainer = styled.div`
+const InputBlock = styled.div`
+  display: flex;
+  flex-direction: column;
   margin-top: 2rem;
 `;
 
-const InputTitle = styled.div`
+const InputLabel = styled.label`
   font-size: 1rem;
   font-weight: 500;
-  margin: 0 0 5px;
+  margin: 0 0 0.315rem;
   color: ${(props) => props.theme.colors.darkGray};
 `;
 
 const NicknameInput = styled.input`
   width: 16rem;
-  height: 3.3rem;
+  height: 3rem;
   font-size: 0.97rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
-  padding: 0 1.2rem;
+  padding: 0 0.8rem;
   border-radius: 5px;
   border: ${(props) => props.theme.borders.lightGray};
   &:hover {
@@ -313,9 +315,9 @@ const BtnContainer = styled.div`
   margin: 1.4rem 0;
 `;
 
-const PostBtn = styled.button`
+const SubmitBtn = styled.button`
   width: 16rem;
-  height: 2.8rem;
+  height: 3rem;
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.lightBlack};
   border-radius: 9px;
