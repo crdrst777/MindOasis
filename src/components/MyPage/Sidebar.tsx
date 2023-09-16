@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { styled } from "styled-components";
 import avatar from "../../assets/img/avatar-icon.png";
+import { useEffect, useState } from "react";
+import { getUserData } from "../../api/user";
 
 interface Props {
   linkTitle: string;
@@ -15,6 +17,13 @@ const linkInfo = [
 
 const Sidebar = ({ linkTitle }: Props) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const [userData, setUserData] = useState<any>({}); // userInfo의 userId를 통해 얻은 userData
+
+  useEffect(() => {
+    if (userInfo) {
+      getUserData(userInfo.uid, setUserData); // 리턴값 -> setUserData(userDocSnap.data());
+    }
+  }, []);
 
   console.log(userInfo);
 
@@ -22,15 +31,15 @@ const Sidebar = ({ linkTitle }: Props) => {
     <Container>
       <SidebarHeader>
         <AvatarContainer>
-          {userInfo.photoURL ? (
-            <img src={userInfo.photoURL} alt="profile photo" />
+          {userData.photoURL ? (
+            <img src={userData.photoURL} alt="profile photo" />
           ) : (
             <BasicAvatarIcon />
           )}
         </AvatarContainer>
 
-        <Nickname>{userInfo.displayName}</Nickname>
-        <Email>{userInfo.email}</Email>
+        <Nickname>{userData.displayName}</Nickname>
+        <Email>{userData.email}</Email>
       </SidebarHeader>
       <SidebarMenu>
         {linkInfo.map((item, idx) =>

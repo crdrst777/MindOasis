@@ -5,6 +5,7 @@ import {
   GoogleAuthProvider,
   GithubAuthProvider,
 } from "firebase/auth";
+import { styled } from "styled-components";
 
 const SocialLogin = () => {
   const onSocialClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -22,12 +23,25 @@ const SocialLogin = () => {
   };
 
   return (
-    <div>
-      <button name="google" onClick={onSocialClick}>
-        구글 로그인
-      </button>
-    </div>
+    <Btn name="google" onClick={onSocialClick}>
+      구글 로그인
+    </Btn>
   );
 };
 
 export default SocialLogin;
+
+const Btn = styled.button`
+  width: 20rem;
+  height: 3rem;
+  color: ${(props) => props.theme.colors.white};
+  background-color: ${(props) => props.theme.colors.darkGray};
+  border-radius: 9px;
+  padding: 0 1.25rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  &:hover {
+    background-color: #5a5a5a;
+  }
+`;

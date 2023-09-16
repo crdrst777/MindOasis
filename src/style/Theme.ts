@@ -69,6 +69,7 @@ const colors = {
 
   disabled: "#ebebeb",
   red: "#ef6253",
+  lightYellow: "#ffe787",
   yellow: "#ffcd00",
   green: "#41b979",
   mint: "#1EC997",

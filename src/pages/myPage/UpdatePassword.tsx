@@ -47,6 +47,7 @@ const UpdatePasswordPage = () => {
               value={newPassword}
               onChange={onChangeNewPassword}
               maxLength={8}
+              placeholder="영문, 숫자, 특수문자 포함 6자 이상"
             />
           </InputBlock>
           <InputBlock>
