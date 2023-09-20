@@ -3,36 +3,35 @@ import Sidebar from "../../components/MyPage/Sidebar";
 import { useState } from "react";
 import { authService } from "../../fbase";
 import { updatePassword } from "firebase/auth";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { UpdatePasswordSchema } from "../../components/Auth/validationSchemas";
+import Validations from "../../components/Auth/Validation";
 
 const UpdatePasswordPage = () => {
-  const [newPassword, setNewPassword] = useState<string>("");
-  const [checkPassword, setCheckPassword] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(UpdatePasswordSchema),
+    mode: "onChange",
+  });
 
-  const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (newPassword === checkPassword) {
-      const user = authService.currentUser;
+  const onSubmit = async (inputData: any) => {
+    const user = authService.currentUser;
 
-      updatePassword(user, newPassword)
-        .then(() => {
-          console.log("Update successful");
-          alert("비밀번호가 변경되었습니다");
-          setNewPassword("");
-          setCheckPassword("");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      console.log("새로운 비밀번호와 비밀번호 확인이 일치하지 않습니다");
-    }
+    updatePassword(user, inputData.newPassword)
+      .then(() => {
+        alert("비밀번호가 변경되었습니다");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  const onChangeNewPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewPassword(e.currentTarget.value);
-  };
-
-  const onChangeCheckPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCheckPassword(e.currentTarget.value);
+  const onError = (error: any) => {
+    console.log(error);
   };
 
   return (
@@ -40,28 +39,33 @@ const UpdatePasswordPage = () => {
       <Container>
         <Sidebar linkTitle={"비밀번호 변경"} />
         <MainContainer>
-          <InputBlock>
-            <InputLabel>새로운 비밀번호</InputLabel>
-            <NewPasswordInput
-              type="password"
-              value={newPassword}
-              onChange={onChangeNewPassword}
-              maxLength={8}
-              placeholder="영문, 숫자, 특수문자 포함 6자 이상"
-            />
-          </InputBlock>
-          <InputBlock>
-            <InputLabel>비밀번호 확인</InputLabel>
-            <CheckPasswordInput
-              type="password"
-              value={checkPassword}
-              onChange={onChangeCheckPassword}
-              maxLength={8}
-            />
-          </InputBlock>
-          <BtnContainer>
-            <SubmitBtn onClick={onSubmit}>저장하기</SubmitBtn>
-          </BtnContainer>
+          <UpdateForm onSubmit={handleSubmit(onSubmit, onError)}>
+            <InputBlock>
+              <InputLabel>새로운 비밀번호</InputLabel>
+              <NewPasswordInput
+                type="password"
+                placeholder="영문, 숫자, 특수문자 포함 6자 이상"
+                {...register("newPassword")}
+              />
+              {errors.newPassword && (
+                <Validations value={errors.newPassword.message} />
+              )}
+            </InputBlock>
+            <InputBlock>
+              <InputLabel>비밀번호 확인</InputLabel>
+              <ConfirmPasswordInput
+                type="password"
+                placeholder="비밀번호를 다시 입력해주세요"
+                {...register("confirmPassword")}
+              />
+              {errors.confirmPassword && (
+                <Validations value={errors.confirmPassword.message} />
+              )}
+            </InputBlock>
+            <BtnContainer>
+              <SubmitBtn type="submit">저장하기</SubmitBtn>
+            </BtnContainer>
+          </UpdateForm>
         </MainContainer>
       </Container>
     </MyPageContainer>
@@ -93,6 +97,8 @@ const MainContainer = styled.section`
   border-radius: 0.4rem;
   background-color: ${(props) => props.theme.colors.white};
 `;
+
+const UpdateForm = styled.form``;
 
 const InputBlock = styled.div`
   display: flex;
@@ -127,7 +133,7 @@ const NewPasswordInput = styled.input`
   }
 `;
 
-const CheckPasswordInput = styled.input`
+const ConfirmPasswordInput = styled.input`
   width: 16rem;
   min-height: 3rem;
   font-size: 0.97rem;

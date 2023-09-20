@@ -108,10 +108,6 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
     fileInput.current!.value = "";
   };
 
-  // const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setNewDisplayName(e.currentTarget.value);
-  // };
-
   // 이미지 리사이즈(압축) 함수
   const handleImageCompress = async (
     e: React.ChangeEvent<HTMLInputElement>
@@ -181,7 +177,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
       <Container>
         <Sidebar linkTitle={"회원정보 변경"} />
         <MainContainer>
-          <UpdatePForm onSubmit={handleSubmit(onSubmit, onError)}>
+          <UpdateForm onSubmit={handleSubmit(onSubmit, onError)}>
             <FileContainer>
               <AvatarContainer>
                 {userInfo.photoURL ? (
@@ -212,12 +208,6 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
 
             <InputBlock>
               <InputLabel>닉네임</InputLabel>
-              {/* <NicknameInput
-              type="text"
-              value={newDisplayName}
-              onChange={onChange}
-              maxLength={30}
-            /> */}
               <NicknameInput
                 type="text"
                 placeholder={newDisplayName}
@@ -229,12 +219,11 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
             </InputBlock>
 
             <BtnContainer>
-              {/* <SubmitBtn onClick={onSubmit}>저장하기</SubmitBtn> */}
               <SubmitBtn type="submit">저장하기</SubmitBtn>
             </BtnContainer>
 
             <button onClick={onLogOutClick}>Log Out</button>
-          </UpdatePForm>
+          </UpdateForm>
         </MainContainer>
       </Container>
     </MyPageContainer>
@@ -266,7 +255,7 @@ const MainContainer = styled.section`
   background-color: ${(props) => props.theme.colors.white};
 `;
 
-const UpdatePForm = styled.form``;
+const UpdateForm = styled.form``;
 
 const FileContainer = styled.div`
   display: flex;
