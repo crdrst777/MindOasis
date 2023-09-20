@@ -1,5 +1,4 @@
 import Proptypes from "prop-types";
-import React from "react";
 import styled from "styled-components";
 
 export default function Validations({ value }: any) {

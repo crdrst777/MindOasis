@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { authService, dbService } from "../../fbase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -7,38 +6,9 @@ import { UserDocType } from "../../types/types";
 import { styled } from "styled-components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import SocialLogin from "../../components/Auth/SocialLogin/SocialLogin";
 import Validations from "../../components/Auth/Validation";
-
-const schema = yup.object().shape({
-  email: yup
-    .string()
-    // .min(2, "최소 2글자 이상 입력해야 합니다.")
-    // .max(16, "최대 16글자 까지 입력할 수 있습니다.")
-    .matches(/^[^ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+$/, "영문으로만 입력할 수 있습니다.")
-    .matches(
-      /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-      "이메일 주소에 '@'를 포함해 주세요."
-    )
-    .required("이메일을 입력해주세요."),
-  nickname: yup
-    .string()
-    .min(2, "최소 2글자 이상 입력해야 합니다.")
-    .max(16, "최대 16글자 까지 입력할 수 있습니다.")
-    .matches(/^[^\s]+$/, "띄어쓰기를 사용할 수 없습니다.")
-    .required("닉네임을 입력해주세요."),
-  password: yup
-    .string()
-    .min(6, "최소 6글자 이상 입력해야 합니다.")
-    .max(16, "최대 16글자 까지 입력할 수 있습니다.")
-    .matches(
-      /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W))/,
-      "영문, 숫자, 특수문자가 포함되어야 합니다."
-    )
-    .matches(/^[^\s]+$/, "띄어쓰기를 사용할 수 없습니다.")
-    .required("비밀번호를 입력해주세요."),
-});
+import { signUpSchema } from "../../components/Auth/validationSchemas";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -48,7 +18,7 @@ const SignUp = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(signUpSchema),
     mode: "onChange",
   });
 
@@ -59,9 +29,6 @@ const SignUp = () => {
         inputData.email,
         inputData.password
       );
-
-      console.log("inputData", inputData);
-      console.log("data", data);
 
       const userData: UserDocType = {
         email: inputData.email,
@@ -75,11 +42,11 @@ const SignUp = () => {
 
       // `${data.user.uid}` -> documentId 값이 된다. documentId를 직접 지정하는게 가능.
       await setDoc(doc(dbService, "users", `${data.user.uid}`), userData);
-
       alert("회원가입이 완료되었습니다!");
       navigate(`/`);
     } catch (error: any) {
-      window.confirm(error.code);
+      // window.confirm(error.code);
+      console.log("error.code", error.code);
     }
   };
 
@@ -101,7 +68,6 @@ const SignUp = () => {
                 {...register("email")}
               />
               {errors.email && <Validations value={errors.email.message} />}
-              {/* <EmailGuideArea></EmailGuideArea> */}
             </InputBlock>
 
             <InputBlock>
@@ -114,7 +80,6 @@ const SignUp = () => {
               {errors.nickname && (
                 <Validations value={errors.nickname.message} />
               )}
-              {/* <NicknameGuideArea></NicknameGuideArea> */}
             </InputBlock>
 
             <InputBlock>
@@ -127,7 +92,6 @@ const SignUp = () => {
               {errors.password && (
                 <Validations value={errors.password.message} />
               )}
-              {/* <PasswordGuideArea></PasswordGuideArea> */}
             </InputBlock>
 
             <InputBlock>
@@ -149,7 +113,6 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  /* margin-bottom: 1.3rem; */
 `;
 
 const MainContainer = styled.section`
@@ -163,7 +126,7 @@ const MainContainer = styled.section`
 
 const SignUpTitle = styled.h2`
   font-size: 1.625rem;
-  font-weight: 400;
+  font-weight: 500;
   margin-bottom: 3.5rem;
 `;
 
@@ -217,17 +180,11 @@ const SubmitBtn = styled.button`
   color: ${(props) => props.theme.colors.black};
   background-color: ${(props) => props.theme.colors.yellow};
   border-radius: 9px;
-  padding: 0 1.25rem;
-  font-size: 0.92rem;
+  padding: 0.18rem 0 0 0;
+  font-size: 0.95rem;
   font-weight: 600;
   transition: background-color 0.2s ease;
   &:hover {
     background-color: #ffda45;
   }
 `;
-
-const EmailGuideArea = styled.p``;
-
-const NicknameGuideArea = styled(EmailGuideArea)``;
-
-const PasswordGuideArea = styled(EmailGuideArea)``;

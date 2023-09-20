@@ -37,7 +37,6 @@ const Btn = styled.button`
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.darkGray};
   border-radius: 9px;
-  padding: 0 1.25rem;
   font-size: 0.92rem;
   font-weight: 500;
   transition: background-color 0.2s ease;
