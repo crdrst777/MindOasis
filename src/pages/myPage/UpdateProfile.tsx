@@ -14,6 +14,10 @@ import avatar from "../../assets/img/avatar-icon.png";
 import Sidebar from "../../components/MyPage/Sidebar";
 import { doc, updateDoc } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
+import Validations from "../../components/Auth/Validation";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { UpdateProfileSchema } from "../../components/Auth/validationSchemas";
 
 interface UpdateProfileProps {
   refreshUser: () => any;
@@ -36,20 +40,23 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
   // `${userInfo.uid}`이 자리엔 원래 documentId 값이 들어가야하는데 문서 생성시 uid값으로 documentId를 만들어줬었음. 동일한 값임.
   const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 파일을 가리키는 참조 생성
 
-  const onLogOutClick = async () => {
-    await authService.signOut();
-    navigate("/");
-    window.location.reload();
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(UpdateProfileSchema),
+    mode: "onChange",
+  });
 
   // 프로필 업데이트
-  const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const onSubmit = async (inputData: any) => {
+    console.log("inputData", inputData);
+
     let userObj = {
-      displayName: newDisplayName,
+      displayName: inputData.nickname,
       photoURL: "",
     };
-    // let photoURL = "";
 
     // 파일 첨부시
     if (uploadPreview) {
@@ -72,25 +79,19 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
           console.log(err);
         });
     }
-    // input창에 입력하고, 파일도 올린 경우
-    if (userInfo.displayName !== newDisplayName && userObj.photoURL !== "") {
+
+    // 파일 업로드 o
+    if (userObj.photoURL !== "") {
+      console.log("파일 업로드 o");
       userObj = {
         ...userObj,
       };
-    } else if (userInfo.displayName !== newDisplayName) {
-      // input창에 입력한 경우
+    } // 파일 업로드 x
+    else if (userObj.photoURL === "") {
+      console.log("파일 업로드 x");
       userObj = {
         ...userObj,
         photoURL: userInfo.photoURL,
-      };
-    } else if (
-      // 파일만 올린 경우 (input창이 비어있거나 그대로인)
-      newDisplayName === "" ||
-      newDisplayName === userInfo.displayName
-    ) {
-      userObj = {
-        displayName: userInfo.displayName,
-        ...userObj,
       };
     }
 
@@ -107,9 +108,9 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
     fileInput.current!.value = "";
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewDisplayName(e.currentTarget.value);
-  };
+  // const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setNewDisplayName(e.currentTarget.value);
+  // };
 
   // 이미지 리사이즈(압축) 함수
   const handleImageCompress = async (
@@ -163,54 +164,77 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
     }
   };
 
+  const onError = (error: any) => {
+    console.log(error);
+  };
+
+  const onLogOutClick = async () => {
+    await authService.signOut();
+    navigate("/");
+    window.location.reload();
+  };
+
+  console.log("userInfo", userInfo);
+
   return (
     <MyPageContainer>
       <Container>
         <Sidebar linkTitle={"회원정보 변경"} />
         <MainContainer>
-          <FileContainer>
-            <AvatarContainer>
-              {userInfo.photoURL ? (
-                <img src={userInfo.photoURL} alt="profile photo" />
-              ) : (
-                <BasicAvatarIcon />
+          <UpdatePForm onSubmit={handleSubmit(onSubmit, onError)}>
+            <FileContainer>
+              <AvatarContainer>
+                {userInfo.photoURL ? (
+                  <img src={userInfo.photoURL} alt="profile photo" />
+                ) : (
+                  <BasicAvatarIcon />
+                )}
+              </AvatarContainer>
+              <button onClick={onDeleteClick}>Delete Avatar</button>
+              <FileInput
+                type="file"
+                accept="image/*"
+                onChange={handleImageCompress}
+                ref={fileInput}
+              />
+              {uploadPreview && (
+                <>
+                  <img
+                    src={uploadPreview}
+                    width="50px"
+                    height="50px"
+                    alt="preview"
+                  />
+                  <button onClick={onClearUploadPreview}>Clear</button>
+                </>
               )}
-            </AvatarContainer>
-            <button onClick={onDeleteClick}>Delete Avatar</button>
-            <FileInput
-              type="file"
-              accept="image/*"
-              onChange={handleImageCompress}
-              ref={fileInput}
-            />
-            {uploadPreview && (
-              <>
-                <img
-                  src={uploadPreview}
-                  width="50px"
-                  height="50px"
-                  alt="preview"
-                />
-                <button onClick={onClearUploadPreview}>Clear</button>
-              </>
-            )}
-          </FileContainer>
+            </FileContainer>
 
-          <InputBlock>
-            <InputLabel>닉네임</InputLabel>
-            <NicknameInput
+            <InputBlock>
+              <InputLabel>닉네임</InputLabel>
+              {/* <NicknameInput
               type="text"
               value={newDisplayName}
               onChange={onChange}
               maxLength={30}
-            />
-          </InputBlock>
+            /> */}
+              <NicknameInput
+                type="text"
+                placeholder={newDisplayName}
+                {...register("nickname")}
+              />
+              {errors.nickname && (
+                <Validations value={errors.nickname.message} />
+              )}
+            </InputBlock>
 
-          <BtnContainer>
-            <SubmitBtn onClick={onSubmit}>저장하기</SubmitBtn>
-          </BtnContainer>
+            <BtnContainer>
+              {/* <SubmitBtn onClick={onSubmit}>저장하기</SubmitBtn> */}
+              <SubmitBtn type="submit">저장하기</SubmitBtn>
+            </BtnContainer>
 
-          <button onClick={onLogOutClick}>Log Out</button>
+            <button onClick={onLogOutClick}>Log Out</button>
+          </UpdatePForm>
         </MainContainer>
       </Container>
     </MyPageContainer>
@@ -241,6 +265,8 @@ const MainContainer = styled.section`
   border-radius: 0.4rem;
   background-color: ${(props) => props.theme.colors.white};
 `;
+
+const UpdatePForm = styled.form``;
 
 const FileContainer = styled.div`
   display: flex;
@@ -321,7 +347,7 @@ const SubmitBtn = styled.button`
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.lightBlack};
   border-radius: 9px;
-  padding: 0 1.25rem;
+  padding: 0.1rem 0 0 0;
   font-size: 0.92rem;
   font-weight: 500;
   transition: background-color 0.2s ease;

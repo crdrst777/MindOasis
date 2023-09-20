@@ -25,21 +25,21 @@ const Sidebar = ({ linkTitle }: Props) => {
     }
   }, []);
 
-  console.log(userInfo);
+  // console.log("userInfo", userInfo);
 
   return (
     <Container>
       <SidebarHeader>
         <AvatarContainer>
-          {userData.photoURL ? (
-            <img src={userData.photoURL} alt="profile photo" />
+          {userInfo.photoURL ? (
+            <img src={userInfo.photoURL} alt="profile photo" />
           ) : (
             <BasicAvatarIcon />
           )}
         </AvatarContainer>
 
-        <Nickname>{userData.displayName}</Nickname>
-        <Email>{userData.email}</Email>
+        <Nickname>{userInfo.displayName}</Nickname>
+        <Email>{userInfo.email}</Email>
       </SidebarHeader>
       <SidebarMenu>
         {linkInfo.map((item, idx) =>

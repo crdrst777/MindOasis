@@ -51,7 +51,7 @@ const SignUp = () => {
   };
 
   const onError = (error: any) => {
-    // console.log(error);
+    console.log(error);
   };
 
   return (

@@ -115,6 +115,10 @@ const NewPasswordInput = styled.input`
   padding: 0 0.8rem;
   border-radius: 5px;
   border: ${(props) => props.theme.borders.lightGray};
+  &::placeholder {
+    color: ${(props) => props.theme.colors.gray1};
+    font-size: 0.9rem;
+  }
   &:hover {
     outline: 1px solid #c9c9c9;
   }
@@ -131,6 +135,10 @@ const CheckPasswordInput = styled.input`
   padding: 0 0.8rem;
   border-radius: 5px;
   border: ${(props) => props.theme.borders.lightGray};
+  &::placeholder {
+    color: ${(props) => props.theme.colors.gray1};
+    font-size: 0.9rem;
+  }
   &:hover {
     outline: 1px solid #c9c9c9;
   }
@@ -149,7 +157,7 @@ const SubmitBtn = styled.button`
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.lightBlack};
   border-radius: 9px;
-  padding: 0 1.25rem;
+  padding: 0.1rem 0 0 0;
   font-size: 0.92rem;
   font-weight: 500;
   transition: background-color 0.2s ease;
