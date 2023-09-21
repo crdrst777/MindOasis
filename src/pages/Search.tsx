@@ -109,17 +109,6 @@ const SearchForm = styled.form`
   cursor: pointer;
 `;
 
-const SearchBtn = styled.button``;
-
-const SearchIcon = styled.img.attrs({
-  src: search,
-})`
-  position: absolute;
-  width: 1.5rem;
-  top: 1rem;
-  right: 1.3rem;
-`;
-
 const SearchInput = styled.input`
   width: 100%;
   height: 3.5rem;
@@ -128,7 +117,7 @@ const SearchInput = styled.input`
   color: ${(props) => props.theme.colors.darkGray};
   /* background-color: #eff2f5; */
   background-color: ${(props) => props.theme.colors.lightGray};
-  padding: 0.2rem 3.3rem 0 1.3rem;
+  padding: 0.2rem 3.8rem 0 1.3rem;
   border-radius: 5px;
   /* border: none; */
   border: ${(props) => props.theme.borders.gray};
@@ -139,6 +128,17 @@ const SearchInput = styled.input`
   &:focus {
     outline: 1.8px solid ${(props) => props.theme.colors.yellow};
   }
+`;
+
+const SearchBtn = styled.button``;
+
+const SearchIcon = styled.img.attrs({
+  src: search,
+})`
+  position: absolute;
+  width: 1.5rem;
+  top: 1rem;
+  right: 1.3rem;
 `;
 
 const Text = styled.div`
