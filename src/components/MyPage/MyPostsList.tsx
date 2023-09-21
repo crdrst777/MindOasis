@@ -72,7 +72,7 @@ const Title = styled.div`
   width: 19rem;
   display: flex;
   align-items: center;
-  font-size: 0.94rem;
+  font-size: 0.96rem;
   font-weight: 400;
   padding: 0.8rem;
 `;

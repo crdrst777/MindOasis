@@ -28,7 +28,7 @@ const Keyword = styled.div`
   color: #5f5f5f;
   background-color: #ffe787;
   border-radius: 1rem;
-  padding: 0.5rem 0.72rem 0.41rem 0.72rem;
+  padding: 0.45rem 0.72rem 0.41rem 0.72rem;
   margin-right: 0.5rem;
   font-size: 0.85rem;
   font-weight: 600;

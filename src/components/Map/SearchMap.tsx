@@ -248,9 +248,9 @@ const Container = styled.div`
 const SelectedPlaceText = styled.div`
   display: flex;
   justify-content: center;
-  font-weight: 500;
+  font-weight: 600;
   margin: 1.7rem 0;
-  font-size: 0.95rem;
+  font-size: 1rem;
 `;
 
 const PlaceName = styled.span`
@@ -258,7 +258,7 @@ const PlaceName = styled.span`
   margin-right: 0.8rem;
 `;
 const PlaceAddr = styled.span`
-  color: ${(props) => props.theme.colors.violet};
+  color: #5392e4;
 `;
 
 const Map = styled.div`
@@ -269,13 +269,13 @@ const Map = styled.div`
 
 const PlaceList = styled.div`
   width: 100%;
-  height: 12.5rem;
-  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px; */
+  height: 11.88rem;
   font-size: 1rem;
   color: ${(props) => props.theme.colors.darkGray};
   border-radius: 5px;
   border: ${(props) => props.theme.borders.gray};
   overflow: scroll;
+  overflow-x: hidden;
   padding: 0.4rem 1.4rem 1.4rem 1.4rem;
 `;
 

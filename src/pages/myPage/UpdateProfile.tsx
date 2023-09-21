@@ -251,11 +251,13 @@ const MainContainer = styled.section`
   min-height: 37.5rem;
   padding: 1.8rem;
   border: ${(props) => props.theme.borders.lightGray};
-  border-radius: 0.4rem;
+  border-radius: 1.4rem;
   background-color: ${(props) => props.theme.colors.white};
 `;
 
-const UpdateForm = styled.form``;
+const UpdateForm = styled.form`
+  width: 18rem;
+`;
 
 const FileContainer = styled.div`
   display: flex;
@@ -287,17 +289,18 @@ const BasicAvatarIcon = styled.img.attrs({
 `;
 
 const FileInput = styled.input`
-  width: 16rem;
+  width: 100%;
   font-size: 0.9rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
   padding: 0 1.2rem;
   margin: 1rem 0;
-  border-radius: 5px;
+  border-radius: 6px;
   border: ${(props) => props.theme.borders.lightGray};
   cursor: pointer;
 `;
 
 const InputBlock = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin-top: 2rem;
@@ -311,12 +314,11 @@ const InputLabel = styled.label`
 `;
 
 const NicknameInput = styled.input`
-  width: 16rem;
   height: 3rem;
   font-size: 0.97rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
   padding: 0 0.8rem;
-  border-radius: 5px;
+  border-radius: 6px;
   border: ${(props) => props.theme.borders.lightGray};
   &:hover {
     outline: 1px solid #c9c9c9;
@@ -331,11 +333,11 @@ const BtnContainer = styled.div`
 `;
 
 const SubmitBtn = styled.button`
-  width: 16rem;
+  width: 100%;
   height: 3rem;
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.lightBlack};
-  border-radius: 9px;
+  border-radius: 6px;
   padding: 0.1rem 0 0 0;
   font-size: 0.92rem;
   font-weight: 500;

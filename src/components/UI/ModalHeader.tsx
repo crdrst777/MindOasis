@@ -79,7 +79,7 @@ const ModalHeader = ({ post, postId, userData }: Props) => {
 export default ModalHeader;
 
 const Header = styled.header`
-  height: 3.95rem;
+  height: 3.85rem;
   padding: 0.6rem 1.8rem;
   display: flex;
   justify-content: space-between;

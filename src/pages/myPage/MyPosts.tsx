@@ -94,6 +94,6 @@ const MainContainer = styled.section`
   width: 40.6rem;
   padding: 3.85rem 2.85rem 2.35rem 2.85rem;
   border: ${(props) => props.theme.borders.lightGray};
-  border-radius: 0.4rem;
+  border-radius: 1.4rem;
   background-color: ${(props) => props.theme.colors.white};
 `;

@@ -209,12 +209,11 @@ const PostEditor = () => {
           maxLength={70}
           placeholder={placeInfo.placeAddr}
         />
-
         <TextInput
           maxLength={700}
           value={text}
           onChange={onTextChange}
-          placeholder="자유롭게 장소에 대해 적어주세요!"
+          placeholder="자유롭게 장소에 대해 적어주세요."
         />
       </WriteContainer>
 
@@ -382,7 +381,7 @@ const CancelBtn = styled.button`
   background-color: ${(props) => props.theme.colors.lightGray};
   border-radius: 4px;
   margin: 0 0.5rem;
-  padding: 0 1.25rem;
+  padding: 0.1rem 1.25rem 0 1.25rem;
   font-size: 0.9rem;
   font-weight: 400;
 

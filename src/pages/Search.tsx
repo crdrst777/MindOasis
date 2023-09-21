@@ -22,10 +22,12 @@ const Search = () => {
   const postsArr: PostType[] = [];
   const [hasResult, setHasResult] = useState(true);
 
-  const onSubmit = async (e: React.MouseEvent<HTMLImageElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // 검색 결과 가져오기
     try {
+      console.log("검색 왜 안돼?");
+
       const q = query(
         collection(dbService, "posts"),
         orderBy("placeInfo.placeAddr"), // 주소 정렬
@@ -64,13 +66,11 @@ const Search = () => {
   return (
     <Container>
       <SearchContainer>
-        <SearchForm>
-          <SearchIcon onClick={onSubmit} />
-          <SearchInput
-            onChange={onChange}
-            value={keyword}
-            // onKeyPress={(e: any) => onSubmit(e)}
-          />
+        <SearchForm onSubmit={onSubmit}>
+          <SearchInput onChange={onChange} value={keyword} />
+          <SearchBtn type="submit">
+            <SearchIcon />
+          </SearchBtn>
         </SearchForm>
         <Text>
           {hasResult ? (
@@ -101,13 +101,15 @@ const SearchContainer = styled.div`
   margin-top: 8rem;
 `;
 
-const SearchForm = styled.div`
+const SearchForm = styled.form`
   width: 100%;
   display: flex;
   justify-content: center;
   position: relative;
   cursor: pointer;
 `;
+
+const SearchBtn = styled.button``;
 
 const SearchIcon = styled.img.attrs({
   src: search,

@@ -1,6 +1,5 @@
 import { styled } from "styled-components";
 import Sidebar from "../../components/MyPage/Sidebar";
-import { useState } from "react";
 import { authService } from "../../fbase";
 import { updatePassword } from "firebase/auth";
 import { useForm } from "react-hook-form";
@@ -94,13 +93,16 @@ const MainContainer = styled.section`
   min-height: 37.5rem;
   padding: 3rem 3rem;
   border: ${(props) => props.theme.borders.lightGray};
-  border-radius: 0.4rem;
+  border-radius: 1.4rem;
   background-color: ${(props) => props.theme.colors.white};
 `;
 
-const UpdateForm = styled.form``;
+const UpdateForm = styled.form`
+  width: 18rem;
+`;
 
 const InputBlock = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin-top: 2rem;
@@ -114,12 +116,11 @@ const InputLabel = styled.label`
 `;
 
 const NewPasswordInput = styled.input`
-  width: 16rem;
   height: 3rem;
   font-size: 0.97rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
   padding: 0 0.8rem;
-  border-radius: 5px;
+  border-radius: 6px;
   border: ${(props) => props.theme.borders.lightGray};
   &::placeholder {
     color: ${(props) => props.theme.colors.gray1};
@@ -134,12 +135,11 @@ const NewPasswordInput = styled.input`
 `;
 
 const ConfirmPasswordInput = styled.input`
-  width: 16rem;
   min-height: 3rem;
   font-size: 0.97rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
   padding: 0 0.8rem;
-  border-radius: 5px;
+  border-radius: 6px;
   border: ${(props) => props.theme.borders.lightGray};
   &::placeholder {
     color: ${(props) => props.theme.colors.gray1};
@@ -158,11 +158,11 @@ const BtnContainer = styled.div`
 `;
 
 const SubmitBtn = styled.button`
-  width: 16rem;
+  width: 100%;
   height: 3rem;
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.lightBlack};
-  border-radius: 9px;
+  border-radius: 6px;
   padding: 0.1rem 0 0 0;
   font-size: 0.92rem;
   font-weight: 500;

@@ -126,11 +126,12 @@ const Overlay = styled.div`
 const ModalContainer = styled.div`
   position: fixed;
   width: 49rem;
-  top: 2.1rem;
+  top: 1.6rem;
   margin: auto 0;
   border-radius: 0.2rem;
   background-color: white;
-  height: 45.2rem;
+  /* height: 40rem; */
+  height: 93.5%;
   overflow: scroll;
   overflow-x: hidden;
   z-index: 100;

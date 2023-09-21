@@ -68,7 +68,7 @@ const Container = styled.aside`
   width: 14.5rem;
   height: 30rem;
   border: ${(props) => props.theme.borders.lightGray};
-  border-radius: 0.4rem;
+  border-radius: 1.4rem;
   padding: 2.3rem 2.4rem;
   background-color: ${(props) => props.theme.colors.white};
 `;
