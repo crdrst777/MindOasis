@@ -19,7 +19,7 @@ export default PostKeyword;
 const Container = styled.div`
   display: flex;
   margin-top: 0.4rem;
-  margin-bottom: 1.7rem;
+  margin-bottom: 1.2rem;
 `;
 
 const Keyword = styled.div`

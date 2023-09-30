@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { styled } from "styled-components";
 import { authService, dbService, storageService } from "../../fbase";
 import { updateProfile } from "firebase/auth";
 import {
@@ -9,22 +9,21 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { styled } from "styled-components";
-import avatar from "../../assets/img/avatar-icon.png";
-import Sidebar from "../../components/MyPage/Sidebar";
 import { doc, updateDoc } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
 import Validations from "../../components/Auth/Validation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { UpdateProfileSchema } from "../../components/Auth/validationSchemas";
+import { ReactComponent as EditIcon } from "../../assets/icon/edit-icon.svg";
+import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
+import Sidebar from "../../components/MyPage/Sidebar";
 
 interface UpdateProfileProps {
   refreshUser: () => any;
 }
 
 const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
-  const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const [imageUpload, setImageUpload] = useState(null);
   const [uploadPreview, setUploadPreview] = useState<any>("");
@@ -32,10 +31,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
   const [newDisplayName, setNewDisplayName] = useState<string>(
     userInfo.displayName
   );
-  const userAuthURLRef = ref(
-    storageService,
-    authService!.currentUser!.photoURL!
-  );
+  const userAuthURLRef = ref(storageService, authService.currentUser?.photoURL);
 
   // `${userInfo.uid}`이 자리엔 원래 documentId 값이 들어가야하는데 문서 생성시 uid값으로 documentId를 만들어줬었음. 동일한 값임.
   const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 파일을 가리키는 참조 생성
@@ -51,8 +47,6 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
 
   // 프로필 업데이트
   const onSubmit = async (inputData: any) => {
-    console.log("inputData", inputData);
-
     let userObj = {
       displayName: inputData.nickname,
       photoURL: "",
@@ -164,14 +158,6 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
     console.log(error);
   };
 
-  const onLogOutClick = async () => {
-    await authService.signOut();
-    navigate("/");
-    window.location.reload();
-  };
-
-  console.log("userInfo", userInfo);
-
   return (
     <MyPageContainer>
       <Container>
@@ -179,31 +165,37 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
         <MainContainer>
           <UpdateForm onSubmit={handleSubmit(onSubmit, onError)}>
             <FileContainer>
-              <AvatarContainer>
-                {userInfo.photoURL ? (
-                  <img src={userInfo.photoURL} alt="profile photo" />
+              <AvatarContainer htmlFor="input-file">
+                {uploadPreview ? (
+                  <AvatarImg src={uploadPreview} />
+                ) : userInfo.photoURL ? (
+                  <AvatarImg src={userInfo.photoURL} alt="profile photo" />
                 ) : (
-                  <BasicAvatarIcon />
+                  <BasicAvatarIconWrapper>
+                    <BasicAvatarIcon />
+                  </BasicAvatarIconWrapper>
                 )}
+
+                <FileInput
+                  id="input-file"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageCompress}
+                  ref={fileInput}
+                />
+
+                <EditIconWrapper>
+                  <EditIcon />
+                </EditIconWrapper>
               </AvatarContainer>
-              <button onClick={onDeleteClick}>Delete Avatar</button>
-              <FileInput
-                type="file"
-                accept="image/*"
-                onChange={handleImageCompress}
-                ref={fileInput}
-              />
-              {uploadPreview && (
-                <>
-                  <img
-                    src={uploadPreview}
-                    width="50px"
-                    height="50px"
-                    alt="preview"
-                  />
-                  <button onClick={onClearUploadPreview}>Clear</button>
-                </>
-              )}
+
+              <DelBtnWrapper>
+                {uploadPreview ? (
+                  <DelBtn onClick={onClearUploadPreview}>삭제</DelBtn>
+                ) : userInfo.photoURL ? (
+                  <DelBtn onClick={onDeleteClick}>삭제</DelBtn>
+                ) : null}
+              </DelBtnWrapper>
             </FileContainer>
 
             <InputBlock>
@@ -220,10 +212,10 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
 
             <BtnContainer>
               <SubmitBtn type="submit">저장하기</SubmitBtn>
+              <UnsubscribeBtn>회원 탈퇴</UnsubscribeBtn>
             </BtnContainer>
-
-            <button onClick={onLogOutClick}>Log Out</button>
           </UpdateForm>
+          {/* <button onClick={onLogOutClick}>Log Out</button> */}
         </MainContainer>
       </Container>
     </MyPageContainer>
@@ -246,6 +238,7 @@ const Container = styled.div`
 const MainContainer = styled.section`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   width: 40.6rem;
   min-height: 37.5rem;
@@ -263,47 +256,77 @@ const FileContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 2.5rem 0 0 0;
 `;
 
-const AvatarContainer = styled.div`
-  width: 9rem;
-  height: 9rem;
+const AvatarContainer = styled.label`
+  width: 9.7rem;
+  height: 9.7rem;
   border-radius: 50%;
-  margin: 2rem 0 1rem 0;
+  cursor: pointer;
+  position: relative;
+`;
 
-  img {
-    width: 9rem;
-    height: 9rem;
+const AvatarImg = styled.img`
+  width: 9.7rem;
+  height: 9.7rem;
+  object-fit: cover;
+  border-radius: 50%;
+`;
+
+const BasicAvatarIconWrapper = styled.div`
+  svg {
+    width: 9.7rem;
+    height: 9.7rem;
     object-fit: cover;
     border-radius: 50%;
   }
 `;
 
-const BasicAvatarIcon = styled.img.attrs({
-  src: avatar,
-})`
-  width: 9rem;
-  height: 9rem;
-  object-fit: cover;
-  border-radius: 50%;
+const FileInput = styled.input`
+  display: none;
+  width: 9.7rem;
+  height: 9.7rem;
+  position: absolute;
 `;
 
-const FileInput = styled.input`
-  width: 100%;
-  font-size: 0.9rem;
-  color: ${(props) => props.theme.colors.moreDarkGray};
-  padding: 0 1.2rem;
-  margin: 1rem 0;
-  border-radius: 6px;
-  border: ${(props) => props.theme.borders.lightGray};
+const EditIconWrapper = styled.div`
+  position: absolute;
+  width: 2.3rem;
+  height: 2.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) => props.theme.colors.yellow};
+  border: 0.2rem solid white;
+  border-radius: 50%;
   cursor: pointer;
+  right: 0.3rem;
+  bottom: 0.4rem;
+
+  svg {
+    width: 1.3rem;
+  }
+`;
+
+const DelBtnWrapper = styled.div``;
+
+const DelBtn = styled.button`
+  width: 3.125rem;
+  height: 2.615rem;
+  border-radius: 4px;
+  margin: 0 0.4rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: black;
+  background-color: ${(props) => props.theme.colors.lightGray};
 `;
 
 const InputBlock = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 2rem;
+  margin-top: 2.7rem;
 `;
 
 const InputLabel = styled.label`
@@ -329,10 +352,15 @@ const NicknameInput = styled.input`
 `;
 
 const BtnContainer = styled.div`
-  margin: 1.4rem 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3.5rem;
 `;
 
 const SubmitBtn = styled.button`
+  margin: 2rem 0;
   width: 100%;
   height: 3rem;
   color: ${(props) => props.theme.colors.white};
@@ -350,4 +378,10 @@ const SubmitBtn = styled.button`
     /* width: 15rem;
     height: 3rem; */
   }
+`;
+
+const UnsubscribeBtn = styled.button`
+  color: ${(props) => props.theme.colors.gray1};
+  font-size: 0.9rem;
+  font-weight: 400;
 `;

@@ -5,8 +5,8 @@ import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import avatar from "../../assets/img/avatar-icon.png";
 import PostLike from "../Post/PostLike";
-
 import DetailsDropdown from "./DetailsDropdown";
+import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
 
 interface Props {
   post: PostType;
@@ -35,7 +35,7 @@ const ModalHeader = ({ post, postId, userData }: Props) => {
 
   useEffect(() => {
     getCreatorData();
-  }, [post, postId]);
+  }, [post, postId, userData]);
 
   useEffect(() => {
     if (Object.keys(userData).length === 0) {
@@ -43,7 +43,7 @@ const ModalHeader = ({ post, postId, userData }: Props) => {
     } else {
       setIsLoggedIn(true);
     }
-  }, []);
+  }, [userData]);
 
   return (
     <Header>
@@ -52,7 +52,9 @@ const ModalHeader = ({ post, postId, userData }: Props) => {
           {creatorData.photoURL ? (
             <img src={creatorData.photoURL} alt="profile photo" />
           ) : (
-            <BasicAvatarIcon />
+            <BasicAvatarIconWrapper>
+              <BasicAvatarIcon />
+            </BasicAvatarIconWrapper>
           )}
         </AvatarContainer>
         <Nickname>{creatorData.displayName}</Nickname>
@@ -104,13 +106,13 @@ const AvatarContainer = styled.div`
   }
 `;
 
-const BasicAvatarIcon = styled.img.attrs({
-  src: avatar,
-})`
-  width: 2.5rem;
-  height: 2.5rem;
-  object-fit: cover;
-  border-radius: 50%;
+const BasicAvatarIconWrapper = styled.div`
+  svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 `;
 
 const Nickname = styled.div`

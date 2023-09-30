@@ -61,7 +61,9 @@ const SearchInput = styled.input`
   padding: 0.13rem 3.5rem 0 1.3rem;
   border-radius: 5px;
   border: none;
-
+  &::placeholder {
+    color: ${(props) => props.theme.colors.gray1};
+  }
   &:hover {
     outline: 1px solid #c9c9c9;
   }

@@ -36,7 +36,7 @@ const CommentItem = ({ comment, userId, delRenderingHandler }: Props) => {
     delRenderingHandler(triggerRender);
   }, [comment, userId, triggerRender]);
 
-  console.log("del-triggerRender", triggerRender);
+  // console.log("del-triggerRender", triggerRender);
 
   return (
     <>

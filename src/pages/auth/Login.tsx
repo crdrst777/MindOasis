@@ -22,14 +22,12 @@ const Login = () => {
   });
 
   const onSubmit = async (inputData: any) => {
-    console.log("inputData", inputData);
     try {
       const data = await signInWithEmailAndPassword(
         authService,
         inputData.email,
         inputData.password
       );
-      console.log("data", data);
 
       navigate("/content");
     } catch (error: any) {

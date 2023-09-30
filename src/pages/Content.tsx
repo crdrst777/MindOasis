@@ -3,7 +3,7 @@ import { dbService } from "../fbase";
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { PostType } from "../types/types";
 import { styled } from "styled-components";
-import { PathMatch, useLocation, useMatch } from "react-router-dom";
+import { PathMatch, useMatch } from "react-router-dom";
 import Modal from "../components/UI/Modal";
 import PreviewPost from "../components/Post/PreviewPost";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +22,10 @@ const Content = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
   const [userData, setUserData] = useState<any>({}); // userInfo의 userId를 통해 얻은 userData
   const [isAllPostBtnClicked, setIsAllPostBtnClicked] = useState(false); // '전체' 버튼 클릭 여부
-  const { isLiked } = useSelector((state: RootState) => state.isLiked);
+  const { likeBtnClicked } = useSelector(
+    (state: RootState) => state.likeBtnClicked
+  );
+
   const { searchedPosts } = useSelector(
     (state: RootState) => state.searchedPosts
   ); // 검색한 결과값
@@ -87,14 +90,16 @@ const Content = () => {
     }
   }, [posts]);
 
+  // 유저가 좋아요 버튼을 누르거나 취소했을때 유저 정보를 다시 가져와 좋아요 부분을 변경해준다? -> 추후에 다시 확인해보기
   useEffect(() => {
     if (userInfo) {
+      console.log("getUserData");
       getUserData(userInfo.uid, setUserData); // 리턴값 -> setUserData(userDocSnap.data());
     }
-  }, [isLiked]);
+  }, [likeBtnClicked]);
 
   // 카테고리 처음 클릭
-  // 전체 post 중에 내가 클릭한 카테고리와 일치하는 post가 있는지 조회 -> 일치하는 경우 postsArr배열에 post를 추가함
+  // 전체 post 중에 내가 클릭한 카ㄴ테고리와 일치하는 post가 있는지 조회 -> 일치하는 경우 postsArr배열에 post를 추가함
   const matchingSeq1 = (
     postsArr: PostType[] // []
   ) => {
@@ -154,7 +159,6 @@ const Content = () => {
 
     // 2. 클릭했던 걸 해제. 빼는 경우
     if (!isChecked) {
-      console.log("뺐음");
       // 추가할때 했던 동작을 반복
       // seq1->seq2
 
@@ -183,7 +187,7 @@ const Content = () => {
     setMatchingPosts(postsArr);
   };
 
-  const AllPostBtnClick = () => {
+  const allPostBtnClick = () => {
     setMatchingPosts([...posts]);
     setIsAllPostBtnClicked(true);
     setIsUnmatched(false);
@@ -208,15 +212,14 @@ const Content = () => {
     }
   }, [checkedList]);
 
-  console.log("matchingPosts.length", matchingPosts.length);
-  // console.log("checkedList", checkedList);
-  console.log("searchedPosts", searchedPosts);
+  console.log("userData.myLikes.length", userData?.myLikes?.length);
+  // console.log("likeBtnClicked", likeBtnClicked);
 
   return (
     <Container>
       <CategoryContainer>
         <AllPostBtn
-          onClick={AllPostBtnClick}
+          onClick={allPostBtnClick}
           $isallpostbtnclicked={isAllPostBtnClicked}
         >
           전체
@@ -231,7 +234,7 @@ const Content = () => {
           <PreviewContainer>
             {currentPosts &&
               currentPosts.map((post) => (
-                <PreviewPost key={post.id} post={post} />
+                <PreviewPost key={post.id} post={post} userData={userData} />
               ))}
           </PreviewContainer>
         )}

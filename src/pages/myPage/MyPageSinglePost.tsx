@@ -4,12 +4,11 @@ import { PostType } from "../../types/types";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
 import ModalHeader from "../../components/UI/ModalHeader";
 import PostKeyword from "../../components/Post/PostKeyword";
 import ReadMap from "../../components/Map/ReadMap";
 import { getUserData } from "../../api/user";
+import CommentSection from "../../components/Comment/CommentSection";
 
 const MyPageSinglePost = () => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
@@ -18,7 +17,6 @@ const MyPageSinglePost = () => {
   const [userData, setUserData] = useState<any>({});
   const postId = useParams().id;
   const closeModal = () => navigate(-1);
-  const { isLiked } = useSelector((state: RootState) => state.isLiked);
   const createdAt = post.createdAt;
   const timestamp = new Intl.DateTimeFormat("ko-KR", {
     year: "numeric",
@@ -31,8 +29,6 @@ const MyPageSinglePost = () => {
   useEffect(() => {
     getUserData(userInfo.uid, setUserData);
   }, []);
-
-  console.log("postId", postId);
 
   const getPost = async () => {
     try {
@@ -56,7 +52,7 @@ const MyPageSinglePost = () => {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isLiked]);
+  }, []);
 
   return (
     <>
@@ -72,14 +68,16 @@ const MyPageSinglePost = () => {
             <ContentsContainer>
               <ContentInfo>
                 <Title>{post.title}</Title>
-                <CreatedAt>{timestamp}</CreatedAt>
+                <RegisteredDate>{timestamp}</RegisteredDate>
               </ContentInfo>
               <Text>{post.text}</Text>
-              <KeywordContainer>
-                <PostKeyword placeKeyword={post.placeKeyword} />
-              </KeywordContainer>
+              <PostKeyword placeKeyword={post.placeKeyword} />
             </ContentsContainer>
-            <ReadMap placeInfo={post.placeInfo} />
+            <ReadMapWrapper>
+              <ReadMap placeInfo={post.placeInfo} />
+            </ReadMapWrapper>
+
+            <CommentSection userData={userData} postId={postId} />
           </Main>
         </ModalContainer>
       </Container>
@@ -124,14 +122,44 @@ const Overlay = styled.div`
 const ModalContainer = styled.div`
   position: fixed;
   width: 49rem;
-  top: 2.1rem;
+  top: 1.6rem;
   margin: auto 0;
   border-radius: 0.2rem;
   background-color: white;
-  height: 45.2rem;
+  /* height: 40rem; */
+  height: 93.5%;
   overflow: scroll;
+  overflow-x: hidden;
   z-index: 100;
+  /* animation: modal-show 0.6s;
+  @keyframes modal-show {
+    from {
+      opacity: 0;
+      margin-top: -50px;
+    }
+    to {
+      opacity: 1;
+      margin-top: 0;
+    }
+  } */
+  /* 
+  @media (max-width: 1120px) {
+    width: 50rem;
+  }
+  @media (max-width: 50rem) {
+    width: 80%;
+  } */
 `;
+
+// const CloseIcon = styled.img.attrs({
+//   src: close,
+// })`
+//   position: absolute;
+//   width: 1rem;
+//   right: 1.5rem;
+//   top: 1.5rem;
+//   cursor: pointer;
+// `;
 
 const Main = styled.article`
   display: flex;
@@ -154,11 +182,12 @@ const Img = styled.img`
 `;
 
 const ContentsContainer = styled.section`
-  padding: 1.2rem 4.2rem;
+  padding: 1.2rem 3.8rem;
 `;
 
 const ContentInfo = styled.div`
-  padding: 0.6rem 0;
+  /* border-top: ${(props) => props.theme.borders.lightGray}; */
+  padding: 0.25rem 0 0.4rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -170,22 +199,26 @@ const Title = styled.div`
   overflow: hidden;
   color: ${(props) => props.theme.colors.moreDarkGray};
   font-size: 1.1rem;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.7rem;
 `;
 
-const CreatedAt = styled.div`
-  color: ${(props) => props.theme.colors.gray};
+const RegisteredDate = styled.div`
   font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: ${(props) => props.theme.colors.gray1};
 `;
 
 const Text = styled.div`
   display: inline-block;
   min-height: 4rem;
-  max-height: 15.5rem;
+  max-height: 16.5rem;
   overflow: hidden;
   padding: 0.5rem 0;
-  line-height: 1.46rem;
+  font-size: 1.01rem;
+  font-weight: 400;
+  line-height: 1.55rem;
 `;
 
-const KeywordContainer = styled.div``;
+const ReadMapWrapper = styled.section``;

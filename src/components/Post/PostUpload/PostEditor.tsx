@@ -339,6 +339,9 @@ const TextInput = styled.textarea`
   line-height: 1.5rem;
   word-spacing: -0.3rem;
   resize: none;
+  &::placeholder {
+    color: ${(props) => props.theme.colors.gray1};
+  }
   &:hover {
     outline: 1px solid #c9c9c9;
   }

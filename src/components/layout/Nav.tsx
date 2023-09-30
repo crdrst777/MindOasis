@@ -1,8 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
-import avatar from "../../assets/img/avatar-icon.png";
-import { useState } from "react";
-// import search from "../../assets/img/search-icon.png";
+import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
 import { ReactComponent as SearchIcon } from "../../assets/icon/search-icon.svg";
 
 const Nav = () => {
@@ -27,15 +25,6 @@ const Nav = () => {
         </Link>
       </Logo>
 
-      {/* <SearchBar>
-        <SearchInput
-          value={keyword}
-          onChange={onChange}
-          placeholder="지역명을 입력하세요."
-        />
-        <Btn onClick={onSubmit}>검색</Btn>
-      </SearchBar> */}
-
       <Menu>
         <li>
           <Link to="/search">
@@ -58,7 +47,9 @@ const Nav = () => {
                 {userInfo.photoURL ? (
                   <img src={userInfo.photoURL} alt="profile" />
                 ) : (
-                  <BasicAvatarIcon />
+                  <BasicAvatarIconWrapper>
+                    <BasicAvatarIcon />
+                  </BasicAvatarIconWrapper>
                 )}
               </AvatarWrapper>
             </Link>
@@ -105,55 +96,6 @@ const SearchWrapper = styled.div`
   }
 `;
 
-// const SearchIcon = styled.img.attrs({
-//   src: search,
-// })`
-//   width: 1.3rem;
-//   padding-top: 0.3rem;
-//   top: 1rem;
-//   left: 1rem;
-//   color: ${(props) => props.theme.colors.yellow};
-
-//   &:hover {
-//     color: ${(props) => props.theme.colors.lightGray};
-//   }
-// `;
-
-// const SearchBar = styled.div`
-//   width: 20rem;
-//   height: 100%;
-//   /* background-color: aquamarine; */
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   /* margin-right: 25rem; */
-// `;
-
-// const SearchInput = styled.input`
-//   width: 18rem;
-//   height: 2.7rem;
-//   font-size: 0.9rem;
-//   font-weight: 0.8rem;
-//   color: ${(props) => props.theme.colors.moreDarkGray};
-//   padding: 0 1.2rem;
-//   border-radius: 5px;
-//   border: none;
-//   background-color: ${(props) => props.theme.colors.lightGray};
-
-//   /* border: ${(props) => props.theme.borders.gray}; */
-//   &:hover {
-//     /* outline: 1px solid #c9c9c9; */
-//   }
-//   &:focus {
-//     /* outline: 1.8px solid ${(props) => props.theme.colors.yellow}; */
-//     outline: none;
-//   }
-// `;
-
-// const Btn = styled.button`
-//   cursor: pointer;
-// `;
-
 const Menu = styled.ul`
   display: flex;
   justify-content: space-between;
@@ -183,11 +125,11 @@ const AvatarWrapper = styled.div`
   }
 `;
 
-const BasicAvatarIcon = styled.img.attrs({
-  src: avatar,
-})`
-  width: 2.5rem;
-  height: 2.5rem;
-  object-fit: cover;
-  border-radius: 50%;
+const BasicAvatarIconWrapper = styled.div`
+  svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 `;

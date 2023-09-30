@@ -21,6 +21,10 @@ const MyLikes = () => {
   const firstPostIdx = lastPostIdx - postsPerPage;
   const currentPosts = myLikes.slice(firstPostIdx, lastPostIdx);
 
+  useEffect(() => {
+    getUserData(userInfo.uid, setUserData);
+  }, []);
+
   const getMyLikes = async () => {
     try {
       const myLikesArr: PostType[] = [];
@@ -46,15 +50,9 @@ const MyLikes = () => {
   };
 
   useEffect(() => {
-    getUserData(userInfo.uid, setUserData);
-  }, []);
-
-  useEffect(() => {
     setLoading(true);
     getMyLikes();
   }, [userData]);
-
-  console.log("myLikes", myLikes);
 
   return (
     <MyPageContainer>

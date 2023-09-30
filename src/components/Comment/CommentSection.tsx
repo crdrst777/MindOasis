@@ -50,7 +50,7 @@ const CommentSection = ({ userData, postId }: Props) => {
     getComments();
   }, [userData, postId, triggerRender, triggerDelRender]);
 
-  console.log("triggerRender----section", triggerRender);
+  // console.log("triggerRender----section", triggerRender);
 
   return (
     <Container>

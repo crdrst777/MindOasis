@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import close from "../../assets/img/close-icon.png";
+// import close from "../../assets/img/close-icon.png";
 import { useNavigate } from "react-router-dom";
 import { PostType, UserDocType } from "../../types/types";
 import { useEffect, useState } from "react";
@@ -8,9 +8,9 @@ import { dbService } from "../../fbase";
 import ModalHeader from "./ModalHeader";
 import ReadMap from "../Map/ReadMap";
 import PostKeyword from "../Post/PostKeyword";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { useDispatch } from "react-redux";
 import CommentSection from "../Comment/CommentSection";
+import { setTriggerRenderReducer } from "../../store/triggerRenderSlice";
 
 interface Props {
   userData: UserDocType;
@@ -18,13 +18,16 @@ interface Props {
 }
 
 const Modal = ({ userData, postId }: Props) => {
-  const [post, setPost] = useState<PostType>({});
-
+  const dispatch = useDispatch();
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
+  const [post, setPost] = useState<PostType>({});
+  const [isClosed, setIsClosed] = useState(false);
+
+  // const [isLiked, setIsLiked] = useState(false);
   // const modalMatch = useMatch(`/content/detail/:id`);
   // useMatch는 이 route 안에 있는지 다른 곳에 있는지 알려줌. -->  string | null
-  const closeModal = () => navigate(-1);
-  const { isLiked } = useSelector((state: RootState) => state.isLiked);
+  // const closeModal = () => navigate(-1);
+
   const timestamp = new Intl.DateTimeFormat("ko-KR", {
     year: "numeric",
     month: "2-digit",
@@ -49,43 +52,48 @@ const Modal = ({ userData, postId }: Props) => {
 
   useEffect(() => {
     getPost();
+    // dispatch(setTriggerRenderReducer(false));
 
     // Modal 배경 스크롤 막기
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isLiked]);
+  }, [userData, postId]);
+
+  const closeModal = () => {
+    // dispatch(setTriggerRenderReducer(true));
+    navigate(`/content`);
+    // window.location.reload();
+  };
 
   return (
-    <>
-      <Container>
-        <Overlay onClick={closeModal} />
+    <Container>
+      <Overlay onClick={closeModal} />
 
-        <ModalContainer>
-          {/* <CloseIcon onClick={closeModal} /> */}
-          <Main>
-            <ModalHeader post={post} postId={postId} userData={userData} />
-            <ImgContainer>
-              <Img src={post.attachmentUrl} alt="image" />
-            </ImgContainer>
-            <ContentsContainer>
-              <ContentInfo>
-                <Title>{post.title}</Title>
-                <RegisteredDate>{timestamp}</RegisteredDate>
-              </ContentInfo>
-              <Text>{post.text}</Text>
-              <PostKeyword placeKeyword={post.placeKeyword} />
-            </ContentsContainer>
-            <ReadMapWrapper>
-              <ReadMap placeInfo={post.placeInfo} />
-            </ReadMapWrapper>
+      <ModalContainer>
+        {/* <CloseIcon onClick={closeModal} /> */}
+        <Main>
+          <ModalHeader post={post} postId={postId} userData={userData} />
+          <ImgContainer>
+            <Img src={post.attachmentUrl} alt="image" />
+          </ImgContainer>
+          <ContentsContainer>
+            <ContentInfo>
+              <Title>{post.title}</Title>
+              <RegisteredDate>{timestamp}</RegisteredDate>
+            </ContentInfo>
+            <Text>{post.text}</Text>
+            <PostKeyword placeKeyword={post.placeKeyword} />
+          </ContentsContainer>
+          <ReadMapWrapper>
+            <ReadMap placeInfo={post.placeInfo} />
+          </ReadMapWrapper>
 
-            <CommentSection userData={userData} postId={postId} />
-          </Main>
-        </ModalContainer>
-      </Container>
-    </>
+          <CommentSection userData={userData} postId={postId} />
+        </Main>
+      </ModalContainer>
+    </Container>
   );
 };
 

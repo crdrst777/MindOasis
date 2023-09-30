@@ -1,8 +1,7 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
-import avatar from "../../assets/img/avatar-icon.png";
-import { useEffect, useState } from "react";
-import { getUserData } from "../../api/user";
+import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
+import { authService } from "../../fbase";
 
 interface Props {
   linkTitle: string;
@@ -16,16 +15,14 @@ const linkInfo = [
 ];
 
 const Sidebar = ({ linkTitle }: Props) => {
+  const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const [userData, setUserData] = useState<any>({}); // userInfo의 userId를 통해 얻은 userData
 
-  useEffect(() => {
-    if (userInfo) {
-      getUserData(userInfo.uid, setUserData); // 리턴값 -> setUserData(userDocSnap.data());
-    }
-  }, []);
-
-  // console.log("userInfo", userInfo);
+  const onLogOutClick = async () => {
+    await authService.signOut();
+    navigate("/");
+    window.location.reload();
+  };
 
   return (
     <Container>
@@ -34,7 +31,9 @@ const Sidebar = ({ linkTitle }: Props) => {
           {userInfo.photoURL ? (
             <img src={userInfo.photoURL} alt="profile photo" />
           ) : (
-            <BasicAvatarIcon />
+            <BasicAvatarIconWrapper>
+              <BasicAvatarIcon />
+            </BasicAvatarIconWrapper>
           )}
         </AvatarContainer>
 
@@ -54,6 +53,9 @@ const Sidebar = ({ linkTitle }: Props) => {
             </Item>
           )
         )}
+        <Item>
+          <LogOutBtn onClick={onLogOutClick}>Log Out</LogOutBtn>
+        </Item>
       </SidebarMenu>
     </Container>
   );
@@ -94,13 +96,13 @@ const AvatarContainer = styled.div`
   }
 `;
 
-const BasicAvatarIcon = styled.img.attrs({
-  src: avatar,
-})`
-  width: 6rem;
-  height: 6rem;
-  object-fit: cover;
-  border-radius: 50%;
+const BasicAvatarIconWrapper = styled.div`
+  svg {
+    width: 6.3rem;
+    height: 6.3rem;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 `;
 
 const Nickname = styled.div`
@@ -153,3 +155,5 @@ const StyledLink = styled(NavLink)`
   font-weight: 500;
   color: ${(props) => props.theme.colors.darkGray};
 `;
+
+const LogOutBtn = styled.button``;
