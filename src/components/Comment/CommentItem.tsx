@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import { CommentType } from "../../types/types";
-import avatar from "../../assets/img/avatar-icon.png";
+import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
 import { deleteDoc, doc } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import { useEffect, useState } from "react";
@@ -49,7 +49,9 @@ const CommentItem = ({ comment, userId, delRenderingHandler }: Props) => {
                   {comment.userPhotoURL ? (
                     <img src={comment.userPhotoURL} alt="profile" />
                   ) : (
-                    <BasicAvatarIcon />
+                    <BasicAvatarIconWrapper>
+                      <BasicAvatarIcon />
+                    </BasicAvatarIconWrapper>
                   )}
                 </AvatarWrapper>
                 <Info>
@@ -104,13 +106,13 @@ const AvatarWrapper = styled.div`
   }
 `;
 
-const BasicAvatarIcon = styled.img.attrs({
-  src: avatar,
-})`
-  width: 2.5rem;
-  height: 2.5rem;
-  object-fit: cover;
-  border-radius: 50%;
+const BasicAvatarIconWrapper = styled.div`
+  svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 `;
 
 const Info = styled.div`

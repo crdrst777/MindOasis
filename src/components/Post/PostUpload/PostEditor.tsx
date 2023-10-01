@@ -178,7 +178,6 @@ const PostEditor = () => {
   const onClearUploadPreview = () => {
     setUploadPreview("");
     setImageUpload(null);
-    fileInput.current!.value = ""; // 사진을 선택했다가 clear를 눌렀을때, 선택된 파일명을 지워줌.
   };
 
   useEffect(() => {
@@ -227,7 +226,7 @@ const PostEditor = () => {
         <ImgViewerWrapper htmlFor="input-file">
           {uploadPreview ? (
             <ImgViewer>
-              <FileImg src={uploadPreview} alt="profile photo"></FileImg>
+              <FileImg src={uploadPreview} alt="preview photo"></FileImg>
             </ImgViewer>
           ) : (
             <EmptyDiv>
@@ -397,7 +396,7 @@ const DelBtn = styled.button`
 const DelIcon = styled.img.attrs({
   src: close,
 })`
-  width: 0.6rem;
+  width: 0.55rem;
   margin-top: 0.5rem;
 `;
 

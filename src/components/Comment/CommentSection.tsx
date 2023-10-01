@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import { UserDocType } from "../../types/types";
@@ -49,8 +49,6 @@ const CommentSection = ({ userData, postId }: Props) => {
   useEffect(() => {
     getComments();
   }, [userData, postId, triggerRender, triggerDelRender]);
-
-  // console.log("triggerRender----section", triggerRender);
 
   return (
     <Container>

@@ -119,8 +119,8 @@ const AvatarWrapper = styled.div`
 
 const BasicAvatarIconWrapper = styled.div`
   svg {
-    width: 2.7rem;
-    height: 2.7rem;
+    width: 2.5rem;
+    height: 2.5rem;
     object-fit: cover;
     border-radius: 50%;
   }
