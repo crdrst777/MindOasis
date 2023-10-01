@@ -14,6 +14,7 @@ import CheckBox from "../../UI/CheckBox";
 import { usePrompt } from "../../../hooks/useBlocker";
 import { createBrowserHistory } from "history";
 import imageCompression from "browser-image-compression";
+import close from "../../../assets/img/close-icon.png";
 
 const PostEditor = () => {
   const history = createBrowserHistory();
@@ -222,19 +223,32 @@ const PostEditor = () => {
           <span>3</span>
           <h2>사진을 공유해주세요</h2>
         </SectionTitle>
+
+        <ImgViewerWrapper htmlFor="input-file">
+          {uploadPreview ? (
+            <ImgViewer>
+              <FileImg src={uploadPreview} alt="profile photo"></FileImg>
+            </ImgViewer>
+          ) : (
+            <EmptyDiv>
+              <p>사진 업로드</p>
+            </EmptyDiv>
+          )}
+        </ImgViewerWrapper>
+
+        {uploadPreview && (
+          <DelBtn onClick={onClearUploadPreview}>
+            <DelIcon />
+          </DelBtn>
+        )}
+
         <FileInput
+          id="input-file"
           type="file"
           accept="image/*"
           onChange={handleImageCompress}
-          // onChange={onFileChange}
           ref={fileInput}
         />
-        {uploadPreview && (
-          <>
-            <img src={uploadPreview} width="50px" height="50px" alt="preview" />
-            <button onClick={onClearUploadPreview}>Clear</button>
-          </>
-        )}
       </FileContainer>
 
       <CheckBoxContainer>
@@ -351,20 +365,58 @@ const TextInput = styled.textarea`
 `;
 
 const FileContainer = styled.section`
-  margin-top: 3.5rem;
   width: 100%;
+  margin-top: 3.5rem;
   margin-bottom: 1.7rem;
 `;
 
 const FileInput = styled.input`
+  display: none;
   width: 100%;
   height: 5rem;
+`;
+
+const ImgViewerWrapper = styled.label``;
+
+const ImgViewer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const FileImg = styled.img`
+  max-width: 20rem;
+  height: 7rem;
+  object-fit: cover;
+`;
+
+const DelBtn = styled.button`
+  width: 100%;
+`;
+
+const DelIcon = styled.img.attrs({
+  src: close,
+})`
+  width: 0.6rem;
+  margin-top: 0.5rem;
+`;
+
+const EmptyDiv = styled.div`
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 0.9rem;
-  color: ${(props) => props.theme.colors.moreDarkGray};
-  padding: 0 1.2rem;
+  font-weight: 400;
+  color: ${(props) => props.theme.colors.gray1};
   border-radius: 5px;
-  border: ${(props) => props.theme.borders.gray};
+  border: 3px dotted #d3d3d3;
   cursor: pointer;
+
+  &:hover {
+    border-color: ${(props) => props.theme.colors.yellow};
+  }
 `;
 
 const CheckBoxContainer = styled.section`

@@ -167,7 +167,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
             <FileContainer>
               <AvatarContainer htmlFor="input-file">
                 {uploadPreview ? (
-                  <AvatarImg src={uploadPreview} />
+                  <AvatarImg src={uploadPreview} alt="profile photo" />
                 ) : userInfo.photoURL ? (
                   <AvatarImg src={userInfo.photoURL} alt="profile photo" />
                 ) : (
@@ -270,16 +270,16 @@ const AvatarContainer = styled.label`
 const AvatarImg = styled.img`
   width: 9.7rem;
   height: 9.7rem;
-  object-fit: cover;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 const BasicAvatarIconWrapper = styled.div`
   svg {
     width: 9.7rem;
     height: 9.7rem;
-    object-fit: cover;
     border-radius: 50%;
+    object-fit: cover;
   }
 `;
 
@@ -360,7 +360,7 @@ const BtnContainer = styled.div`
 `;
 
 const SubmitBtn = styled.button`
-  margin: 2rem 0;
+  margin: 1.6rem 0 1.8rem 0;
   width: 100%;
   height: 3rem;
   color: ${(props) => props.theme.colors.white};
