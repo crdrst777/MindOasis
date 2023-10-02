@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { authService, dbService, storageService } from "../../fbase";
 import { updateProfile } from "firebase/auth";
@@ -18,6 +18,7 @@ import { UpdateProfileSchema } from "../../components/Auth/validationSchemas";
 import { ReactComponent as EditIcon } from "../../assets/icon/edit-icon.svg";
 import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
 import Sidebar from "../../components/MyPage/Sidebar";
+import { getUserData } from "../../api/user";
 
 interface UpdateProfileProps {
   refreshUser: () => any;
@@ -25,6 +26,7 @@ interface UpdateProfileProps {
 
 const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const [userData, setUserData] = useState<any>({}); // userInfo의 userId를 통해 얻은 userData
   const [imageUpload, setImageUpload] = useState(null);
   const [uploadPreview, setUploadPreview] = useState<any>("");
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
@@ -32,7 +34,6 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
     userInfo.displayName
   );
   const userAuthURLRef = ref(storageService, authService.currentUser?.photoURL);
-
   // `${userInfo.uid}`이 자리엔 원래 documentId 값이 들어가야하는데 문서 생성시 uid값으로 documentId를 만들어줬었음. 동일한 값임.
   const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 파일을 가리키는 참조 생성
 
@@ -44,6 +45,12 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
     resolver: yupResolver(UpdateProfileSchema),
     mode: "onChange",
   });
+
+  useEffect(() => {
+    if (userInfo) {
+      getUserData(userInfo.uid, setUserData); // 리턴값 -> setUserData(userDocSnap.data());
+    }
+  }, []);
 
   // 프로필 업데이트
   const onSubmit = async (inputData: any) => {
@@ -131,7 +138,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
   const onClearUploadPreview = () => {
     setUploadPreview("");
     setImageUpload(null);
-    fileInput.current!.value = ""; // 사진을 선택했다가 clear를 눌렀을때, 선택된 파일명을 지워줌.
+    // fileInput.current!.value = ""; // 사진을 선택했다가 clear를 눌렀을때, 선택된 파일명을 지워줌.
   };
 
   // 프로필 사진 삭제
@@ -145,6 +152,19 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
         photoURL: "",
       });
 
+      // users.commnets[]의 comment id들을 조회해서 userInfo.uid와 동일한것에는 commnets.userId를 ""로 초기화 시켜준다.
+      // for (let i of userData.comments) {
+      //   const commentId = i.split("-", 1);
+      //   if (commentId === userInfo.uid) {
+      //     console.log("commentId", commentId);
+      //     console.log("초기화!");
+      //     await updateDoc(doc(dbService, "comments", commentId), {
+      //       userPhotoURL: "",
+      //     });
+      //   }
+      // }
+
+      // 파일 삭제
       try {
         await deleteObject(userAuthURLRef);
       } catch (error: any) {
@@ -157,6 +177,8 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
   const onError = (error: any) => {
     console.log(error);
   };
+
+  console.log("userInfo", userInfo);
 
   return (
     <MyPageContainer>
@@ -215,7 +237,6 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
               <UnsubscribeBtn>회원 탈퇴</UnsubscribeBtn>
             </BtnContainer>
           </UpdateForm>
-          {/* <button onClick={onLogOutClick}>Log Out</button> */}
         </MainContainer>
       </Container>
     </MyPageContainer>
@@ -312,14 +333,30 @@ const EditIconWrapper = styled.div`
 const DelBtnWrapper = styled.div``;
 
 const DelBtn = styled.button`
-  width: 3.125rem;
-  height: 2.615rem;
+  /* width: 2.5rem;
+  height: 2rem;
   border-radius: 4px;
-  margin: 0 0.4rem;
-  font-size: 0.875rem;
+  margin-top: 1rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: black;
-  background-color: ${(props) => props.theme.colors.lightGray};
+  background-color: ${(props) => props.theme.colors.lightGray}; */
+
+  margin-top: 1rem;
+  width: 2.25rem;
+  height: 1.8rem;
+  padding-top: 0.13rem;
+  background-color: ${(props) => props.theme.colors.white};
+  border: 0.9px solid #c1c1c1;
+  border-radius: 3px;
+  color: ${(props) => props.theme.colors.gray};
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.moreLightGray};
+    border-color: #959595;
+    color: #6e6e6e;
+  }
 `;
 
 const InputBlock = styled.div`

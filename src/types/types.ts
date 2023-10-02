@@ -21,7 +21,8 @@ export interface UserDocType {
   email: string;
   displayName?: string;
   photoURL?: string;
-  myLikes: string[];
+  myLikes: string[]; // postId
+  comments: string[]; // commentId
 }
 
 export interface UserInfoType {
@@ -34,8 +35,6 @@ export interface UserInfoType {
 export interface CommentType {
   id?: string;
   userId?: string;
-  userPhotoURL?: string;
-  userDisplayName?: string;
   createdAt?: number;
   text?: string;
   postId?: string;

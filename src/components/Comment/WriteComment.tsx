@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 import { CommentType, UserDocType } from "../../types/types";
 import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
 import { useEffect, useState } from "react";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc, updateDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
 
 interface Props {
@@ -15,6 +15,7 @@ const WriteComment = ({ userData, postId, submitRenderingHandler }: Props) => {
   const [text, setText] = useState("");
   const [triggerRender, setTriggerRender] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const userDocRef = doc(dbService, "users", `${userData?.uid}`); // 현재 로그인한 유저를 가리키는 참조 생성
 
   const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -23,20 +24,28 @@ const WriteComment = ({ userData, postId, submitRenderingHandler }: Props) => {
       alert("로그인을 해주세요.");
     } else {
       const commentData: CommentType = {
+        id: `${userData.uid}-${Date.now()}`,
         userId: userData.uid,
-        userPhotoURL: userData.photoURL,
-        userDisplayName: userData.displayName,
         createdAt: Date.now(),
         text: text,
         postId,
       };
 
       if (text !== "") {
-        console.log(`등록-${text}`);
-        await addDoc(collection(dbService, "comments"), commentData);
+        // id 지정해서 comment 문서 생성.
+        await setDoc(
+          doc(dbService, "comments", `${userData.uid}-${Date.now()}`),
+          commentData
+        );
+
         setTriggerRender((prev) => !prev);
         setText("");
       }
+
+      // users.commnets에 comment id 저장하기
+      await updateDoc(userDocRef, {
+        comments: [...userData.comments, `${userData.uid}-${Date.now()}`],
+      });
     }
   };
 
@@ -57,6 +66,7 @@ const WriteComment = ({ userData, postId, submitRenderingHandler }: Props) => {
   }, [triggerRender]);
 
   // console.log("sub-triggerRender", triggerRender);
+  console.log("userData", userData);
 
   return (
     <Container>

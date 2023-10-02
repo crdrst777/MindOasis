@@ -4,6 +4,7 @@ import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon
 import { deleteDoc, doc } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import { useEffect, useState } from "react";
+import { getUserData } from "../../api/user";
 
 interface Props {
   comment?: CommentType;
@@ -13,6 +14,7 @@ interface Props {
 
 const CommentItem = ({ comment, userId, delRenderingHandler }: Props) => {
   const commentRef = doc(dbService, "comments", `${comment.id}`); // 파일을 가리키는 참조 생성
+  const [userData, setUserData] = useState<any>({}); // userInfo의 userId를 통해 얻은 userData
   const [triggerRender, setTriggerRender] = useState(false);
 
   const timestamp = new Intl.DateTimeFormat("ko-KR", {
@@ -22,6 +24,10 @@ const CommentItem = ({ comment, userId, delRenderingHandler }: Props) => {
     hour: "2-digit",
     minute: "2-digit",
   }).format(comment.createdAt);
+
+  useEffect(() => {
+    getUserData(comment.userId, setUserData); // 리턴값 -> setUserData(userDocSnap.data());
+  }, []);
 
   const onDeleteClick = async () => {
     const ok = window.confirm("정말 이 댓글을 삭제하시겠습니까?");
@@ -46,8 +52,8 @@ const CommentItem = ({ comment, userId, delRenderingHandler }: Props) => {
             <CommentHeader>
               <InfoContainer>
                 <AvatarWrapper>
-                  {comment.userPhotoURL ? (
-                    <img src={comment.userPhotoURL} alt="profile" />
+                  {userData.photoURL ? (
+                    <img src={userData.photoURL} alt="profile photo" />
                   ) : (
                     <BasicAvatarIconWrapper>
                       <BasicAvatarIcon />
@@ -55,7 +61,7 @@ const CommentItem = ({ comment, userId, delRenderingHandler }: Props) => {
                   )}
                 </AvatarWrapper>
                 <Info>
-                  <Nickname>{comment.userDisplayName}</Nickname>
+                  <Nickname>{userData.displayName}</Nickname>
                   <RegisteredDate>{timestamp}</RegisteredDate>
                 </Info>
               </InfoContainer>

@@ -19,10 +19,7 @@ const Nav = () => {
   return (
     <Container>
       <Logo>
-        <Link to="/">
-          {/* <img></img> */}
-          Mind Oasis
-        </Link>
+        <Link to="/">Mind Oasis</Link>
       </Logo>
 
       <Menu>
