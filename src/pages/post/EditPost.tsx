@@ -132,7 +132,6 @@ const EditPost = () => {
         attachmentUrl,
         placeInfo,
         placeKeyword,
-        likedUsers: [],
         likeState: false,
       };
       await uploadData(postObj);
@@ -145,7 +144,6 @@ const EditPost = () => {
         attachmentUrl,
         placeInfo,
         placeKeyword,
-        likedUsers: [],
         likeState: false,
       };
       await uploadData(postObj);

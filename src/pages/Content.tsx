@@ -93,7 +93,7 @@ const Content = () => {
   // 유저가 좋아요 버튼을 누르거나 취소했을때 유저 정보를 다시 가져와 좋아요 부분을 변경해준다? -> 추후에 다시 확인해보기
   useEffect(() => {
     if (userInfo) {
-      console.log("getUserData");
+      // console.log("getUserData");
       getUserData(userInfo.uid, setUserData); // 리턴값 -> setUserData(userDocSnap.data());
     }
   }, [likeBtnClicked]);
@@ -212,7 +212,7 @@ const Content = () => {
     }
   }, [checkedList]);
 
-  console.log("userData.myLikes.length", userData?.myLikes?.length);
+  // console.log("userData.myLikes.length", userData?.myLikes?.length);
   // console.log("likeBtnClicked", likeBtnClicked);
 
   return (

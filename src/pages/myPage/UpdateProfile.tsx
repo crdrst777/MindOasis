@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { authService, dbService, storageService } from "../../fbase";
-import { updateProfile } from "firebase/auth";
+import { deleteUser, updateProfile } from "firebase/auth";
 import {
   ref,
   uploadString,
@@ -9,7 +9,7 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { doc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
 import Validations from "../../components/Auth/Validation";
 import { useForm } from "react-hook-form";
@@ -18,15 +18,15 @@ import { UpdateProfileSchema } from "../../components/Auth/validationSchemas";
 import { ReactComponent as EditIcon } from "../../assets/icon/edit-icon.svg";
 import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
 import Sidebar from "../../components/MyPage/Sidebar";
-import { getUserData } from "../../api/user";
+import { useNavigate } from "react-router";
 
 interface UpdateProfileProps {
   refreshUser: () => any;
 }
 
 const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
+  const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const [userData, setUserData] = useState<any>({}); // userInfo의 userId를 통해 얻은 userData
   const [imageUpload, setImageUpload] = useState(null);
   const [uploadPreview, setUploadPreview] = useState<any>("");
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
@@ -45,12 +45,6 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
     resolver: yupResolver(UpdateProfileSchema),
     mode: "onChange",
   });
-
-  useEffect(() => {
-    if (userInfo) {
-      getUserData(userInfo.uid, setUserData); // 리턴값 -> setUserData(userDocSnap.data());
-    }
-  }, []);
 
   // 프로필 업데이트
   const onSubmit = async (inputData: any) => {
@@ -105,7 +99,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
     });
 
     refreshUser();
-    setUploadPreview(""); //파일 미리보기 img src 비워주기
+    setUploadPreview(""); // 파일 미리보기 img src 비워주기
     fileInput.current!.value = "";
   };
 
@@ -152,18 +146,6 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
         photoURL: "",
       });
 
-      // users.commnets[]의 comment id들을 조회해서 userInfo.uid와 동일한것에는 commnets.userId를 ""로 초기화 시켜준다.
-      // for (let i of userData.comments) {
-      //   const commentId = i.split("-", 1);
-      //   if (commentId === userInfo.uid) {
-      //     console.log("commentId", commentId);
-      //     console.log("초기화!");
-      //     await updateDoc(doc(dbService, "comments", commentId), {
-      //       userPhotoURL: "",
-      //     });
-      //   }
-      // }
-
       // 파일 삭제
       try {
         await deleteObject(userAuthURLRef);
@@ -178,7 +160,21 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
     console.log(error);
   };
 
-  console.log("userInfo", userInfo);
+  const withdrawAccount = async () => {
+    const ok = window.confirm("정말 탈퇴 하시겠습니까?");
+    if (!ok) return;
+
+    try {
+      const user = authService.currentUser;
+      await deleteUser(user); // 계정 삭제
+      await deleteDoc(userDocRef);
+      alert("회원 탈퇴가 완료되었습니다.");
+      navigate("/");
+      window.location.reload();
+    } catch (error: any) {
+      console.log(error.code);
+    }
+  };
 
   return (
     <MyPageContainer>
@@ -234,9 +230,11 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
 
             <BtnContainer>
               <SubmitBtn type="submit">저장하기</SubmitBtn>
-              <UnsubscribeBtn>회원 탈퇴</UnsubscribeBtn>
             </BtnContainer>
           </UpdateForm>
+          <WithdrawAccountBtn onClick={withdrawAccount}>
+            회원 탈퇴
+          </WithdrawAccountBtn>
         </MainContainer>
       </Container>
     </MyPageContainer>
@@ -333,15 +331,6 @@ const EditIconWrapper = styled.div`
 const DelBtnWrapper = styled.div``;
 
 const DelBtn = styled.button`
-  /* width: 2.5rem;
-  height: 2rem;
-  border-radius: 4px;
-  margin-top: 1rem;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: black;
-  background-color: ${(props) => props.theme.colors.lightGray}; */
-
   margin-top: 1rem;
   width: 2.25rem;
   height: 1.8rem;
@@ -417,8 +406,8 @@ const SubmitBtn = styled.button`
   }
 `;
 
-const UnsubscribeBtn = styled.button`
-  color: ${(props) => props.theme.colors.gray1};
-  font-size: 0.9rem;
+const WithdrawAccountBtn = styled.button`
+  color: #aaaaaa;
+  font-size: 0.82rem;
   font-weight: 400;
 `;

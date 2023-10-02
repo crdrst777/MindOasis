@@ -53,6 +53,7 @@ const Sidebar = ({ linkTitle }: Props) => {
             </Item>
           )
         )}
+
         <Item>
           <LogOutBtn onClick={onLogOutClick}>Log Out</LogOutBtn>
         </Item>

@@ -12,7 +12,6 @@ export interface PostType {
   attachmentUrl?: string;
   placeInfo?: PlaceInfoType;
   placeKeyword?: string[];
-  likedUsers?: string[];
   likeState?: boolean;
 }
 
@@ -22,7 +21,6 @@ export interface UserDocType {
   displayName?: string;
   photoURL?: string;
   myLikes: string[]; // postId
-  comments: string[]; // commentId
 }
 
 export interface UserInfoType {

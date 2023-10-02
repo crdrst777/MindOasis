@@ -44,7 +44,7 @@ const PreviewPost = ({ post, userData }: Props) => {
       for (let i of userData.myLikes) {
         if (i === post.id) {
           setIsLiked(true);
-          console.log("true");
+          // console.log("true");
         } else {
           // setIsLiked(false);
           // console.log("false");
@@ -57,9 +57,9 @@ const PreviewPost = ({ post, userData }: Props) => {
   // 현재 else일땐 아무 처리도 안하기 때문에 리랜더링이 안되는게 맞다. (setIsLiked(false); 하면 오류가 남)
 
   // console.log("triggerRender", triggerRender);
-  console.log("isLiked", isLiked);
-  console.log("post.id", post.id);
-  console.log("userData.myLikes.length", userData?.myLikes?.length);
+  // console.log("isLiked", isLiked);
+  // console.log("post.id", post.id);
+  // console.log("userData.myLikes.length", userData?.myLikes?.length);
   // console.log("likeBtnClicked", likeBtnClicked);
 
   return (

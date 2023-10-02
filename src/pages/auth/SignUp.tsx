@@ -36,7 +36,6 @@ const SignUp = () => {
         uid: data.user.uid,
         photoURL: data.user.photoURL,
         myLikes: [],
-        comments: [],
       };
 
       console.log("userData", userData);

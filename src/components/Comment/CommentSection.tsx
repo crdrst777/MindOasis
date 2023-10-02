@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import { UserDocType } from "../../types/types";

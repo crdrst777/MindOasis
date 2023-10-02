@@ -87,13 +87,13 @@ const PostEditor = () => {
     const blankPattern = /^\s+|\s+$/g; //공백만 입력된 경우
 
     if (placeInfo.placeAddr === "") {
-      alert("지도에서 위치를 선택해주세요");
+      alert("지도에서 위치를 선택해주세요.");
     } else if (text.replace(blankPattern, "") === "" || text === "") {
-      alert("내용을 입력해주세요");
+      alert("내용을 입력해주세요.");
     } else if (imageUpload === null) {
-      alert("사진을 선택해주세요");
+      alert("사진을 선택해주세요.");
     } else if (placeKeyword.length === 0) {
-      alert("키워드를 선택해주세요");
+      alert("키워드를 선택해주세요.");
 
       //  title인풋에 공백만 있거나 값이 없는 경우엔 장소이름을 넣어준다.
     } else if (title.replace(blankPattern, "") === "" || title === "") {
@@ -105,7 +105,6 @@ const PostEditor = () => {
         attachmentUrl,
         placeInfo,
         placeKeyword,
-        likedUsers: [],
         likeState: false,
       };
       await uploadData(postObj);
@@ -118,7 +117,6 @@ const PostEditor = () => {
         attachmentUrl,
         placeInfo,
         placeKeyword,
-        likedUsers: [],
         likeState: false,
       };
       await uploadData(postObj);

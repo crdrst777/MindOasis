@@ -45,39 +45,37 @@ const CommentItem = ({ comment, userId, delRenderingHandler }: Props) => {
   // console.log("del-triggerRender", triggerRender);
 
   return (
-    <>
-      <Container>
-        {comment && (
-          <>
-            <CommentHeader>
-              <InfoContainer>
-                <AvatarWrapper>
-                  {userData.photoURL ? (
-                    <img src={userData.photoURL} alt="profile photo" />
-                  ) : (
-                    <BasicAvatarIconWrapper>
-                      <BasicAvatarIcon />
-                    </BasicAvatarIconWrapper>
-                  )}
-                </AvatarWrapper>
-                <Info>
-                  <Nickname>{userData.displayName}</Nickname>
-                  <RegisteredDate>{timestamp}</RegisteredDate>
-                </Info>
-              </InfoContainer>
+    <Container>
+      {comment && (
+        <>
+          <CommentHeader>
+            <InfoContainer>
+              <AvatarWrapper>
+                {userData.photoURL ? (
+                  <img src={userData.photoURL} alt="profile photo" />
+                ) : (
+                  <BasicAvatarIconWrapper>
+                    <BasicAvatarIcon />
+                  </BasicAvatarIconWrapper>
+                )}
+              </AvatarWrapper>
+              <Info>
+                <Nickname>{userData.displayName}</Nickname>
+                <RegisteredDate>{timestamp}</RegisteredDate>
+              </Info>
+            </InfoContainer>
 
-              {userId === comment.userId && (
-                <DeleteBtn onClick={onDeleteClick}>삭제</DeleteBtn>
-              )}
-            </CommentHeader>
+            {userId === comment.userId && (
+              <DeleteBtn onClick={onDeleteClick}>삭제</DeleteBtn>
+            )}
+          </CommentHeader>
 
-            <CommentText>
-              <p>{comment.text}</p>
-            </CommentText>
-          </>
-        )}
-      </Container>
-    </>
+          <CommentText>
+            <p>{comment.text}</p>
+          </CommentText>
+        </>
+      )}
+    </Container>
   );
 };
 

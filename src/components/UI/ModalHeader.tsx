@@ -3,7 +3,6 @@ import { styled } from "styled-components";
 import { PostType, UserDocType } from "../../types/types";
 import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
-import avatar from "../../assets/img/avatar-icon.png";
 import PostLike from "../Post/PostLike";
 import DetailsDropdown from "./DetailsDropdown";
 import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
