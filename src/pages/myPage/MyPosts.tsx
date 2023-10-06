@@ -49,8 +49,6 @@ const MyPosts = () => {
     getMyPosts();
   }, []);
 
-  console.log("myPosts", myPosts);
-
   return (
     <MyPageContainer>
       <Container>

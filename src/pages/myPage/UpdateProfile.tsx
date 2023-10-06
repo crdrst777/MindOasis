@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { styled } from "styled-components";
 import { authService, dbService, storageService } from "../../fbase";
-import { deleteUser, updateProfile } from "firebase/auth";
+import { updateProfile } from "firebase/auth";
 import {
   ref,
   uploadString,
@@ -9,23 +9,22 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
 import Validations from "../../components/Auth/Validation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { UpdateProfileSchema } from "../../components/Auth/validationSchemas";
+import { UpdateProfileSchema } from "../../components/Auth/ValidationSchemas";
 import { ReactComponent as EditIcon } from "../../assets/icon/edit-icon.svg";
 import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
 import Sidebar from "../../components/MyPage/Sidebar";
-import { useNavigate } from "react-router";
+import WithdrawAccount from "../../components/Auth/WithdrawAccount";
 
 interface UpdateProfileProps {
   refreshUser: () => any;
 }
 
 const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
-  const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const [imageUpload, setImageUpload] = useState(null);
   const [uploadPreview, setUploadPreview] = useState<any>("");
@@ -108,7 +107,6 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     let file = e.currentTarget?.files[0];
-
     const options = {
       maxSizeMB: 0.2, // 이미지 최대 용량
       // maxWidthOrHeight: 1920, // 최대 넓이(혹은 높이)
@@ -118,7 +116,6 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
     try {
       const compressedFile = await imageCompression(file, options);
       setImageUpload(compressedFile);
-
       const promise = imageCompression.getDataUrlFromFile(compressedFile);
       promise.then((result) => {
         setUploadPreview(result);
@@ -158,22 +155,6 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
 
   const onError = (error: any) => {
     console.log(error);
-  };
-
-  const withdrawAccount = async () => {
-    const ok = window.confirm("정말 탈퇴 하시겠습니까?");
-    if (!ok) return;
-
-    try {
-      const user = authService.currentUser;
-      await deleteUser(user); // 계정 삭제
-      await deleteDoc(userDocRef);
-      alert("회원 탈퇴가 완료되었습니다.");
-      navigate("/");
-      window.location.reload();
-    } catch (error: any) {
-      console.log(error.code);
-    }
   };
 
   return (
@@ -232,9 +213,7 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
               <SubmitBtn type="submit">저장하기</SubmitBtn>
             </BtnContainer>
           </UpdateForm>
-          <WithdrawAccountBtn onClick={withdrawAccount}>
-            회원 탈퇴
-          </WithdrawAccountBtn>
+          <WithdrawAccount />
         </MainContainer>
       </Container>
     </MyPageContainer>

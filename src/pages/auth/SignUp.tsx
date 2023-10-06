@@ -6,9 +6,9 @@ import { UserDocType } from "../../types/types";
 import { styled } from "styled-components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import SocialLogin from "../../components/Auth/SocialLogin/SocialLogin";
+import SocialLogin from "../../components/Auth/SocialLogin";
 import Validations from "../../components/Auth/Validation";
-import { signUpSchema } from "../../components/Auth/validationSchemas";
+import { signUpSchema } from "../../components/Auth/ValidationSchemas";
 
 const SignUp = () => {
   const navigate = useNavigate();

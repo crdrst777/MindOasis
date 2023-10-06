@@ -4,7 +4,7 @@ import { authService } from "../../fbase";
 import { updatePassword } from "firebase/auth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { UpdatePasswordSchema } from "../../components/Auth/validationSchemas";
+import { UpdatePasswordSchema } from "../../components/Auth/ValidationSchemas";
 import Validations from "../../components/Auth/Validation";
 
 const UpdatePasswordPage = () => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { authService } from "../../../fbase";
+import { authService } from "../../fbase";
 import {
   signInWithPopup,
   GoogleAuthProvider,

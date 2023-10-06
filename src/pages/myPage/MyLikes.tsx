@@ -38,7 +38,7 @@ const MyLikes = () => {
             // postId를 각각의 데이터에 넣어줬음
             myLikesArr.push({ id: postId, ...postDocSnap.data() });
           } else {
-            console.log("Document does not exist");
+            // console.log("Document does not exist");
           }
         }
       }

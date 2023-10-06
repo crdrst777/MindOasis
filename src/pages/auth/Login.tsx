@@ -5,9 +5,9 @@ import { styled } from "styled-components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import Validations from "../../components/Auth/Validation";
-import SocialLogin from "../../components/Auth/SocialLogin/SocialLogin";
+import SocialLogin from "../../components/Auth/SocialLogin";
 import { ReactComponent as ArrowIcon } from "../../assets/icon/arrow-icon.svg";
-import { loginSchema } from "../../components/Auth/validationSchemas";
+import { loginSchema } from "../../components/Auth/ValidationSchemas";
 
 const Login = () => {
   const navigate = useNavigate();
