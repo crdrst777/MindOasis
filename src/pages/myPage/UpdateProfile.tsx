@@ -393,4 +393,5 @@ const DeleteAccountBtn = styled.button`
   color: #a6a6a6;
   font-size: 0.82rem;
   font-weight: 400;
+  margin-bottom: 0.7rem;
 `;

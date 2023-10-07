@@ -11,10 +11,16 @@ import { PasswordSchema } from "../../components/Auth/ValidationSchemas";
 import Validations from "../../components/Auth/Validation";
 
 interface Props {
+  inputLabel: string;
+  btnText: string;
   setIsReauthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Reauthenticate = ({ setIsReauthenticated }: Props) => {
+const Reauthenticate = ({
+  inputLabel,
+  btnText,
+  setIsReauthenticated,
+}: Props) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
   const {
@@ -69,7 +75,7 @@ const Reauthenticate = ({ setIsReauthenticated }: Props) => {
     <>
       <UpdateForm onSubmit={handleSubmit(onSubmit, onError)}>
         <InputBlock>
-          <InputLabel>비밀번호</InputLabel>
+          <InputLabel>{inputLabel}</InputLabel>
           <NewPasswordInput
             type="password"
             placeholder="유저 인증을 위해 비밀번호를 입력해주세요."
@@ -79,7 +85,7 @@ const Reauthenticate = ({ setIsReauthenticated }: Props) => {
         </InputBlock>
 
         <BtnContainer>
-          <SubmitBtn type="submit">계정 삭제</SubmitBtn>
+          <SubmitBtn type="submit">{btnText}</SubmitBtn>
         </BtnContainer>
       </UpdateForm>
     </>

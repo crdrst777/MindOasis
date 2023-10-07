@@ -124,7 +124,11 @@ const DeleteAccount = () => {
               <br />• 탈퇴된 계정은 복구 될 수 없습니다.
             </p>
           </Text>
-          <Reauthenticate setIsReauthenticated={setIsReauthenticated} />
+          <Reauthenticate
+            inputLabel={"비밀번호"}
+            btnText={"계정 삭제"}
+            setIsReauthenticated={setIsReauthenticated}
+          />
         </MainContainer>
       </Container>
     </MyPageContainer>

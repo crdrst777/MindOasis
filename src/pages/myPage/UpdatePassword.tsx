@@ -6,8 +6,14 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { UpdatePasswordSchema } from "../../components/Auth/ValidationSchemas";
 import Validations from "../../components/Auth/Validation";
+import { useState } from "react";
+import Reauthenticate from "./Reauthenticate";
+import { useNavigate } from "react-router";
 
 const UpdatePasswordPage = () => {
+  const navigate = useNavigate();
+  const [isReauthenticated, setIsReauthenticated] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -23,6 +29,7 @@ const UpdatePasswordPage = () => {
     updatePassword(user, inputData.newPassword)
       .then(() => {
         alert("비밀번호가 변경되었습니다.");
+        navigate("/mypage/updateprofile");
       })
       .catch((err) => {
         console.log(err);
@@ -37,34 +44,43 @@ const UpdatePasswordPage = () => {
     <MyPageContainer>
       <Container>
         <Sidebar linkTitle={"비밀번호 변경"} />
+
         <MainContainer>
-          <UpdateForm onSubmit={handleSubmit(onSubmit, onError)}>
-            <InputBlock>
-              <InputLabel>새로운 비밀번호</InputLabel>
-              <NewPasswordInput
-                type="password"
-                placeholder="영문, 숫자, 특수문자 포함 6자 이상"
-                {...register("newPassword")}
-              />
-              {errors.newPassword && (
-                <Validations value={errors.newPassword.message} />
-              )}
-            </InputBlock>
-            <InputBlock>
-              <InputLabel>비밀번호 확인</InputLabel>
-              <ConfirmPasswordInput
-                type="password"
-                placeholder="비밀번호를 다시 입력해주세요."
-                {...register("confirmPassword")}
-              />
-              {errors.confirmPassword && (
-                <Validations value={errors.confirmPassword.message} />
-              )}
-            </InputBlock>
-            <BtnContainer>
-              <SubmitBtn type="submit">저장하기</SubmitBtn>
-            </BtnContainer>
-          </UpdateForm>
+          {!isReauthenticated ? (
+            <Reauthenticate
+              inputLabel={"현재 비밀번호"}
+              btnText={"확인"}
+              setIsReauthenticated={setIsReauthenticated}
+            />
+          ) : (
+            <UpdateForm onSubmit={handleSubmit(onSubmit, onError)}>
+              <InputBlock>
+                <InputLabel>새로운 비밀번호</InputLabel>
+                <NewPasswordInput
+                  type="password"
+                  placeholder="영문, 숫자, 특수문자 포함 6자 이상"
+                  {...register("newPassword")}
+                />
+                {errors.newPassword && (
+                  <Validations value={errors.newPassword.message} />
+                )}
+              </InputBlock>
+              <InputBlock>
+                <InputLabel>비밀번호 확인</InputLabel>
+                <ConfirmPasswordInput
+                  type="password"
+                  placeholder="비밀번호를 다시 입력해주세요."
+                  {...register("confirmPassword")}
+                />
+                {errors.confirmPassword && (
+                  <Validations value={errors.confirmPassword.message} />
+                )}
+              </InputBlock>
+              <BtnContainer>
+                <SubmitBtn type="submit">저장하기</SubmitBtn>
+              </BtnContainer>
+            </UpdateForm>
+          )}
         </MainContainer>
       </Container>
     </MyPageContainer>
