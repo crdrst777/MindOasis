@@ -11,6 +11,8 @@ import UploadPost from "./pages/post/UploadPost";
 import EditPost from "./pages/post/EditPost";
 import MyPageSinglePost from "./pages/myPage/MyPageSinglePost";
 import Search from "./pages/Search";
+import DeleteAccount from "./pages/myPage/DeleteAccount";
+import Reauthenticate from "./pages/myPage/Reauthenticate";
 
 interface AppRouterProps {
   isLoggedIn: boolean;
@@ -29,6 +31,8 @@ const AppRouter = ({ isLoggedIn, refreshUser }: AppRouterProps) => {
               <UpdateProfile refreshUser={refreshUser} />
             }
           />
+          {/* <Route path="/mypage/reauthenticate" element={<Reauthenticate />} /> */}
+          <Route path="/mypage/deleteaccount" element={<DeleteAccount />} />
           <Route path="/mypage/updatepassword" element={<UpdatePassword />} />
           <Route path="/mypage/myposts" element={<MyPosts />} />
           <Route path="/mypage/mylikes" element={<MyLikes />} />

@@ -18,13 +18,14 @@ import { UpdateProfileSchema } from "../../components/Auth/ValidationSchemas";
 import { ReactComponent as EditIcon } from "../../assets/icon/edit-icon.svg";
 import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
 import Sidebar from "../../components/MyPage/Sidebar";
-import WithdrawAccount from "../../components/Auth/WithdrawAccount";
+import DeleteAccount from "./DeleteAccount";
+import { Link } from "react-router-dom";
 
-interface UpdateProfileProps {
+interface Props {
   refreshUser: () => any;
 }
 
-const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
+const UpdateProfile = ({ refreshUser }: Props) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const [imageUpload, setImageUpload] = useState(null);
   const [uploadPreview, setUploadPreview] = useState<any>("");
@@ -213,7 +214,10 @@ const UpdateProfile = ({ refreshUser }: UpdateProfileProps) => {
               <SubmitBtn type="submit">저장하기</SubmitBtn>
             </BtnContainer>
           </UpdateForm>
-          <WithdrawAccount />
+          {/* <DeleteAccount /> */}
+          <Link to="/mypage/deleteaccount">
+            <DeleteAccountBtn>계정 삭제</DeleteAccountBtn>
+          </Link>
         </MainContainer>
       </Container>
     </MyPageContainer>
@@ -385,8 +389,8 @@ const SubmitBtn = styled.button`
   }
 `;
 
-const WithdrawAccountBtn = styled.button`
-  color: #aaaaaa;
+const DeleteAccountBtn = styled.button`
+  color: #a6a6a6;
   font-size: 0.82rem;
   font-weight: 400;
 `;

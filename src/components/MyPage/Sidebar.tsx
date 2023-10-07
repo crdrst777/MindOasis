@@ -12,6 +12,7 @@ const linkInfo = [
   { title: "비밀번호 변경", link: "/mypage/updatepassword" },
   { title: "내 작성글", link: "/mypage/myposts" },
   { title: "내 관심글", link: "/mypage/mylikes" },
+  // { title: "회원 탈퇴", link: "/mypage/deleteaccount" },
 ];
 
 const Sidebar = ({ linkTitle }: Props) => {

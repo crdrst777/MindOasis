@@ -22,7 +22,7 @@ const UpdatePasswordPage = () => {
 
     updatePassword(user, inputData.newPassword)
       .then(() => {
-        alert("비밀번호가 변경되었습니다");
+        alert("비밀번호가 변경되었습니다.");
       })
       .catch((err) => {
         console.log(err);
@@ -54,7 +54,7 @@ const UpdatePasswordPage = () => {
               <InputLabel>비밀번호 확인</InputLabel>
               <ConfirmPasswordInput
                 type="password"
-                placeholder="비밀번호를 다시 입력해주세요"
+                placeholder="비밀번호를 다시 입력해주세요."
                 {...register("confirmPassword")}
               />
               {errors.confirmPassword && (
