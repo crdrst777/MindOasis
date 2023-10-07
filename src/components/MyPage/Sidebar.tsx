@@ -2,6 +2,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
 import { authService } from "../../fbase";
+import { useEffect, useState } from "react";
+import { getUserData } from "../../api/user";
 
 interface Props {
   linkTitle: string;
@@ -18,6 +20,13 @@ const linkInfo = [
 const Sidebar = ({ linkTitle }: Props) => {
   const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const [userData, setUserData] = useState<any>({}); // userInfo의 userId를 통해 얻은 userData
+
+  useEffect(() => {
+    if (userInfo) {
+      getUserData(userInfo.uid, setUserData); // 리턴값 -> setUserData(userDocSnap.data());
+    }
+  }, []);
 
   const onLogOutClick = async () => {
     await authService.signOut();
@@ -38,7 +47,7 @@ const Sidebar = ({ linkTitle }: Props) => {
           )}
         </AvatarContainer>
 
-        <Nickname>{userInfo.displayName}</Nickname>
+        <Nickname>{userData.displayName}</Nickname>
         <Email>{userInfo.email}</Email>
       </SidebarHeader>
       <SidebarMenu>
@@ -114,7 +123,7 @@ const Nickname = styled.div`
 `;
 
 const Email = styled.div`
-  margin-top: 1rem;
+  margin-top: 0.9rem;
   font-size: 1.05rem;
   color: ${(props) => props.theme.colors.gray};
 `;

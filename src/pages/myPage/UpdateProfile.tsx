@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { authService, dbService, storageService } from "../../fbase";
 import { updateProfile } from "firebase/auth";
@@ -18,15 +18,17 @@ import { UpdateProfileSchema } from "../../components/Auth/ValidationSchemas";
 import { ReactComponent as EditIcon } from "../../assets/icon/edit-icon.svg";
 import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
 import Sidebar from "../../components/MyPage/Sidebar";
-import DeleteAccount from "./DeleteAccount";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { getUserData } from "../../api/user";
 
 interface Props {
   refreshUser: () => any;
 }
 
 const UpdateProfile = ({ refreshUser }: Props) => {
+  const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const [userData, setUserData] = useState<any>({}); // userInfo의 userId를 통해 얻은 userData
   const [imageUpload, setImageUpload] = useState(null);
   const [uploadPreview, setUploadPreview] = useState<any>("");
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
@@ -45,6 +47,12 @@ const UpdateProfile = ({ refreshUser }: Props) => {
     resolver: yupResolver(UpdateProfileSchema),
     mode: "onChange",
   });
+
+  useEffect(() => {
+    if (userInfo) {
+      getUserData(userInfo.uid, setUserData); // 리턴값 -> setUserData(userDocSnap.data());
+    }
+  }, []);
 
   // 프로필 업데이트
   const onSubmit = async (inputData: any) => {
@@ -98,9 +106,10 @@ const UpdateProfile = ({ refreshUser }: Props) => {
       ...userObj,
     });
 
-    refreshUser();
+    // refreshUser();
     setUploadPreview(""); // 파일 미리보기 img src 비워주기
     fileInput.current!.value = "";
+    window.location.reload();
   };
 
   // 이미지 리사이즈(압축) 함수
@@ -150,13 +159,16 @@ const UpdateProfile = ({ refreshUser }: Props) => {
       } catch (error: any) {
         console.log(error.code);
       }
-      refreshUser();
+      refreshUser(); // user를 새로고침
     }
   };
 
   const onError = (error: any) => {
     console.log(error);
   };
+
+  console.log("userData", userData);
+  // console.log("userInfo.displayName", userInfo.displayName);
 
   return (
     <MyPageContainer>
@@ -393,5 +405,4 @@ const DeleteAccountBtn = styled.button`
   color: #a6a6a6;
   font-size: 0.82rem;
   font-weight: 400;
-  margin-bottom: 0.7rem;
 `;

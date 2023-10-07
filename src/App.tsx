@@ -34,10 +34,10 @@ function App() {
         });
 
         // 어째선지 Social Login을 했을때는 displayName이 존재하지만, Local Login을 했을때는 displayName이 null이다. 그래서 아래 코드를 씀.
-        if (user.displayName === null) {
-          const userName = user.email!.split("@")[0]; // @ 앞의 부분만 가져옴
-          await updateProfile(user, { displayName: userName });
-        }
+        // if (user.displayName === null) {
+        //   const userName = user.email!.split("@")[0]; // @ 앞의 부분만 가져옴
+        //   await updateProfile(user, { displayName: userName });
+        // }
       } else {
         setIsLoggedIn(false);
       }
@@ -57,10 +57,11 @@ function App() {
       displayName: user!.displayName,
       photoURL: user!.photoURL,
     });
-    // setUserInfo(Object.assign({}, user));
   };
 
   localStorage.setItem("userInfo", JSON.stringify(userInfo));
+
+  console.log("userInfo", userInfo);
 
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
