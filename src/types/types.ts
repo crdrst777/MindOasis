@@ -12,7 +12,6 @@ export interface PostType {
   attachmentUrl?: string;
   placeInfo?: PlaceInfoType;
   placeKeyword?: string[];
-  likeState?: boolean;
 }
 
 export interface UserDocType {

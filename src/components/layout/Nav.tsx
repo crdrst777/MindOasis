@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
 import { ReactComponent as SearchIcon } from "../../assets/icon/search-icon.svg";
+import NavDropdown from "../UI/Dropdown/NavDropdown";
 
 const Nav = () => {
   const navigate = useNavigate();
@@ -22,41 +23,47 @@ const Nav = () => {
         <Link to="/">Mind Oasis</Link>
       </Logo>
 
-      <Menu>
-        <li>
+      <NavList>
+        <NavItem>
           <Link to="/search">
             <SearchWrapper>
               <SearchIcon />
             </SearchWrapper>
           </Link>
-        </li>
-        <li>
+        </NavItem>
+        <NavItem>
           <Link to="/content">목록</Link>
-        </li>
-        <li onClick={goToLogin}>
+        </NavItem>
+        <NavItem onClick={goToLogin}>
           <Link to="/uploadpost">새 글 쓰기</Link>
-        </li>
+        </NavItem>
 
         {userInfo ? (
-          <li>
-            <Link to="/mypage/updateprofile">
-              <AvatarWrapper>
-                {userInfo.photoURL ? (
-                  <img src={userInfo.photoURL} alt="profile" />
-                ) : (
-                  <BasicAvatarIconWrapper>
-                    <BasicAvatarIcon />
-                  </BasicAvatarIconWrapper>
-                )}
-              </AvatarWrapper>
-            </Link>
-          </li>
+          <>
+            <AvatarItem>
+              <Link to="/mypage/updateprofile">
+                <AvatarWrapper>
+                  {userInfo.photoURL ? (
+                    <img src={userInfo.photoURL} alt="profile photo" />
+                  ) : (
+                    <BasicAvatarIconWrapper>
+                      <BasicAvatarIcon />
+                    </BasicAvatarIconWrapper>
+                  )}
+                </AvatarWrapper>
+              </Link>
+            </AvatarItem>
+
+            <NavDropdownWrapper>
+              <NavDropdown />
+            </NavDropdownWrapper>
+          </>
         ) : (
-          <li>
+          <NavItem>
             <Link to="/login">로그인</Link>
-          </li>
+          </NavItem>
         )}
-      </Menu>
+      </NavList>
     </Container>
   );
 };
@@ -68,13 +75,13 @@ const Container = styled.nav`
   align-items: center;
   justify-content: space-between;
   margin: auto;
-  height: 3.8rem;
+  height: 4.5rem;
   padding: 0 6rem;
   border-bottom: ${(props) => props.theme.borders.lightGray};
 `;
 
 const Logo = styled.div`
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 600;
 `;
 
@@ -84,7 +91,6 @@ const SearchWrapper = styled.div`
 
   svg {
     width: 1.7rem;
-    /* background-color: red; */
     stroke: ${(props) => props.theme.colors.black};
 
     &:hover {
@@ -93,19 +99,41 @@ const SearchWrapper = styled.div`
   }
 `;
 
-const Menu = styled.ul`
+const NavList = styled.ul`
   display: flex;
   justify-content: space-between;
   height: inherit;
+`;
 
-  li {
-    display: flex;
-    align-items: center;
-    font-size: 1.03rem;
-    font-weight: 500;
-    color: ${(props) => props.theme.colors.black};
-    margin-left: 2rem;
-    cursor: pointer;
+const NavItem = styled.li`
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: ${(props) => props.theme.colors.black};
+  margin-left: 2.5rem;
+  cursor: pointer;
+`;
+
+const NavDropdownWrapper = styled.div`
+  display: none;
+  position: fixed;
+  left: calc(100% - 17.5rem);
+  bottom: calc(100% - 19.3rem);
+
+  // 이걸 해줘야 드롭다운박스로 내려오는 동안 박스가 안사라짐.
+  &:hover {
+    display: block;
+  }
+`;
+
+const AvatarItem = styled.li`
+  display: flex;
+  align-items: center;
+  margin-left: 2.5rem;
+
+  &:hover + ${NavDropdownWrapper} {
+    display: block;
   }
 `;
 

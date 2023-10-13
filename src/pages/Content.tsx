@@ -212,9 +212,6 @@ const Content = () => {
     }
   }, [checkedList]);
 
-  // console.log("userData.myLikes.length", userData?.myLikes?.length);
-  // console.log("likeBtnClicked", likeBtnClicked);
-
   return (
     <Container>
       <CategoryContainer>
@@ -276,14 +273,14 @@ const AllPostBtn = styled.button<{ $isallpostbtnclicked: boolean }>`
   padding: 0.6rem 1rem 0.54rem 1rem;
   margin-top: 0.42rem;
   margin-right: 1rem;
-  width: 3.7rem;
+  width: 3.77rem;
   height: 2.17rem;
   cursor: pointer;
   border-radius: 2rem;
   transition: background-color 0.2s ease;
   background-color: ${(props) =>
     props.$isallpostbtnclicked ? "#ffe787" : props.theme.colors.lightGray};
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 500;
   color: ${(props) =>
     props.$isallpostbtnclicked
@@ -314,7 +311,7 @@ const PreviewContainer = styled.div`
   display: grid;
   justify-content: center;
   grid-template-columns: repeat(auto-fill, 15.3rem);
-  column-gap: 1.5rem;
-  row-gap: 1.5rem;
+  column-gap: 1.3rem;
+  row-gap: 1.3rem;
   margin-bottom: 0.5rem;
 `;

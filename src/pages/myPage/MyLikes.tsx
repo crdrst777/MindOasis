@@ -60,11 +60,24 @@ const MyLikes = () => {
         <Sidebar linkTitle={"내 관심글"} />
 
         <MainContainer>
-          {loading ? <Loading /> : null}
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              {currentPosts.length ? (
+                <>
+                  {currentPosts.map((post) => (
+                    <MyLikesList key={post.id} post={post} />
+                  ))}
+                </>
+              ) : (
+                <Text>
+                  <h3>내 관심글이 없습니다.</h3>
+                </Text>
+              )}
+            </>
+          )}
 
-          {currentPosts.map((post) => (
-            <MyLikesList key={post.id} post={post} />
-          ))}
           <Pagination
             totalPosts={myLikes.length}
             postsPerPage={postsPerPage}
@@ -99,4 +112,14 @@ const MainContainer = styled.section`
   border: ${(props) => props.theme.borders.lightGray};
   border-radius: 1.4rem;
   background-color: ${(props) => props.theme.colors.white};
+`;
+
+const Text = styled.div`
+  margin: auto;
+  padding-bottom: 2.1rem;
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 400;
+  }
 `;

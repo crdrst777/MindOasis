@@ -19,25 +19,31 @@ import { ReactComponent as EditIcon } from "../../assets/icon/edit-icon.svg";
 import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
 import Sidebar from "../../components/MyPage/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import { getUserData } from "../../api/user";
 
 interface Props {
   refreshUser: () => any;
 }
-
+// userInfo.photoURL
 const UpdateProfile = ({ refreshUser }: Props) => {
   const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const [userData, setUserData] = useState<any>({}); // userInfo의 userId를 통해 얻은 userData
-  const [imageUpload, setImageUpload] = useState(null);
-  const [uploadPreview, setUploadPreview] = useState<any>("");
-  const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
+  const [imageUpload, setImageUpload] = useState(null); // 기본값 null
+  const [uploadPreview, setUploadPreview] = useState<any>(""); // ""
+  const fileInput = useRef<HTMLInputElement>(null); // 기본값 null
+
   const [newDisplayName, setNewDisplayName] = useState<string>(
     userInfo.displayName
   );
-  const userAuthURLRef = ref(storageService, authService.currentUser?.photoURL);
+  // 프로필 사진 파일(스토리지) ref
+  // 소셜 로그인시에는 당연히 스토리지에 해당 파일이 없어서 에러가 나는건가 했는데, onSubmit()/onDeleteClick() 내로 이동해주니 잘되는거 보면
+  // 스토리지에 없어서 그런게 아니라, 이 시점에서는 코드를 제대로 못읽는것 같음. storageService, authService를 가져오는?것보다 ref()가 더 빠른건가? 라고 일단 결론내림.
+
+  // const userAuthURLRef = ref(storageService, authService.currentUser?.photoURL);
+  // 이렇게해도 마찬가지임
+  // const userAuthURLRef = ref(storageService, userInfo.photoURL);
+
   // `${userInfo.uid}`이 자리엔 원래 documentId 값이 들어가야하는데 문서 생성시 uid값으로 documentId를 만들어줬었음. 동일한 값임.
-  const userDocRef = doc(dbService, "users", `${userInfo.uid}`); // 파일을 가리키는 참조 생성
+  const userDocRef = doc(dbService, "users", `${userInfo.uid}`);
 
   const {
     register,
@@ -47,12 +53,6 @@ const UpdateProfile = ({ refreshUser }: Props) => {
     resolver: yupResolver(UpdateProfileSchema),
     mode: "onChange",
   });
-
-  useEffect(() => {
-    if (userInfo) {
-      getUserData(userInfo.uid, setUserData); // 리턴값 -> setUserData(userDocSnap.data());
-    }
-  }, []);
 
   // 프로필 업데이트
   const onSubmit = async (inputData: any) => {
@@ -66,14 +66,19 @@ const UpdateProfile = ({ refreshUser }: Props) => {
       // 기존 프로필 사진이 있는 경우 기존의 것을 스토리지에서 지워준다.
       if (userInfo.photoURL !== null) {
         try {
+          const userAuthURLRef = ref(storageService, userInfo.photoURL);
           await deleteObject(userAuthURLRef);
+          console.log("??");
         } catch (error: any) {
           console.log(error.code);
         }
       }
 
       const attachmentRef = ref(storageService, `${userInfo.uid}/${uuidv4()}`); // 파일 경로 참조 생성
+      console.log("attachmentRef", attachmentRef);
+
       await uploadString(attachmentRef, uploadPreview, "data_url"); // 파일 업로드(이 경우는 url)
+
       await getDownloadURL(attachmentRef)
         .then((url) => {
           userObj.photoURL = url;
@@ -106,10 +111,10 @@ const UpdateProfile = ({ refreshUser }: Props) => {
       ...userObj,
     });
 
-    // refreshUser();
+    refreshUser();
     setUploadPreview(""); // 파일 미리보기 img src 비워주기
     fileInput.current!.value = "";
-    window.location.reload();
+    // window.location.reload();
   };
 
   // 이미지 리사이즈(압축) 함수
@@ -139,7 +144,6 @@ const UpdateProfile = ({ refreshUser }: Props) => {
   const onClearUploadPreview = () => {
     setUploadPreview("");
     setImageUpload(null);
-    // fileInput.current!.value = ""; // 사진을 선택했다가 clear를 눌렀을때, 선택된 파일명을 지워줌.
   };
 
   // 프로필 사진 삭제
@@ -155,7 +159,9 @@ const UpdateProfile = ({ refreshUser }: Props) => {
 
       // 파일 삭제
       try {
+        const userAuthURLRef = ref(storageService, userInfo.photoURL);
         await deleteObject(userAuthURLRef);
+        console.log("??");
       } catch (error: any) {
         console.log(error.code);
       }
@@ -167,13 +173,14 @@ const UpdateProfile = ({ refreshUser }: Props) => {
     console.log(error);
   };
 
-  console.log("userData", userData);
-  // console.log("userInfo.displayName", userInfo.displayName);
+  console.log("userInfo", userInfo);
+  console.log("uploadPreview", uploadPreview);
 
   return (
     <MyPageContainer>
       <Container>
         <Sidebar linkTitle={"회원정보 변경"} />
+
         <MainContainer>
           <UpdateForm onSubmit={handleSubmit(onSubmit, onError)}>
             <FileContainer>
@@ -226,7 +233,7 @@ const UpdateProfile = ({ refreshUser }: Props) => {
               <SubmitBtn type="submit">저장하기</SubmitBtn>
             </BtnContainer>
           </UpdateForm>
-          {/* <DeleteAccount /> */}
+
           <Link to="/mypage/deleteaccount">
             <DeleteAccountBtn>계정 삭제</DeleteAccountBtn>
           </Link>
@@ -297,6 +304,7 @@ const BasicAvatarIconWrapper = styled.div`
   }
 `;
 
+// const FileInput = styled.input`
 const FileInput = styled.input`
   display: none;
   width: 9.7rem;

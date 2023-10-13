@@ -54,11 +54,23 @@ const MyPosts = () => {
       <Container>
         <Sidebar linkTitle={"내 작성글"} />
         <MainContainer>
-          {loading ? <Loading /> : null}
-
-          {currentPosts.map((post) => (
-            <MyPostList key={post.id} post={post} />
-          ))}
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              {currentPosts.length ? (
+                <>
+                  {currentPosts.map((post) => (
+                    <MyPostList key={post.id} post={post} />
+                  ))}
+                </>
+              ) : (
+                <Text>
+                  <h3>내 작성글이 없습니다.</h3>
+                </Text>
+              )}
+            </>
+          )}
 
           <Pagination
             totalPosts={myPosts.length}
@@ -94,4 +106,14 @@ const MainContainer = styled.section`
   border: ${(props) => props.theme.borders.lightGray};
   border-radius: 1.4rem;
   background-color: ${(props) => props.theme.colors.white};
+`;
+
+const Text = styled.div`
+  margin: auto;
+  padding-bottom: 2.1rem;
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 400;
+  }
 `;

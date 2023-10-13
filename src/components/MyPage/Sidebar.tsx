@@ -1,9 +1,6 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { styled } from "styled-components";
 import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
-import { authService } from "../../fbase";
-import { useEffect, useState } from "react";
-import { getUserData } from "../../api/user";
 
 interface Props {
   linkTitle: string;
@@ -14,25 +11,10 @@ const linkInfo = [
   { title: "비밀번호 변경", link: "/mypage/updatepassword" },
   { title: "내 작성글", link: "/mypage/myposts" },
   { title: "내 관심글", link: "/mypage/mylikes" },
-  // { title: "회원 탈퇴", link: "/mypage/deleteaccount" },
 ];
 
 const Sidebar = ({ linkTitle }: Props) => {
-  const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const [userData, setUserData] = useState<any>({}); // userInfo의 userId를 통해 얻은 userData
-
-  useEffect(() => {
-    if (userInfo) {
-      getUserData(userInfo.uid, setUserData); // 리턴값 -> setUserData(userDocSnap.data());
-    }
-  }, []);
-
-  const onLogOutClick = async () => {
-    await authService.signOut();
-    navigate("/");
-    window.location.reload();
-  };
 
   return (
     <Container>
@@ -47,7 +29,12 @@ const Sidebar = ({ linkTitle }: Props) => {
           )}
         </AvatarContainer>
 
-        <Nickname>{userData.displayName}</Nickname>
+        {userInfo.displayName ? (
+          <Nickname>{userInfo.displayName}</Nickname>
+        ) : (
+          <Nickname>{userInfo.email!.split("@")[0]}</Nickname>
+        )}
+
         <Email>{userInfo.email}</Email>
       </SidebarHeader>
       <SidebarMenu>
@@ -63,10 +50,6 @@ const Sidebar = ({ linkTitle }: Props) => {
             </Item>
           )
         )}
-
-        <Item>
-          <LogOutBtn onClick={onLogOutClick}>Log Out</LogOutBtn>
-        </Item>
       </SidebarMenu>
     </Container>
   );
@@ -166,5 +149,3 @@ const StyledLink = styled(NavLink)`
   font-weight: 500;
   color: ${(props) => props.theme.colors.darkGray};
 `;
-
-const LogOutBtn = styled.button``;

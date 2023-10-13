@@ -105,7 +105,6 @@ const PostEditor = () => {
         attachmentUrl,
         placeInfo,
         placeKeyword,
-        likeState: false,
       };
       await uploadData(postObj);
     } else {
@@ -117,7 +116,6 @@ const PostEditor = () => {
         attachmentUrl,
         placeInfo,
         placeKeyword,
-        likeState: false,
       };
       await uploadData(postObj);
     }

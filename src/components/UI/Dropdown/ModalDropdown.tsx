@@ -1,20 +1,20 @@
 import { styled } from "styled-components";
-import { ReactComponent as EllipsisIcon } from "../../assets/icon/ellipsis-icon.svg";
+import { ReactComponent as EllipsisIcon } from "../../../assets/icon/ellipsis-icon.svg";
 import { useState } from "react";
 import { deleteDoc, doc } from "firebase/firestore";
-import { dbService, storageService } from "../../fbase";
+import { dbService, storageService } from "../../../fbase";
 import { deleteObject, ref } from "firebase/storage";
-import { PostType } from "../../types/types";
+import { PostType } from "../../../types/types";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setPlaceInfoReducer } from "../../store/placeInfoSlice";
+import { setPlaceInfoReducer } from "../../../store/placeInfoSlice";
 
 interface Props {
   post: PostType;
   postId: string;
 }
 
-const DetailsDropdown = ({ post, postId }: Props) => {
+const ModalDropdown = ({ post, postId }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -80,7 +80,7 @@ const DetailsDropdown = ({ post, postId }: Props) => {
   );
 };
 
-export default DetailsDropdown;
+export default ModalDropdown;
 
 const Container = styled.div`
   /* background-color: ${(props) => props.theme.colors.white};

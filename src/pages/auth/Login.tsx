@@ -28,16 +28,23 @@ const Login = () => {
         inputData.email,
         inputData.password
       );
-
       navigate("/content");
     } catch (error: any) {
-      console.log("error.code", error.code);
+      if (error.code === "auth/user-not-found") {
+        alert("유효하지 않은 이메일입니다. 다시 입력해주세요.");
+      } else if (error.code === "auth/wrong-password") {
+        alert("유효하지 않은 비밀번호입니다. 다시 입력해주세요.");
+      } else if (error.code === "auth/too-many-requests") {
+        alert(
+          "연속된 로그인 요청이 여러 번 감지되어 로그인 요청이 금지되었습니다.\n잠시 후 다시 시도해 주세요."
+        );
+      } else {
+        alert(error.code);
+      }
     }
   };
 
-  const onError = (error: any) => {
-    console.log(error);
-  };
+  const onError = (error: any) => {};
 
   return (
     <Container>
@@ -195,6 +202,5 @@ const SignUpBlock = styled.div`
     margin-left: 0.1rem;
     width: 1.05rem;
     height: 1.05rem;
-    /* fill: ${(props) => props.theme.colors.darkGray}; */
   }
 `;

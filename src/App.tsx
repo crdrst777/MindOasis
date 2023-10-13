@@ -1,5 +1,5 @@
 import { BrowserRouter } from "react-router-dom";
-import { authService } from "./fbase";
+import { authService, storageService } from "./fbase";
 import { useEffect, useState } from "react";
 import { updateProfile } from "firebase/auth";
 import AppRouter from "./Router";
@@ -8,6 +8,7 @@ import { UserInfoType } from "./types/types";
 import Nav from "./components/Layout/Nav";
 import Loading from "./components/UI/Loading";
 import { styled } from "styled-components";
+import { refFromURL } from "firebase/database";
 
 function App() {
   const [init, setInit] = useState(false);
@@ -29,15 +30,16 @@ function App() {
         setUserInfo({
           uid: user.uid,
           email: user.email,
-          displayName: user.displayName, // 초기값이 null임
-          photoURL: user.photoURL, // 초기값이 null임
+          displayName: user.displayName, //초기값: null
+          photoURL: user.photoURL, //초기값: null  //소셜로그인의 경우는 url값이 있음
+          // photoURL: null, // 초기값이 null임
         });
 
         // 어째선지 Social Login을 했을때는 displayName이 존재하지만, Local Login을 했을때는 displayName이 null이다. 그래서 아래 코드를 씀.
-        // if (user.displayName === null) {
-        //   const userName = user.email!.split("@")[0]; // @ 앞의 부분만 가져옴
-        //   await updateProfile(user, { displayName: userName });
-        // }
+        if (user.displayName === null) {
+          const userName = user.email!.split("@")[0]; // @ 앞의 부분만 가져옴
+          await updateProfile(user, { displayName: userName });
+        }
       } else {
         setIsLoggedIn(false);
       }

@@ -32,27 +32,26 @@ const SignUp = () => {
 
       const userData: UserDocType = {
         email: inputData.email,
-        displayName: inputData.nickname,
+        displayName: "",
         uid: data.user.uid,
         photoURL: data.user.photoURL,
         myLikes: [],
       };
-
-      console.log("userData", userData);
 
       // `${data.user.uid}` -> documentId 값이 된다. documentId를 직접 지정하는게 가능.
       await setDoc(doc(dbService, "users", `${data.user.uid}`), userData);
       alert("회원가입이 완료되었습니다!");
       navigate(`/`);
     } catch (error: any) {
-      // window.confirm(error.code);
-      console.log("error.code", error.code);
+      if (error.code === "auth/email-already-in-use") {
+        alert("이미 사용 중인 이메일입니다.");
+      } else {
+        alert(error.code);
+      }
     }
   };
 
-  const onError = (error: any) => {
-    console.log(error);
-  };
+  const onError = (error: any) => {};
 
   return (
     <Container>
@@ -68,18 +67,6 @@ const SignUp = () => {
                 {...register("email")}
               />
               {errors.email && <Validations value={errors.email.message} />}
-            </InputBlock>
-
-            <InputBlock>
-              <InputLabel>닉네임</InputLabel>
-              <NicknameInput
-                type="text"
-                placeholder="닉네임"
-                {...register("nickname")}
-              />
-              {errors.nickname && (
-                <Validations value={errors.nickname.message} />
-              )}
             </InputBlock>
 
             <InputBlock>
@@ -170,8 +157,6 @@ const EmailInput = styled.input`
     outline: 1.8px solid ${(props) => props.theme.colors.yellow};
   }
 `;
-
-const NicknameInput = styled(EmailInput)``;
 
 const PasswordInput = styled(EmailInput)``;
 

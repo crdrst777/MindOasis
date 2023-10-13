@@ -10,7 +10,6 @@ import ReadMap from "../Map/ReadMap";
 import PostKeyword from "../Post/PostKeyword";
 import { useDispatch } from "react-redux";
 import CommentSection from "../Comment/CommentSection";
-import { setTriggerRenderReducer } from "../../store/triggerRenderSlice";
 
 interface Props {
   userData: UserDocType;
@@ -18,10 +17,8 @@ interface Props {
 }
 
 const Modal = ({ userData, postId }: Props) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
   const [post, setPost] = useState<PostType>({});
-  const [isClosed, setIsClosed] = useState(false);
 
   // const [isLiked, setIsLiked] = useState(false);
   // const modalMatch = useMatch(`/content/detail/:id`);
@@ -52,7 +49,6 @@ const Modal = ({ userData, postId }: Props) => {
 
   useEffect(() => {
     getPost();
-    // dispatch(setTriggerRenderReducer(false));
 
     // Modal 배경 스크롤 막기
     document.body.style.overflow = "hidden";
@@ -62,7 +58,6 @@ const Modal = ({ userData, postId }: Props) => {
   }, [userData, postId]);
 
   const closeModal = () => {
-    // dispatch(setTriggerRenderReducer(true));
     navigate(`/content`);
     // window.location.reload();
   };

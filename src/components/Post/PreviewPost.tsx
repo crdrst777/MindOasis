@@ -93,7 +93,7 @@ const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.403);
   /* z-index: 2000; */
   transition: opacity 0.2s ease;
-  /* border-radius: 4px; */
+  border-radius: 0.8rem;
 
   &:hover {
     opacity: 1;
@@ -130,7 +130,6 @@ const Title = styled.div<{ $isLoggedIn: boolean }>`
 const PreviewImg = styled.img`
   width: 100%;
   height: 100%;
-  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 3px 0px; */
   object-fit: cover;
-  /* border-radius: 4px; */
+  border-radius: 0.8rem;
 `;

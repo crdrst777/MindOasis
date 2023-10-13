@@ -118,7 +118,7 @@ const CheckBoxLabel = styled.label`
   cursor: pointer;
   border-radius: 2rem;
   background-color: ${(props) => props.theme.colors.lightGray};
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 500;
   color: ${(props) => props.theme.colors.black};
   transition: background-color 0.2s ease;

@@ -4,8 +4,8 @@ import { PostType, UserDocType } from "../../types/types";
 import { doc, getDoc } from "firebase/firestore";
 import { dbService } from "../../fbase";
 import PostLike from "../Post/PostLike";
-import DetailsDropdown from "./DetailsDropdown";
 import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
+import ModalDropdown from "./Dropdown/ModalDropdown";
 
 interface Props {
   post: PostType;
@@ -65,7 +65,7 @@ const ModalHeader = ({ post, postId, userData }: Props) => {
             <>
               <BtnContainer>
                 <PostLike post={post} postId={postId} userData={userData} />
-                <DetailsDropdown post={post} postId={postId}></DetailsDropdown>
+                <ModalDropdown post={post} postId={postId}></ModalDropdown>
               </BtnContainer>
             </>
           ) : (
