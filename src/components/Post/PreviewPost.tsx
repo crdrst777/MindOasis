@@ -15,7 +15,6 @@ const PreviewPost = ({ post, userData }: Props) => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
-  const [test, setTest] = useState(false);
 
   const openModal = (id: any) => {
     navigate(`/content/${id}`); // 이 url로 바꿔줌.
@@ -56,12 +55,6 @@ const PreviewPost = ({ post, userData }: Props) => {
   // 이 다시 가져온 바뀐 값을 조회해서 isLiked 상태값에 따라 하트 색을 바꿔준다.
   // 현재 else일땐 아무 처리도 안하기 때문에 리랜더링이 안되는게 맞다. (setIsLiked(false); 하면 오류가 남)
 
-  // console.log("triggerRender", triggerRender);
-  // console.log("isLiked", isLiked);
-  // console.log("post.id", post.id);
-  // console.log("userData.myLikes.length", userData?.myLikes?.length);
-  // console.log("likeBtnClicked", likeBtnClicked);
-
   return (
     <Container onClick={() => openModal(post.id)}>
       <Overlay>
@@ -72,7 +65,7 @@ const PreviewPost = ({ post, userData }: Props) => {
         )}
         <Title $isLoggedIn={isLoggedIn}>{post?.title}</Title>
       </Overlay>
-      <PreviewImg src={post.attachmentUrl} alt="image" />
+      <PreviewImg src={post.attachmentUrl} alt="image"></PreviewImg>
     </Container>
   );
 };
@@ -86,18 +79,18 @@ const Container = styled.div`
 `;
 
 const Overlay = styled.div`
-  opacity: 0;
+  opacity: 1;
   width: 15.3rem;
   height: 15.3rem;
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.403);
+  background-color: rgba(68, 68, 68, 0.351);
   /* z-index: 2000; */
   transition: opacity 0.2s ease;
   border-radius: 0.8rem;
 
   &:hover {
-    opacity: 1;
-    box-shadow: inset 0 2px 45px rgba(0, 0, 0, 0.383);
+    opacity: 0;
+    /* box-shadow: inset 0 2px 45px rgba(0, 0, 0, 0.383); */
   }
 `;
 
@@ -106,8 +99,8 @@ const LikeBtn = styled.div<{ $likestate: boolean }>`
   margin: 0.8rem 0.8rem 0 0;
 
   svg {
-    width: 1.95rem;
-    height: 1.95rem;
+    width: 1.82rem;
+    height: 1.82rem;
     padding: 0.45rem;
     fill: ${(props) =>
       props.$likestate ? "#ffdd00" : props.theme.colors.white};
@@ -120,11 +113,11 @@ const Title = styled.div<{ $isLoggedIn: boolean }>`
   height: 2.55rem;
   overflow: hidden;
   color: ${(props) => props.theme.colors.white};
-  margin-top: ${(props) => (props.$isLoggedIn ? "7.8rem" : "11rem")};
+  margin-top: ${(props) => (props.$isLoggedIn ? "8.35rem" : "11rem")};
   margin-left: 1.9rem;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 400;
-  line-height: 1.3rem;
+  line-height: 1.2rem;
 `;
 
 const PreviewImg = styled.img`

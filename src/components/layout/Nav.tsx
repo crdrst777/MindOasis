@@ -78,6 +78,7 @@ const Container = styled.nav`
   height: 4.5rem;
   padding: 0 6rem;
   border-bottom: ${(props) => props.theme.borders.lightGray};
+  /* background-color: black; */
 `;
 
 const Logo = styled.div`
@@ -120,6 +121,7 @@ const NavDropdownWrapper = styled.div`
   position: fixed;
   left: calc(100% - 17.5rem);
   bottom: calc(100% - 19.3rem);
+  z-index: 1;
 
   // 이걸 해줘야 드롭다운박스로 내려오는 동안 박스가 안사라짐.
   &:hover {

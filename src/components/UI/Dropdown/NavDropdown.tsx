@@ -44,7 +44,6 @@ const Container = styled.div`
 
 const DropdownList = styled.ul`
   width: 12.5rem;
-
   height: 100%;
   padding: 1rem 0;
   display: flex;
@@ -59,6 +58,7 @@ const DropdownItem = styled.li`
   font-size: 1.02rem;
   font-weight: 500;
   color: ${(props) => props.theme.colors.darkGray};
+
   cursor: pointer;
   transition: background-color 0.05s ease;
   &:hover {

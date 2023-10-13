@@ -13,6 +13,7 @@ import Category from "../components/UI/Category";
 import Pagination from "../components/UI/Pagination";
 import { setPlaceKeywordReducer } from "../store/checkedListSlice";
 import { setSearchedPostsReducer } from "../store/searchedPostsSlice";
+import Slider from "../components/Layout/Slider";
 
 const Content = () => {
   const dispatch = useDispatch();
@@ -213,40 +214,43 @@ const Content = () => {
   }, [checkedList]);
 
   return (
-    <Container>
-      <CategoryContainer>
-        <AllPostBtn
-          onClick={allPostBtnClick}
-          $isallpostbtnclicked={isAllPostBtnClicked}
-        >
-          전체
-        </AllPostBtn>
-        <Category isAllPostBtnClicked={isAllPostBtnClicked} />
-      </CategoryContainer>
+    <>
+      <Slider />
+      <Container>
+        <CategoryContainer>
+          <AllPostBtn
+            onClick={allPostBtnClick}
+            $isallpostbtnclicked={isAllPostBtnClicked}
+          >
+            전체
+          </AllPostBtn>
+          <Category isAllPostBtnClicked={isAllPostBtnClicked} />
+        </CategoryContainer>
 
-      <ContentContainer>
-        {isUnmatched ? (
-          <AlertText>일치하는 게시물이 없습니다.</AlertText>
-        ) : (
-          <PreviewContainer>
-            {currentPosts &&
-              currentPosts.map((post) => (
-                <PreviewPost key={post.id} post={post} userData={userData} />
-              ))}
-          </PreviewContainer>
-        )}
-      </ContentContainer>
+        <ContentContainer>
+          {isUnmatched ? (
+            <AlertText>일치하는 게시물이 없습니다.</AlertText>
+          ) : (
+            <PreviewContainer>
+              {currentPosts &&
+                currentPosts.map((post) => (
+                  <PreviewPost key={post.id} post={post} userData={userData} />
+                ))}
+            </PreviewContainer>
+          )}
+        </ContentContainer>
 
-      <Pagination
-        totalPosts={matchingPosts.length}
-        postsPerPage={postsPerPage}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
-      {bigMatch ? (
-        <Modal userData={userData} postId={bigMatch?.params.id}></Modal>
-      ) : null}
-    </Container>
+        <Pagination
+          totalPosts={matchingPosts.length}
+          postsPerPage={postsPerPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+        {bigMatch ? (
+          <Modal userData={userData} postId={bigMatch?.params.id}></Modal>
+        ) : null}
+      </Container>
+    </>
   );
 };
 
@@ -263,35 +267,36 @@ const Container = styled.div`
 const CategoryContainer = styled.section`
   margin: 0 auto;
   margin-bottom: 3rem;
-  width: 40rem;
+  width: 42rem;
   height: 3rem;
   display: flex;
   justify-content: space-between;
 `;
 
 const AllPostBtn = styled.button<{ $isallpostbtnclicked: boolean }>`
-  padding: 0.6rem 1rem 0.54rem 1rem;
+  padding: 0.6rem 0 0.54rem 0;
   margin-top: 0.42rem;
   margin-right: 1rem;
-  width: 3.77rem;
-  height: 2.17rem;
+  width: 4rem;
+  height: 2.3rem;
   cursor: pointer;
-  border-radius: 2rem;
+  /* border-radius: 2rem; */
+  border-radius: 0.8rem;
+  border: ${(props) =>
+    props.$isallpostbtnclicked ? "none" : "0.1rem solid #dedede"};
   transition: background-color 0.2s ease;
   background-color: ${(props) =>
-    props.$isallpostbtnclicked ? "#ffe787" : props.theme.colors.lightGray};
-  font-size: 0.9rem;
-  font-weight: 500;
+    props.$isallpostbtnclicked ? "#ffe787" : "none"};
+  font-size: 0.87rem;
+  font-weight: 600;
   color: ${(props) =>
-    props.$isallpostbtnclicked
-      ? props.theme.colors.black
-      : props.theme.colors.black};
+    props.$isallpostbtnclicked ? props.theme.colors.black : "#747474"};
 `;
 
 const ContentContainer = styled.section`
   width: 100%;
   height: 100%;
-  margin-bottom: 1.2rem;
+  margin-bottom: 2rem;
 `;
 
 const AlertText = styled.div`

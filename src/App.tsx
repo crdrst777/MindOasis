@@ -9,6 +9,7 @@ import Nav from "./components/Layout/Nav";
 import Loading from "./components/UI/Loading";
 import { styled } from "styled-components";
 import { refFromURL } from "firebase/database";
+import Slider from "./components/Layout/Slider";
 
 function App() {
   const [init, setInit] = useState(false);
@@ -87,6 +88,7 @@ export default App;
 
 const ContentWrapper = styled.div`
   min-height: calc(100vh - 10.8rem); /* footer 높이를 빼준다. */
+  /* background-color: black; */
 `;
 
 const LoadingWrapper = styled.div`
