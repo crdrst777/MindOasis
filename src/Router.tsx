@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
 import UpdateProfile from "./pages/myPage/UpdateProfile";
 import UpdatePassword from "./pages/myPage/UpdatePassword";
@@ -12,7 +11,6 @@ import EditPost from "./pages/post/EditPost";
 import MyPageSinglePost from "./pages/myPage/MyPageSinglePost";
 import Search from "./pages/Search";
 import DeleteAccount from "./pages/myPage/DeleteAccount";
-import Reauthenticate from "./pages/myPage/Reauthenticate";
 
 interface AppRouterProps {
   isLoggedIn: boolean;
@@ -31,7 +29,6 @@ const AppRouter = ({ isLoggedIn, refreshUser }: AppRouterProps) => {
               <UpdateProfile refreshUser={refreshUser} />
             }
           />
-          {/* <Route path="/mypage/reauthenticate" element={<Reauthenticate />} /> */}
           <Route path="/mypage/deleteaccount" element={<DeleteAccount />} />
           <Route path="/mypage/updatepassword" element={<UpdatePassword />} />
           <Route path="/mypage/myposts" element={<MyPosts />} />
@@ -44,10 +41,9 @@ const AppRouter = ({ isLoggedIn, refreshUser }: AppRouterProps) => {
         <Route path="/login" element={<Login />} />
       )}
 
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Content />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/search" element={<Search />} />
-      <Route path="/content" element={<Content />} />
       <Route path="/content/:id" element={<Content />} />
       <Route path="/mypage/content/:id" element={<MyPageSinglePost />} />
     </Routes>

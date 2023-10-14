@@ -106,7 +106,7 @@ const PostEditor = () => {
         placeInfo,
         placeKeyword,
       };
-      await uploadData(postObj);
+      uploadData(postObj);
     } else {
       const postObj: PostType = {
         title: title,
@@ -117,12 +117,12 @@ const PostEditor = () => {
         placeInfo,
         placeKeyword,
       };
-      await uploadData(postObj);
+      uploadData(postObj);
     }
   };
 
   const onCancelClick = () => {
-    navigate(`/content`);
+    navigate(`/`);
   };
 
   const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -178,7 +178,7 @@ const PostEditor = () => {
 
   useEffect(() => {
     if (when === false) {
-      navigate(`/content`);
+      navigate(`/`);
     }
   }, [when]);
 
@@ -423,17 +423,19 @@ const CheckBoxContainer = styled.section`
 const BtnContainer = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 2rem;
 `;
 
 const CancelBtn = styled.button`
-  height: 2rem;
+  width: 6.8rem;
+  height: 2.7rem;
   color: black;
-  background-color: ${(props) => props.theme.colors.lightGray};
-  border-radius: 4px;
-  margin: 0 0.5rem;
+  background-color: #e5e5e5;
+  border-radius: 0.5rem;
+  margin: 0 0.45rem;
   padding: 0.1rem 1.25rem 0 1.25rem;
-  font-size: 0.9rem;
-  font-weight: 400;
+  font-size: 0.94rem;
+  font-weight: 500;
 
   @media ${(props) => props.theme.mobile} {
     /* width: 5rem;
@@ -443,7 +445,7 @@ const CancelBtn = styled.button`
 const PostBtn = styled(CancelBtn)`
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.lightBlack};
-  font-weight: 500;
+
   &:hover {
     background-color: ${(props) => props.theme.colors.darkGray};
   }

@@ -48,7 +48,7 @@ const Search = () => {
 
       if (postsArr.length > 0) {
         dispatch(setSearchedPostsReducer(postsArr));
-        navigate("/content");
+        navigate("/");
       } else {
         setHasResult(false);
       }

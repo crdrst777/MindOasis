@@ -32,10 +32,8 @@ const EditPost = () => {
   const postId = state.postId;
 
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  // const [title, setTitle] = useState(post.placeInfo.placeAddr);
   const [title, setTitle] = useState("");
   const [text, setText] = useState(post.text);
-  // const [attachment, setAttachment] = useState<any>(post.attachmentUrl);
   const fileInput = useRef<HTMLInputElement>(null); // 기본값으로 null을 줘야함
   const { placeInfo } = useSelector((state: RootState) => state.placeInfo);
   const { placeKeyword } = useSelector(
@@ -90,11 +88,8 @@ const EditPost = () => {
     // 다른 파일을 새로 첨부하지 않고 기존 파일 그대로 업데이트 할 경우
     if (uploadPreview === post.attachmentUrl) {
       attachmentUrl = uploadPreview;
-
-      console.log(
-        "다른 파일을 새로 첨부하지 않고 기존 파일 그대로 업데이트 할 경우"
-      );
     }
+
     // 다른 파일을 새로 첨부하는 경우
     else if (imageUpload !== null) {
       const attachmentRef = ref(storageService, `${userInfo.uid}/${uuidv4()}`); // 파일 경로 참조 생성
@@ -127,25 +122,30 @@ const EditPost = () => {
       const postObj: PostType = {
         title: placeInfo.placeAddr,
         text: text,
-        createdAt: Date.now(),
+        createdAt: post.createdAt,
         creatorId: userInfo.uid,
         attachmentUrl,
         placeInfo,
         placeKeyword,
       };
-      await uploadData(postObj);
+      uploadData(postObj);
     } else {
       const postObj: PostType = {
         title: title,
         text: text,
-        createdAt: Date.now(),
+        createdAt: post.createdAt,
         creatorId: userInfo.uid,
         attachmentUrl,
         placeInfo,
         placeKeyword,
       };
-      await uploadData(postObj);
+      uploadData(postObj);
     }
+  };
+
+  // 취소 버튼 클릭
+  const onCancelClick = () => {
+    navigate(`/`);
   };
 
   const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -187,14 +187,9 @@ const EditPost = () => {
     setImageUpload(null);
   };
 
-  // 취소 버튼 클릭
-  const onCancelClick = () => {
-    navigate(`/content`);
-  };
-
   useEffect(() => {
     if (when === false) {
-      navigate(`/content`);
+      navigate(`/`);
     }
   }, [when]);
 
@@ -230,22 +225,6 @@ const EditPost = () => {
             placeholder="자유롭게 장소에 대해 적어주세요!"
           />
         </WriteContainer>
-
-        {/* <FileContainer>
-          <SectionTitle>
-            <span>3</span>
-            <h2>사진을 공유해주세요</h2>
-          </SectionTitle>
-          <FileInput
-            type="file"
-            accept="image/*"
-            onChange={handleImageCompress}
-            ref={fileInput}
-          />
-
-          <img src={uploadPreview} width="50px" height="50px" alt="preview" />
-          <button onClick={onClearAttachment}>Clear</button>
-        </FileContainer> */}
 
         <FileContainer>
           <SectionTitle>
@@ -312,6 +291,7 @@ const EditPostContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-bottom: 1.3rem;
 `;
 
 const MapContainer = styled.section`
@@ -460,17 +440,19 @@ const CheckBoxContainer = styled.section`
 const BtnContainer = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 2rem;
 `;
 
 const CancelBtn = styled.button`
-  height: 2rem;
+  width: 6.8rem;
+  height: 2.7rem;
   color: black;
-  background-color: ${(props) => props.theme.colors.lightGray};
-  border-radius: 4px;
-  margin: 0 0.5rem;
-  padding: 0 1.25rem;
-  font-size: 0.9rem;
-  font-weight: 400;
+  background-color: #e5e5e5;
+  border-radius: 0.5rem;
+  margin: 0 0.45rem;
+  padding: 0.1rem 1.25rem 0 1.25rem;
+  font-size: 0.94rem;
+  font-weight: 500;
 
   @media ${(props) => props.theme.mobile} {
     /* width: 5rem;
@@ -480,7 +462,7 @@ const CancelBtn = styled.button`
 const PostBtn = styled(CancelBtn)`
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.lightBlack};
-  font-weight: 500;
+
   &:hover {
     background-color: ${(props) => props.theme.colors.darkGray};
   }

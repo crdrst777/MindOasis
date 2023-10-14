@@ -88,7 +88,6 @@ export default App;
 
 const ContentWrapper = styled.div`
   min-height: calc(100vh - 10.8rem); /* footer 높이를 빼준다. */
-  /* background-color: black; */
 `;
 
 const LoadingWrapper = styled.div`

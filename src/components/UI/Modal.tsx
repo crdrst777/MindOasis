@@ -58,7 +58,7 @@ const Modal = ({ userData, postId }: Props) => {
   }, [userData, postId]);
 
   const closeModal = () => {
-    navigate(`/content`);
+    navigate(`/`);
     // window.location.reload();
   };
 
@@ -138,7 +138,7 @@ const ModalContainer = styled.div`
   overflow: scroll;
   overflow-x: hidden;
   z-index: 100;
-  /* animation: modal-show 0.6s;
+  animation: modal-show 0.5s;
   @keyframes modal-show {
     from {
       opacity: 0;
@@ -148,7 +148,7 @@ const ModalContainer = styled.div`
       opacity: 1;
       margin-top: 0;
     }
-  } */
+  }
   /* 
   @media (max-width: 1120px) {
     width: 50rem;
@@ -193,7 +193,6 @@ const ContentsContainer = styled.section`
 `;
 
 const ContentInfo = styled.div`
-  /* border-top: ${(props) => props.theme.borders.lightGray}; */
   padding: 0.25rem 0 0.4rem 0;
   display: flex;
   justify-content: space-between;

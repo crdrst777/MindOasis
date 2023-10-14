@@ -28,7 +28,7 @@ const Login = () => {
         inputData.email,
         inputData.password
       );
-      navigate("/content");
+      navigate("/");
     } catch (error: any) {
       if (error.code === "auth/user-not-found") {
         alert("유효하지 않은 이메일입니다. 다시 입력해주세요.");

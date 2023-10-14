@@ -32,7 +32,7 @@ const Nav = () => {
           </Link>
         </NavItem>
         <NavItem>
-          <Link to="/content">목록</Link>
+          <Link to="/">목록</Link>
         </NavItem>
         <NavItem onClick={goToLogin}>
           <Link to="/uploadpost">새 글 쓰기</Link>
@@ -78,7 +78,6 @@ const Container = styled.nav`
   height: 4.5rem;
   padding: 0 6rem;
   border-bottom: ${(props) => props.theme.borders.lightGray};
-  /* background-color: black; */
 `;
 
 const Logo = styled.div`
