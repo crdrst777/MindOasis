@@ -145,7 +145,7 @@ const EditPost = () => {
 
   // 취소 버튼 클릭
   const onCancelClick = () => {
-    navigate(`/`);
+    navigate(-1);
   };
 
   const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -189,7 +189,7 @@ const EditPost = () => {
 
   useEffect(() => {
     if (when === false) {
-      navigate(`/`);
+      navigate(-2);
     }
   }, [when]);
 

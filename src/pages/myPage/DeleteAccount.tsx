@@ -11,7 +11,7 @@ import { styled } from "styled-components";
 import { authService, dbService } from "../../fbase";
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/MyPage/Sidebar";
-import Reauthenticate from "./Reauthenticate";
+import Reauthenticate from "../../components/Auth/Reauthenticate";
 import { deleteUser } from "firebase/auth";
 
 const DeleteAccount = () => {

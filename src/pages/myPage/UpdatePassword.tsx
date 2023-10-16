@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { UpdatePasswordSchema } from "../../components/Auth/ValidationSchemas";
 import Validations from "../../components/Auth/Validation";
 import { useState } from "react";
-import Reauthenticate from "./Reauthenticate";
+import Reauthenticate from "../../components/Auth/Reauthenticate";
 import { useNavigate } from "react-router";
 
 const UpdatePasswordPage = () => {

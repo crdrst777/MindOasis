@@ -7,8 +7,8 @@ import {
 } from "firebase/auth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { PasswordSchema } from "../../components/Auth/ValidationSchemas";
-import Validations from "../../components/Auth/Validation";
+import { PasswordSchema } from "./ValidationSchemas";
+import Validations from "./Validation";
 
 interface Props {
   inputLabel: string;

@@ -16,7 +16,6 @@ const MyPageSinglePost = () => {
   const [post, setPost] = useState<PostType>({});
   const [userData, setUserData] = useState<any>({});
   const postId = useParams().id;
-  const closeModal = () => navigate(-1);
   const createdAt = post.createdAt;
   const timestamp = new Intl.DateTimeFormat("ko-KR", {
     year: "numeric",
@@ -25,6 +24,8 @@ const MyPageSinglePost = () => {
     hour: "2-digit",
     minute: "2-digit",
   }).format(createdAt);
+
+  const closeModal = () => navigate(-1);
 
   useEffect(() => {
     getUserData(userInfo.uid, setUserData);
@@ -131,7 +132,7 @@ const ModalContainer = styled.div`
   overflow: scroll;
   overflow-x: hidden;
   z-index: 100;
-  /* animation: modal-show 0.6s;
+  animation: modal-show 0.5s;
   @keyframes modal-show {
     from {
       opacity: 0;
@@ -141,7 +142,7 @@ const ModalContainer = styled.div`
       opacity: 1;
       margin-top: 0;
     }
-  } */
+  }
   /* 
   @media (max-width: 1120px) {
     width: 50rem;
@@ -186,7 +187,6 @@ const ContentsContainer = styled.section`
 `;
 
 const ContentInfo = styled.div`
-  /* border-top: ${(props) => props.theme.borders.lightGray}; */
   padding: 0.25rem 0 0.4rem 0;
   display: flex;
   justify-content: space-between;
@@ -219,6 +219,7 @@ const Text = styled.div`
   font-size: 1.01rem;
   font-weight: 400;
   line-height: 1.55rem;
+  white-space: pre-wrap;
 `;
 
 const ReadMapWrapper = styled.section``;

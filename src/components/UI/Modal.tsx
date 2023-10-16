@@ -225,6 +225,7 @@ const Text = styled.div`
   font-size: 1.01rem;
   font-weight: 400;
   line-height: 1.55rem;
+  white-space: pre-wrap;
 `;
 
 const ReadMapWrapper = styled.section``;

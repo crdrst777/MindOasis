@@ -72,6 +72,10 @@ const PostEditor = () => {
     e.preventDefault();
     let attachmentUrl: string = "";
 
+    // const textReplaceNewline = () => {
+    //   return text.replaceAll("<br>", "\r\n");
+    // };
+
     if (imageUpload !== null) {
       const attachmentRef = ref(storageService, `${userInfo.uid}/${uuidv4()}`); // 파일 경로 참조 생성
       // "https://firebasestorage.googleapis.com/v0/b/mind-oasis-66b9e.appspot.com/o/u1D7yAHTq4fOAXeIThoewbT9vYS2%2F070dbc05-c5be-4117-b944-99d620db1201?alt=media&token=ef68906f-49e7-44da-a42d-146caee97d2f"
@@ -348,6 +352,7 @@ const TextInput = styled.textarea`
   line-height: 1.5rem;
   word-spacing: -0.3rem;
   resize: none;
+
   &::placeholder {
     color: ${(props) => props.theme.colors.gray1};
   }
