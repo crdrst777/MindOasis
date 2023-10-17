@@ -9,12 +9,12 @@ import { useSelector } from "react-redux";
 interface Props {
   post: PostType;
   userData: UserDocType;
+  likestate: boolean;
 }
 
-const PreviewPost = ({ post, userData }: Props) => {
+const PreviewPost = ({ post, userData, likestate }: Props) => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하면 url을 왔다갔다할 수 있음.
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [isLiked, setIsLiked] = useState(false);
 
   const openModal = (id: any) => {
     navigate(`/content/${id}`); // 이 url로 바꿔줌.
@@ -28,38 +28,42 @@ const PreviewPost = ({ post, userData }: Props) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (userData?.myLikes?.length > 0) {
-      // for (let i = 1; i < userData.myLikes.length; i++) {
-      //   if (userData.myLikes[i] === post.id) {
-      //     setIsLiked(true);
-      //     console.log("true");
-      //   } else {
-      //     setIsLiked(false);
-      //     console.log("false");
-      //   }
-      // }
+  // useEffect(() => {
+  //   if (userData?.myLikes?.length > 0) {
+  //     // for (let i = 1; i < userData.myLikes.length; i++) {
+  //     //   if (userData.myLikes[i] === post.id) {
+  //     //     setIsLiked(true);
+  //     //     console.log("true");
+  //     //   } else {
+  //     //     setIsLiked(false);
+  //     //     console.log("false");
+  //     //   }
+  //     // }
 
-      for (let i of userData.myLikes) {
-        if (i === post.id) {
-          setIsLiked(true);
-          // console.log("true");
-        } else {
-          // setIsLiked(false);
-          // console.log("false");
-        }
-      }
-    }
-  }, [userData]);
+  //     for (let i of userData.myLikes) {
+  //       if (i === post.id) {
+  //         setIsLiked(true);
+  //         // console.log("true");
+  //       } else {
+  //         setIsLiked(false);
+  //         // console.log("false");
+  //       }
+  //     }
+  //   }
+  // }, [userData]);
   // 좋아요를 클릭할때마다 리덕스로 올려준 값을 content 컴포넌트에서 받아서 userData를 다시 가져와준다.
   // 이 다시 가져온 바뀐 값을 조회해서 isLiked 상태값에 따라 하트 색을 바꿔준다.
   // 현재 else일땐 아무 처리도 안하기 때문에 리랜더링이 안되는게 맞다. (setIsLiked(false); 하면 오류가 남)
+
+  // post.myLikes 배열의 첫번째 요소만 노란색 하트 나오고있음..
+
+  console.log("likestate", likestate);
 
   return (
     <Container onClick={() => openModal(post.id)}>
       <Overlay>
         {isLoggedIn && (
-          <LikeBtn $likestate={isLiked}>
+          <LikeBtn $likestate={likestate}>
             <HeartIcon />
           </LikeBtn>
         )}

@@ -213,6 +213,16 @@ const Content = () => {
     }
   }, [checkedList]);
 
+  const isLikedPost = (postId: string) => {
+    if (userData?.myLikes?.length > 0) {
+      for (let i of userData.myLikes) {
+        if (i === postId) {
+          return true;
+        }
+      }
+    }
+  };
+
   return (
     <>
       <Slider />
@@ -234,7 +244,12 @@ const Content = () => {
             <PreviewContainer>
               {currentPosts &&
                 currentPosts.map((post) => (
-                  <PreviewPost key={post.id} post={post} userData={userData} />
+                  <PreviewPost
+                    key={post.id}
+                    post={post}
+                    userData={userData}
+                    likestate={isLikedPost(post.id)}
+                  />
                 ))}
             </PreviewContainer>
           )}
@@ -267,18 +282,18 @@ const Container = styled.div`
 const CategoryContainer = styled.section`
   margin: 0 auto;
   margin-bottom: 3rem;
-  width: 42rem;
+  width: 40rem;
   height: 3rem;
   display: flex;
   justify-content: space-between;
 `;
 
 const AllPostBtn = styled.button<{ $isallpostbtnclicked: boolean }>`
-  padding: 0.6rem 0 0.54rem 0;
-  margin-top: 0.42rem;
-  margin-right: 1rem;
-  width: 4rem;
-  height: 2.3rem;
+  padding-top: 0.15rem;
+  margin-top: 0.32rem;
+  margin-right: 1.16rem;
+  width: 4.2rem;
+  height: 2.39rem;
   cursor: pointer;
   /* border-radius: 2rem; */
   border-radius: 0.8rem;

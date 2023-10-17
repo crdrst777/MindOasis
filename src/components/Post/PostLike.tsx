@@ -69,6 +69,7 @@ const PostLike = ({ post, postId, userData }: Props) => {
     dispatch(setLikeBtnClickedReducer(isLiked));
   }, [isLiked]);
 
+  // 현재 게시물이 현재 유저가 좋아요했던 게시물이면 setIsLiked(true); -> 모달의 하트를 노란색으로 보여주기 위한
   useEffect(() => {
     if (userData?.myLikes?.length > 0) {
       for (let i of userData.myLikes) {
@@ -80,8 +81,6 @@ const PostLike = ({ post, postId, userData }: Props) => {
       setIsLiked(false);
     }
   }, []);
-
-  // console.log("userData.myLikes.length", userData?.myLikes?.length);
 
   return (
     <Container>

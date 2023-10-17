@@ -13,11 +13,11 @@ interface Props {
 const checkBoxList = [
   "자연",
   "도시",
+  "물",
+  "산",
+  "한적한",
   "뷰가 좋은",
-  "인적이 드문",
-  "예시1",
-  "예시2",
-  "예시3",
+  "포토 스팟",
 ];
 
 const Category = ({ isAllPostBtnClicked }: Props) => {
