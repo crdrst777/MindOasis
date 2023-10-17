@@ -336,7 +336,7 @@ const SectionTitle = styled.div`
 const InputTitle = styled.div`
   font-size: 0.95rem;
   font-weight: 500;
-  margin: 0 0 5px;
+  margin: 0 0 0.3125rem;
   color: ${(props) => props.theme.colors.darkGray};
 `;
 
@@ -347,13 +347,14 @@ const TitleInput = styled.input`
   color: ${(props) => props.theme.colors.moreDarkGray};
   padding: 0 1.2rem;
   margin-bottom: 0.8rem;
-  border-radius: 5px;
+  border-radius: 0.315rem;
   border: ${(props) => props.theme.borders.gray};
   &:hover {
-    outline: 1px solid #c9c9c9;
+    outline: 1px solid #d3d3d3;
   }
   &:focus {
-    outline: 1.8px solid ${(props) => props.theme.colors.yellow};
+    border: 1px solid ${(props) => props.theme.colors.yellow};
+    outline: 1px solid ${(props) => props.theme.colors.yellow};
   }
 `;
 
@@ -363,16 +364,21 @@ const TextInput = styled.textarea`
   font-size: 0.95rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
   padding: 1.1rem 1.2rem;
-  border-radius: 5px;
+  border-radius: 0.315rem;
   border: ${(props) => props.theme.borders.gray};
   line-height: 1.5rem;
   word-spacing: -0.3rem;
   resize: none;
+
+  &::placeholder {
+    color: ${(props) => props.theme.colors.gray1};
+  }
   &:hover {
-    outline: 1px solid #c9c9c9;
+    outline: 1px solid #d3d3d3;
   }
   &:focus {
-    outline: 1.8px solid ${(props) => props.theme.colors.yellow};
+    border: 1px solid ${(props) => props.theme.colors.yellow};
+    outline: 1px solid ${(props) => props.theme.colors.yellow};
   }
 `;
 
@@ -422,7 +428,7 @@ const EmptyDiv = styled.div`
   font-size: 0.9rem;
   font-weight: 400;
   color: ${(props) => props.theme.colors.gray1};
-  border-radius: 5px;
+  border-radius: 0.315rem;
   border: 3px dotted #d3d3d3;
   cursor: pointer;
 

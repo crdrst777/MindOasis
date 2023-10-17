@@ -17,9 +17,7 @@ const PostLike = ({ post, postId, userData }: Props) => {
   const dispatch = useDispatch();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const userDocRef = doc(dbService, "users", `${userInfo?.uid}`); // 현재 로그인한 유저를 가리키는 참조 생성
-  // const [likeBtnClicked, setLikeBtnClicked] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  // const test = useParams().id;
 
   // like 버튼 클릭시 실행되는 함수
   const onLikeBtnClick = async () => {

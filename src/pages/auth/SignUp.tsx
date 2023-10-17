@@ -142,7 +142,7 @@ const EmailInput = styled.input`
   font-size: 0.97rem;
   color: ${(props) => props.theme.colors.moreDarkGray};
   padding: 0 0.8rem;
-  border-radius: 6px;
+  border-radius: 0.315rem;
   border: ${(props) => props.theme.borders.lightGray};
 
   &::placeholder {
@@ -151,10 +151,11 @@ const EmailInput = styled.input`
   }
 
   &:hover {
-    outline: 1px solid #c9c9c9;
+    outline: 1px solid #d3d3d3;
   }
   &:focus {
-    outline: 1.8px solid ${(props) => props.theme.colors.yellow};
+    border: 1px solid ${(props) => props.theme.colors.yellow};
+    outline: 1px solid ${(props) => props.theme.colors.yellow};
   }
 `;
 
@@ -164,7 +165,7 @@ const SubmitBtn = styled.button`
   height: 3rem;
   color: ${(props) => props.theme.colors.black};
   background-color: ${(props) => props.theme.colors.yellow};
-  border-radius: 6px;
+  border-radius: 0.315rem;
   padding: 0.18rem 0 0 0;
   font-size: 0.95rem;
   font-weight: 600;

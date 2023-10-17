@@ -120,13 +120,15 @@ const SearchInput = styled.input`
   padding: 0.2rem 3.8rem 0 1.3rem;
   border-radius: 5px;
   /* border: none; */
-  border: ${(props) => props.theme.borders.gray};
+  /* border: ${(props) => props.theme.borders.gray}; */
+  border: 1.8px solid ${(props) => props.theme.colors.yellow};
 
   &:hover {
-    outline: 1px solid #c9c9c9;
+    /* outline: 1px solid #c9c9c9; */
+    outline: 1px solid ${(props) => props.theme.colors.yellow};
   }
   &:focus {
-    outline: 1.8px solid ${(props) => props.theme.colors.yellow};
+    outline: 1px solid ${(props) => props.theme.colors.yellow};
   }
 `;
 
@@ -145,4 +147,5 @@ const Text = styled.div`
   margin-top: 4rem;
   font-size: 1.12rem;
   font-weight: 400;
+  color: ${(props) => props.theme.colors.darkGray};
 `;

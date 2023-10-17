@@ -68,7 +68,7 @@ const SearchInput = styled.input`
     outline: 1px solid #c9c9c9;
   }
   &:focus {
-    outline: 1.8px solid ${(props) => props.theme.colors.yellow};
+    outline: 2px solid ${(props) => props.theme.colors.yellow};
   }
 `;
 
