@@ -22,8 +22,8 @@ const NavDropdown = () => {
     <Container>
       <DropdownList>
         {linkInfo.map((item, idx) => (
-          <Link to={`${item.link}`}>
-            <DropdownItem key={idx}>{`${item.title}`}</DropdownItem>
+          <Link to={`${item.link}`} key={idx}>
+            <DropdownItem>{`${item.title}`}</DropdownItem>
           </Link>
         ))}
         <DropdownItem onClick={onLogOutClick}>로그아웃</DropdownItem>

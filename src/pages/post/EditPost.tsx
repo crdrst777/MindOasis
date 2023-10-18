@@ -45,7 +45,7 @@ const EditPost = () => {
   );
 
   const [when, setWhen] = useState(true);
-  console.log("test", when);
+
   usePrompt("현재 페이지를 벗어나시겠습니까?", when);
 
   // 뒤로가기를 할 경우
@@ -353,8 +353,8 @@ const TitleInput = styled.input`
     outline: 1px solid #d3d3d3;
   }
   &:focus {
-    border: 1px solid ${(props) => props.theme.colors.yellow};
-    outline: 1px solid ${(props) => props.theme.colors.yellow};
+    border: 1px solid ${(props) => props.theme.colors.darkYellow};
+    outline: 1px solid ${(props) => props.theme.colors.darkYellow};
   }
 `;
 
@@ -377,8 +377,8 @@ const TextInput = styled.textarea`
     outline: 1px solid #d3d3d3;
   }
   &:focus {
-    border: 1px solid ${(props) => props.theme.colors.yellow};
-    outline: 1px solid ${(props) => props.theme.colors.yellow};
+    border: 1px solid ${(props) => props.theme.colors.darkYellow};
+    outline: 1px solid ${(props) => props.theme.colors.darkYellow};
   }
 `;
 

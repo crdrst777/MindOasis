@@ -42,7 +42,7 @@ const Content = () => {
   );
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(12);
+  const [postsPerPage, setPostsPerPage] = useState(16);
   const lastPostIdx = currentPage * postsPerPage;
   const firstPostIdx = lastPostIdx - postsPerPage;
   const currentPosts = matchingPosts.slice(firstPostIdx, lastPostIdx);
@@ -276,7 +276,7 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 3rem 7.3rem 6rem 7.3rem;
+  padding: 3rem 7.3rem 4rem 7.3rem;
 `;
 
 const CategoryContainer = styled.section`
@@ -311,7 +311,7 @@ const AllPostBtn = styled.button<{ $isallpostbtnclicked: boolean }>`
 const ContentContainer = styled.section`
   width: 100%;
   height: 100%;
-  margin-bottom: 2rem;
+  margin-bottom: 1.4rem;
 `;
 
 const AlertText = styled.div`

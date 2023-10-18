@@ -69,8 +69,6 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
         setPlaces(data);
         setPagination(pagination);
 
-        // console.log("places", places);
-
         // 지도 클릭시 마커를 생성하고 주소를 받아온다.
         if (data) {
           const NewMarker = new kakao.maps.Marker();
@@ -196,8 +194,8 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
     );
   };
 
-  console.log("searchPlace", searchPlace);
-  console.log("placeInfo", placeInfo);
+  // console.log("searchPlace", searchPlace);
+  // console.log("placeInfo", placeInfo);
 
   return (
     <Container>

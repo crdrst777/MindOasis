@@ -149,7 +149,6 @@ const EmailInput = styled.input`
     color: ${(props) => props.theme.colors.gray1};
     font-size: 0.9rem;
   }
-
   &:hover {
     outline: 1px solid #d3d3d3;
   }

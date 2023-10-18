@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { styled } from "styled-components";
 import { authService, dbService, storageService } from "../../fbase";
 import { updateProfile } from "firebase/auth";
@@ -23,7 +23,7 @@ import { Link, useNavigate } from "react-router-dom";
 interface Props {
   refreshUser: () => any;
 }
-// userInfo.photoURL
+
 const UpdateProfile = ({ refreshUser }: Props) => {
   const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -34,14 +34,6 @@ const UpdateProfile = ({ refreshUser }: Props) => {
   const [newDisplayName, setNewDisplayName] = useState<string>(
     userInfo.displayName
   );
-  // 프로필 사진 파일(스토리지) ref
-  // 소셜 로그인시에는 당연히 스토리지에 해당 파일이 없어서 에러가 나는건가 했는데, onSubmit()/onDeleteClick() 내로 이동해주니 잘되는거 보면
-  // 스토리지에 없어서 그런게 아니라, 이 시점에서는 코드를 제대로 못읽는것 같음. storageService, authService를 가져오는?것보다 ref()가 더 빠른건가? 라고 일단 결론내림.
-
-  // const userAuthURLRef = ref(storageService, authService.currentUser?.photoURL);
-  // 이렇게해도 마찬가지임
-  // const userAuthURLRef = ref(storageService, userInfo.photoURL);
-
   // `${userInfo.uid}`이 자리엔 원래 documentId 값이 들어가야하는데 문서 생성시 uid값으로 documentId를 만들어줬었음. 동일한 값임.
   const userDocRef = doc(dbService, "users", `${userInfo.uid}`);
 
@@ -173,7 +165,6 @@ const UpdateProfile = ({ refreshUser }: Props) => {
     console.log(error);
   };
 
-  console.log("userInfo", userInfo);
   console.log("uploadPreview", uploadPreview);
 
   return (
@@ -262,7 +253,7 @@ const MainContainer = styled.section`
   justify-content: center;
   align-items: center;
   width: 40.6rem;
-  min-height: 37.5rem;
+  min-height: 36.7rem;
   padding: 1.8rem;
   border: ${(props) => props.theme.borders.lightGray};
   border-radius: 1.4rem;
@@ -304,7 +295,6 @@ const BasicAvatarIconWrapper = styled.div`
   }
 `;
 
-// const FileInput = styled.input`
 const FileInput = styled.input`
   display: none;
   width: 9.7rem;
@@ -373,10 +363,11 @@ const NicknameInput = styled.input`
   border-radius: 6px;
   border: ${(props) => props.theme.borders.lightGray};
   &:hover {
-    outline: 1px solid #c9c9c9;
+    outline: 1px solid #d3d3d3;
   }
   &:focus {
-    outline: 1.8px solid ${(props) => props.theme.colors.yellow};
+    border: 1px solid ${(props) => props.theme.colors.darkYellow};
+    outline: 1px solid ${(props) => props.theme.colors.darkYellow};
   }
 `;
 

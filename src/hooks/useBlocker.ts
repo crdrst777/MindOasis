@@ -9,17 +9,15 @@ import { setPlaceInfoReducer } from "../store/placeInfoSlice";
 const useBlocker = (blocker: () => {}, when: boolean): void => {
   const dispatch = useDispatch();
   const { navigator } = useContext(NavigationContext);
-  console.log("navigator", navigator);
 
   useEffect(() => {
     if (when === false) return;
 
     const push = navigator.push;
-    console.log("push", push);
 
     navigator.push = (...args: Parameters<typeof push>) => {
       const result = blocker();
-      console.log("result", result);
+
       // "현재 페이지를 벗어나시겠습니까?"라는 알림창에 확인 버튼을 눌렀을 경우
       if (result !== false) {
         push(...args);
@@ -47,7 +45,6 @@ export const usePrompt = (message: string, when: boolean) => {
       window.onbeforeunload = function () {
         return message;
       };
-      console.log("test");
     }
 
     return () => {

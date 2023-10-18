@@ -53,7 +53,7 @@ const CheckBox = ({ checkedListArr }: Props) => {
     dispatch(setPlaceKeywordReducer(checkedList));
   }, [dispatch, checkedList]);
 
-  console.log("checkedList", checkedList);
+  // console.log("checkedList", checkedList);
 
   return (
     <Container>

@@ -106,7 +106,7 @@ const MainContainer = styled.section`
   justify-content: center;
   align-items: center;
   width: 40.6rem;
-  min-height: 37.5rem;
+  min-height: 36.7rem;
   padding: 3rem 3rem;
   border: ${(props) => props.theme.borders.lightGray};
   border-radius: 1.4rem;
@@ -143,10 +143,11 @@ const NewPasswordInput = styled.input`
     font-size: 0.9rem;
   }
   &:hover {
-    outline: 1px solid #c9c9c9;
+    outline: 1px solid #d3d3d3;
   }
   &:focus {
-    outline: 1.8px solid ${(props) => props.theme.colors.yellow};
+    border: 1px solid ${(props) => props.theme.colors.darkYellow};
+    outline: 1px solid ${(props) => props.theme.colors.darkYellow};
   }
 `;
 
@@ -162,10 +163,11 @@ const ConfirmPasswordInput = styled.input`
     font-size: 0.9rem;
   }
   &:hover {
-    outline: 1px solid #c9c9c9;
+    outline: 1px solid #d3d3d3;
   }
   &:focus {
-    outline: 1.8px solid ${(props) => props.theme.colors.yellow};
+    border: 1px solid ${(props) => props.theme.colors.darkYellow};
+    outline: 1px solid ${(props) => props.theme.colors.darkYellow};
   }
 `;
 

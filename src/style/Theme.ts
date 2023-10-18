@@ -71,6 +71,7 @@ const colors = {
   red: "#ef6253",
   lightYellow: "#ffe787",
   yellow: "#ffcd00",
+  darkYellow: "#f4cd32",
   green: "#41b979",
   mint: "#1EC997",
   blue: "#0080ff",
