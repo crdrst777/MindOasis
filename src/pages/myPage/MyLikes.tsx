@@ -108,6 +108,7 @@ const MainContainer = styled.section`
   flex-direction: column;
   align-items: center;
   width: 40.6rem;
+  min-height: 36.7rem;
   padding: 3.85rem 2.85rem 2.35rem 2.85rem;
   border: ${(props) => props.theme.borders.lightGray};
   border-radius: 1.4rem;

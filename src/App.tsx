@@ -87,7 +87,7 @@ function App() {
 export default App;
 
 const ContentWrapper = styled.div`
-  min-height: calc(100vh - 10.8rem); /* footer 높이를 빼준다. */
+  min-height: calc(100vh - 13.3rem); /* footer 높이를 빼준다??? */
 `;
 
 const LoadingWrapper = styled.div`
@@ -95,5 +95,5 @@ const LoadingWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 38.5rem;
+  min-height: calc(100vh - 13.3rem);
 `;

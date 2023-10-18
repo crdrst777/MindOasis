@@ -88,7 +88,6 @@ export default Search;
 
 const Container = styled.div`
   width: 100%;
-  height: 38.5rem;
   display: flex;
   justify-content: center;
 `;

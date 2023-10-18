@@ -106,7 +106,7 @@ const MainContainer = styled.section`
   justify-content: center;
   align-items: center;
   width: 40.6rem;
-  min-height: 36.7rem;
+  height: 36.7rem;
   padding: 3rem 3rem;
   border: ${(props) => props.theme.borders.lightGray};
   border-radius: 1.4rem;

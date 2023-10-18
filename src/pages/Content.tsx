@@ -276,7 +276,7 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 3rem 7.3rem 4rem 7.3rem;
+  padding: 3rem 7.3rem 6rem 7.3rem;
 `;
 
 const CategoryContainer = styled.section`
@@ -320,7 +320,8 @@ const AlertText = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  padding-top: 5.4rem;
+  padding-top: 3.9rem;
+  padding-bottom: 6rem;
   font-size: 1.1rem;
   font-weight: 400;
 `;

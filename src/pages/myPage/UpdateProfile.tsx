@@ -253,7 +253,7 @@ const MainContainer = styled.section`
   justify-content: center;
   align-items: center;
   width: 40.6rem;
-  min-height: 36.7rem;
+  height: 36.7rem;
   padding: 1.8rem;
   border: ${(props) => props.theme.borders.lightGray};
   border-radius: 1.4rem;
@@ -268,7 +268,7 @@ const FileContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 2.5rem 0 0 0;
+  margin: 2.4rem 0 0 0;
 `;
 
 const AvatarContainer = styled.label`
@@ -404,4 +404,5 @@ const DeleteAccountBtn = styled.button`
   color: #a6a6a6;
   font-size: 0.82rem;
   font-weight: 400;
+  margin-bottom: 0.8rem;
 `;

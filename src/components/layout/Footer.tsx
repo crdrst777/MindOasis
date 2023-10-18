@@ -35,7 +35,7 @@ export default Footer;
 const Container = styled.footer`
   border-top: ${(props) => props.theme.borders.lightGray};
   padding: 0 2.5rem;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
 `;
 
 const Menu = styled.ul`
