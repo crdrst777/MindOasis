@@ -189,7 +189,7 @@ const EditPost = () => {
 
   useEffect(() => {
     if (when === false) {
-      navigate(-2);
+      navigate("/");
     }
   }, [when]);
 
@@ -291,7 +291,7 @@ const EditPostContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 1.3rem;
+  margin-bottom: 3rem;
 `;
 
 const MapContainer = styled.section`
@@ -446,7 +446,7 @@ const CheckBoxContainer = styled.section`
 const BtnContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 2rem;
+  margin-top: 3rem;
 `;
 
 const CancelBtn = styled.button`

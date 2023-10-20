@@ -12,8 +12,6 @@ const Nav = () => {
     if (!userInfo) {
       alert("로그인을 해주세요");
       navigate("/login");
-      // refreshUser();
-      // window.location.reload();
     }
   };
 

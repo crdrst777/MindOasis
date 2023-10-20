@@ -122,7 +122,7 @@ const PostEditor = () => {
   };
 
   const onCancelClick = () => {
-    navigate(`/`);
+    navigate(-1);
   };
 
   const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -178,7 +178,7 @@ const PostEditor = () => {
 
   useEffect(() => {
     if (when === false) {
-      navigate(`/`);
+      navigate("/");
     }
   }, [when]);
 
@@ -271,7 +271,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 1.3rem;
+  margin-bottom: 3rem;
 `;
 
 const MapContainer = styled.section`
@@ -426,7 +426,7 @@ const CheckBoxContainer = styled.section`
 const BtnContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 2rem;
+  margin-top: 3rem;
 `;
 
 const CancelBtn = styled.button`

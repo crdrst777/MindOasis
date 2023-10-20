@@ -39,7 +39,6 @@ const Container = styled.div`
   border-radius: 0.9rem;
   background-color: ${(props) => props.theme.colors.white};
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.182);
-  /* inset: auto 0px 0px auto; */
 `;
 
 const DropdownList = styled.ul`

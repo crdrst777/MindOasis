@@ -51,7 +51,7 @@ const ModalDropdown = ({ post, postId }: Props) => {
       if (post.attachmentUrl) {
         await deleteObject(postUrlRef);
       }
-      navigate(`/`);
+      navigate(-1);
     }
   };
 
