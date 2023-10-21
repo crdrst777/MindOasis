@@ -9,7 +9,7 @@ import Nav from "./components/Layout/Nav";
 import Loading from "./components/UI/Loading";
 import { styled } from "styled-components";
 import { refFromURL } from "firebase/database";
-import Slider from "./components/Layout/Slider";
+import Slider from "./components/Layout/Banner";
 
 function App() {
   const [init, setInit] = useState(false);

@@ -8,6 +8,11 @@ const Nav = () => {
   const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
+  const goToMain = () => {
+    navigate("/");
+    window.location.reload();
+  };
+
   const goToLogin = () => {
     if (!userInfo) {
       alert("로그인을 해주세요");
@@ -17,9 +22,7 @@ const Nav = () => {
 
   return (
     <Container>
-      <Logo>
-        <Link to="/">Mind Oasis</Link>
-      </Logo>
+      <Logo onClick={goToMain}>Mind Oasis</Logo>
 
       <NavList>
         <NavItem>
@@ -81,6 +84,7 @@ const Container = styled.nav`
 const Logo = styled.div`
   font-size: 1.4rem;
   font-weight: 600;
+  cursor: pointer;
 `;
 
 const SearchWrapper = styled.div`

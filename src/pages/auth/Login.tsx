@@ -113,7 +113,8 @@ const MainContainer = styled.section`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  margin: 4rem auto;
+  /* margin: 4rem auto; */
+  margin: 7rem auto 10rem auto;
 `;
 
 const LoginTitle = styled.h2`
