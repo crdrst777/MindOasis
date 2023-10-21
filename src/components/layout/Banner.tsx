@@ -5,7 +5,7 @@ const Banner = () => {
     <Container>
       <BannerWrapper>
         <LeftCover>
-          {/* <Title>당신의 영감과 휴식의 공간을 공유하고 함께 탐구하세요</Title> */}
+          <Title>당신의 영감과 휴식의 공간을 공유하고 함께 탐구하세요</Title>
           <TextContainer>
             <Text></Text>
           </TextContainer>
@@ -48,6 +48,7 @@ const Title = styled.h2`
   max-width: 20rem;
   font-size: 1.75rem;
   font-weight: 600;
+  line-height: 2.3rem;
 `;
 const TextContainer = styled.div``;
 const Text = styled.span``;

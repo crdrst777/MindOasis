@@ -98,8 +98,6 @@ const SearchMap = ({ searchPlace }: SearchMapProps) => {
                 mouseEvent.latLng,
                 function (result: any, status: any) {
                   if (status === kakao.maps.services.Status.OK) {
-                    console.log("result", result[0]);
-
                     dispatch(
                       setPlaceInfoReducer({
                         placeName: "",

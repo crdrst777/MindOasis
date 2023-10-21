@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { authService, dbService, storageService } from "../../fbase";
 import { updateProfile } from "firebase/auth";
@@ -18,7 +18,7 @@ import { UpdateProfileSchema } from "../../components/Auth/ValidationSchemas";
 import { ReactComponent as EditIcon } from "../../assets/icon/edit-icon.svg";
 import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
 import Sidebar from "../../components/MyPage/Sidebar";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   refreshUser: () => any;
@@ -27,6 +27,7 @@ interface Props {
 const UpdateProfile = ({ refreshUser }: Props) => {
   const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const [isSocialLogin, setIsSocialLogin] = useState(false);
   const [imageUpload, setImageUpload] = useState(null); // 기본값 null
   const [uploadPreview, setUploadPreview] = useState<any>(""); // ""
   const fileInput = useRef<HTMLInputElement>(null); // 기본값 null
@@ -45,6 +46,14 @@ const UpdateProfile = ({ refreshUser }: Props) => {
     resolver: yupResolver(UpdateProfileSchema),
     mode: "onChange",
   });
+
+  // 소셜 로그인 여부 체크
+  useEffect(() => {
+    const user = authService.currentUser;
+    if (user.providerData[0].providerId === "google.com") {
+      setIsSocialLogin(true);
+    }
+  }, []);
 
   // 프로필 업데이트
   const onSubmit = async (inputData: any) => {
@@ -165,7 +174,13 @@ const UpdateProfile = ({ refreshUser }: Props) => {
     console.log(error);
   };
 
-  console.log("uploadPreview", uploadPreview);
+  const goToDeleteAccount = () => {
+    if (!isSocialLogin) {
+      navigate("/mypage/deleteaccount");
+    } else {
+      alert("소셜 로그인 계정은 삭제할 수 없습니다.");
+    }
+  };
 
   return (
     <MyPageContainer>
@@ -225,9 +240,9 @@ const UpdateProfile = ({ refreshUser }: Props) => {
             </BtnContainer>
           </UpdateForm>
 
-          <Link to="/mypage/deleteaccount">
-            <DeleteAccountBtn>계정 삭제</DeleteAccountBtn>
-          </Link>
+          <DeleteAccountBtn onClick={goToDeleteAccount}>
+            계정 삭제
+          </DeleteAccountBtn>
         </MainContainer>
       </Container>
     </MyPageContainer>

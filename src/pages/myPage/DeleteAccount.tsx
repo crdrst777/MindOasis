@@ -106,9 +106,6 @@ const DeleteAccount = () => {
     }
   }, [isReauthenticated]);
 
-  console.log("myPostsId", myPostsId.length);
-  console.log("myCommentsId", myCommentsId.length);
-
   return (
     <MyPageContainer>
       <Container>

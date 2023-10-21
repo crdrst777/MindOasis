@@ -1,5 +1,5 @@
 import React from "react";
-import { authService, dbService, storageService } from "../../fbase";
+import { authService, dbService } from "../../fbase";
 import {
   signInWithPopup,
   GoogleAuthProvider,
@@ -9,7 +9,6 @@ import { styled } from "styled-components";
 import { useNavigate } from "react-router";
 import { UserDocType } from "../../types/types";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { ref, uploadBytes, uploadString } from "firebase/storage";
 
 const SocialLogin = () => {
   const navigate = useNavigate();
@@ -33,28 +32,18 @@ const SocialLogin = () => {
             email: user.email ?? "",
             displayName: user.displayName ?? "",
             photoURL: user.photoURL ?? "",
-            // photoURL: null,
             myLikes: [],
           };
-
-          console.log("user", user);
 
           const userDocRef = doc(dbService, "users", `${userData.uid}`);
           const userDocSnap = await getDoc(userDocRef);
           if (!userDocSnap.exists()) {
             // doc에 등록되있지 않은 새로운 유저라면
             await setDoc(doc(dbService, "users", `${user.uid}`), userData);
-            console.log("등록", user.uid);
-            console.log("등록", user.photoURL);
-
-            // const googlePhotoRef = ref(storageService, `${user.photoURL}`); // 파일 경로 참조 생성
-            // console.log("googlePhotoRef", googlePhotoRef);
-            // const test = user.photoURL;
-            // await uploadString(googlePhotoRef, test, "data_url");
           }
         }
 
-        // navigate(`/`);
+        navigate(`/`);
       }
     } catch (error: any) {
       console.log(error.code);

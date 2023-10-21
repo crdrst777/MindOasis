@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PasswordSchema } from "./ValidationSchemas";
 import Validations from "./Validation";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 interface Props {
   inputLabel: string;
@@ -21,6 +23,7 @@ const Reauthenticate = ({
   btnText,
   setIsReauthenticated,
 }: Props) => {
+  const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
   const {
@@ -31,6 +34,15 @@ const Reauthenticate = ({
     resolver: yupResolver(PasswordSchema),
     mode: "onChange",
   });
+
+  // 소셜 로그인 여부 체크
+  useEffect(() => {
+    const user = authService.currentUser;
+    if (user.providerData[0].providerId === "google.com") {
+      alert("소셜 로그인 계정은 비밀번호를 변경할 수 없습니다.");
+      navigate(-1);
+    }
+  }, []);
 
   const userRecertification = async (email: string, password: string) => {
     const user = authService.currentUser as User;
@@ -49,14 +61,10 @@ const Reauthenticate = ({
   };
 
   const onSubmit = async (inputData: any) => {
-    console.log("inputData", inputData);
-    console.log("userInfo", userInfo);
-
     const result = await userRecertification(
       userInfo.email,
       inputData.password
     );
-    console.log("result", result);
 
     // 재인증 여부에 따른 setState()
     if (result) {
