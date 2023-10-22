@@ -5,12 +5,18 @@ const Banner = () => {
     <Container>
       <BannerWrapper>
         <LeftCover>
-          <Title>당신의 영감과 휴식의 공간을 공유하고 함께 탐구하세요</Title>
           <TextContainer>
-            <Text></Text>
+            <Title>당신의 영감과 휴식의 공간을 공유하고 함께 탐구하세요</Title>
+            <TextWrapper>
+              <Text>지도로 더 정확하게 찾아가세요 🔍</Text>
+              <Text>사진과 글로 장소를 공유해주세요 📸</Text>
+            </TextWrapper>
           </TextContainer>
         </LeftCover>
-        <RightCover></RightCover>
+        <RightCover>
+          {/* <div>🏝</div> */}
+          <div>🏞</div>
+        </RightCover>
       </BannerWrapper>
     </Container>
   );
@@ -32,33 +38,49 @@ const BannerWrapper = styled.div`
 `;
 
 const LeftCover = styled.div`
-  /* width: 65%; */
   height: 100%;
   flex-grow: 1.5;
   flex-shrink: 1;
   flex-basis: 0%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  /* margin: auto; */
-  /* background-color: antiquewhite; */
+  align-items: end;
 `;
 
+const TextContainer = styled.div``;
+
 const Title = styled.h2`
-  max-width: 20rem;
+  max-width: 40rem;
   font-size: 1.75rem;
   font-weight: 600;
   line-height: 2.3rem;
 `;
-const TextContainer = styled.div``;
-const Text = styled.span``;
+
+const TextWrapper = styled.div`
+  display: flex;
+  margin-top: 0.5rem;
+`;
+
+const Text = styled.span`
+  margin-right: 1rem;
+  font-size: 1.2rem;
+  font-weight: 400;
+`;
 
 const RightCover = styled.div`
-  /* width: 35%; */
   height: 100%;
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0%;
   margin: auto;
-  /* background-color: tomato; */
+
+  div {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 8rem;
+  }
 `;
