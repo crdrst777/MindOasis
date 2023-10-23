@@ -3,10 +3,10 @@ import { ReactComponent as EditIcon } from "../../assets/icon/edit-icon.svg";
 import { ReactComponent as BasicAvatarIcon } from "../../assets/icon/avatar-icon.svg";
 import { updateProfile } from "firebase/auth";
 import { authService, dbService, storageService } from "../../fbase";
-import imageCompression from "browser-image-compression";
 import { useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
+import { handleImageCompress } from "../../api/image";
 
 interface Props {
   newDisplayName: string;
@@ -27,27 +27,12 @@ const UploadAvatarImg = ({
   const [imageUpload, setImageUpload] = useState(null); // 기본값 null
   const userDocRef = doc(dbService, "users", `${userInfo.uid}`);
 
-  // 이미지 리사이즈(압축) 함수
-  const handleImageCompress = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  // 이미지 리사이즈(압축) 함수를 실행하는 함수
+  const runImageCompress = async (e: React.ChangeEvent<HTMLInputElement>) => {
     let file = e.currentTarget?.files[0];
-    const options = {
-      maxSizeMB: 0.2, // 이미지 최대 용량
-      // maxWidthOrHeight: 1920, // 최대 넓이(혹은 높이)
-      useWebWorker: true,
-    };
-
-    try {
-      const compressedFile = await imageCompression(file, options);
-      setImageUpload(compressedFile);
-      const promise = imageCompression.getDataUrlFromFile(compressedFile);
-      promise.then((result) => {
-        setUploadPreview(result);
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    const result = await handleImageCompress(file, 0.2);
+    setImageUpload(result.compressedFile);
+    setUploadPreview(result.urlFromFile);
   };
 
   // 파일을 첨부한 상태에서 clear 버튼을 누르는 경우
@@ -95,7 +80,7 @@ const UploadAvatarImg = ({
           id="input-file"
           type="file"
           accept="image/*"
-          onChange={handleImageCompress}
+          onChange={runImageCompress}
           ref={fileInput}
         />
 

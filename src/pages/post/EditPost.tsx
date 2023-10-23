@@ -12,9 +12,8 @@ import MapSection from "../../components/Map/MapSection";
 import CheckBox from "../../components/UI/CheckBox";
 import { createBrowserHistory } from "history";
 import { usePrompt } from "../../hooks/useBlocker";
-import imageCompression from "browser-image-compression";
 import close from "../../assets/img/close-icon.png";
-import { uploadImage } from "../../api/storage";
+import { handleImageCompress, uploadImage } from "../../api/image";
 
 const EditPost = () => {
   const history = createBrowserHistory();
@@ -40,7 +39,6 @@ const EditPost = () => {
   );
 
   const [when, setWhen] = useState(true);
-
   usePrompt("현재 페이지를 벗어나시겠습니까?", when);
 
   // 뒤로가기를 할 경우
@@ -60,6 +58,7 @@ const EditPost = () => {
   const uploadData = (data: PostType) => {
     const postDocRef = doc(dbService, "posts", `${postId}`);
     updateDoc(postDocRef, { ...data });
+
     alert("등록 완료");
     setWhen((prev) => !prev);
 
@@ -144,29 +143,12 @@ const EditPost = () => {
     setText(e.target.value);
   };
 
-  // 이미지 리사이즈(압축) 함수
-  const handleImageCompress = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  // 이미지 리사이즈(압축) 함수를 실행하는 함수
+  const runImageCompress = async (e: React.ChangeEvent<HTMLInputElement>) => {
     let file = e.currentTarget?.files[0];
-
-    const options = {
-      maxSizeMB: 0.5, // 이미지 최대 용량
-      // maxWidthOrHeight: 1920, // 최대 넓이(혹은 높이)
-      useWebWorker: true,
-    };
-
-    try {
-      const compressedFile = await imageCompression(file, options);
-      setImageUpload(compressedFile);
-
-      const promise = imageCompression.getDataUrlFromFile(compressedFile);
-      promise.then((result) => {
-        setUploadPreview(result);
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    const result = await handleImageCompress(file, 0.5);
+    setImageUpload(result.compressedFile);
+    setUploadPreview(result.urlFromFile);
   };
 
   // 파일을 첨부한 상태에서 clear 버튼을 누르는 경우
@@ -242,7 +224,7 @@ const EditPost = () => {
             id="input-file"
             type="file"
             accept="image/*"
-            onChange={handleImageCompress}
+            onChange={runImageCompress}
             ref={fileInput}
           />
         </FileContainer>

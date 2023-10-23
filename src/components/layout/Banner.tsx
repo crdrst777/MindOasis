@@ -59,12 +59,12 @@ const Title = styled.h2`
 
 const TextWrapper = styled.div`
   display: flex;
-  margin-top: 0.5rem;
+  margin-top: 0.45rem;
 `;
 
 const Text = styled.span`
   margin-right: 1rem;
-  font-size: 1.2rem;
+  font-size: 1.17rem;
   font-weight: 400;
 `;
 

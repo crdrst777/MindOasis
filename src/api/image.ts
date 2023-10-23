@@ -1,7 +1,9 @@
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { storageService } from "../fbase";
 import { v4 as uuidv4 } from "uuid";
+import imageCompression from "browser-image-compression";
 
+// 이미지 업로드
 export const uploadImage = async (uploadPreview: string) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -12,4 +14,17 @@ export const uploadImage = async (uploadPreview: string) => {
   const url = await getDownloadURL(response.ref);
 
   return url;
+};
+
+// 이미지 리사이즈(압축) 함수
+export const handleImageCompress = async (file: File, maxSizeMB: number) => {
+  const options = {
+    maxSizeMB, // 이미지 최대 용량
+    // maxWidthOrHeight: 1920, // 최대 넓이(혹은 높이)
+    useWebWorker: true,
+  };
+  const compressedFile = await imageCompression(file, options);
+  const urlFromFile = await imageCompression.getDataUrlFromFile(compressedFile);
+
+  return { compressedFile, urlFromFile };
 };

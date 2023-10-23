@@ -24,8 +24,6 @@ const ModalHeader = ({ post, postId, userData }: Props) => {
       const creatorDocSnap = await getDoc(creatorDocRef);
       if (creatorDocSnap.exists()) {
         setCreatorData(creatorDocSnap.data());
-      } else {
-        console.log("creator document does not exist");
       }
     } catch (error) {
       console.log(error);

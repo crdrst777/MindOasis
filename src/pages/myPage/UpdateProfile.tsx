@@ -11,7 +11,7 @@ import { UpdateProfileSchema } from "../../components/Auth/ValidationSchemas";
 import Sidebar from "../../components/MyPage/Sidebar";
 import { useNavigate } from "react-router-dom";
 import UploadAvatarImg from "../../components/MyPage/UploadAvatarImg";
-import { uploadImage } from "../../api/storage";
+import { uploadImage } from "../../api/image";
 
 interface Props {
   refreshUser: () => any;
@@ -58,7 +58,6 @@ const UpdateProfile = ({ refreshUser }: Props) => {
         try {
           const userAuthURLRef = ref(storageService, userInfo.photoURL);
           await deleteObject(userAuthURLRef);
-          console.log("기존 파일 삭제");
         } catch (error: any) {
           console.log(error.code);
         }
