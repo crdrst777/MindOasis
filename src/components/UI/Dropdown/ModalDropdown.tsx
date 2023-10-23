@@ -6,7 +6,7 @@ import { dbService, storageService } from "../../../fbase";
 import { deleteObject, ref } from "firebase/storage";
 import { PostType } from "../../../types/types";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setPlaceInfoReducer } from "../../../store/placeInfoSlice";
 
 interface Props {
@@ -19,7 +19,6 @@ const ModalDropdown = ({ post, postId }: Props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // const navigate: NavigateFunction = useNavigate();
   const postRef = doc(dbService, "posts", `${postId}`); // 파일을 가리키는 참조 생성
   const postUrlRef = ref(storageService, post.attachmentUrl); // 파일을 가리키는 참조 생성
 
@@ -83,12 +82,6 @@ const ModalDropdown = ({ post, postId }: Props) => {
 export default ModalDropdown;
 
 const Container = styled.div`
-  /* background-color: ${(props) => props.theme.colors.white};
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.35); */
-  /* z-index: 4001; */
   margin-left: 0.5rem;
 `;
 
@@ -133,13 +126,6 @@ const DropdownContainer = styled.div`
   position: absolute;
   inset: auto 0px 0px auto;
   transform: translate3d(-27px, -598.5px, 0px);
-  /* div {
-    transition-duration: 200ms, 100ms;
-    transition-timing-function: cubic-bezier(0.24, 0.22, 0.015, 1.56),
-      ease-in-out;
-    transition-delay: 0s, 0s;
-    transition-property: transform, opacity;
-  } */
 `;
 
 const Arrow = styled.div`

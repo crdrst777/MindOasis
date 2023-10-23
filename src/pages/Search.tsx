@@ -26,8 +26,6 @@ const Search = () => {
     e.preventDefault();
     // 검색 결과 가져오기
     try {
-      console.log("검색 왜 안돼?");
-
       const q = query(
         collection(dbService, "posts"),
         orderBy("placeInfo.placeAddr"), // 주소 정렬
@@ -60,8 +58,6 @@ const Search = () => {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value);
   };
-
-  console.log("keyword", keyword);
 
   return (
     <Container>

@@ -1,5 +1,5 @@
 import { BrowserRouter } from "react-router-dom";
-import { authService, storageService } from "./fbase";
+import { authService } from "./fbase";
 import { useEffect, useState } from "react";
 import { updateProfile } from "firebase/auth";
 import AppRouter from "./Router";
@@ -8,8 +8,6 @@ import { UserInfoType } from "./types/types";
 import Nav from "./components/Layout/Nav";
 import Loading from "./components/UI/Loading";
 import { styled } from "styled-components";
-import { refFromURL } from "firebase/database";
-import Slider from "./components/Layout/Banner";
 
 function App() {
   const [init, setInit] = useState(false);
@@ -25,7 +23,7 @@ function App() {
       // 여기서 받아오는 user는 authService.currentUser 와 같음. 이걸 userInfo에 넣어준다.
       if (user) {
         setIsLoggedIn(true);
-        console.log(user);
+
         // 새 유저가 로그인할때마다 userInfo에 저장.
         // 내가 원하는 firebase의 특정 부분만을 가져와서 리액트한테 주기.
         setUserInfo({
@@ -62,8 +60,6 @@ function App() {
   };
 
   localStorage.setItem("userInfo", JSON.stringify(userInfo));
-
-  console.log("userInfo", userInfo);
 
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>

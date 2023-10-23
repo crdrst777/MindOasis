@@ -35,7 +35,6 @@ const PostCategory = ({
         (item) => item === checkedList[0]
       );
       if (result.length === 1) {
-        console.log("seq1: result", result);
         postsArr.push(post);
         setIsUnmatched(false);
       }
@@ -50,7 +49,6 @@ const PostCategory = ({
     matchingPosts: PostType[] // temp = [...matchingPosts]
   ) => {
     // seq1에서 한 setMatchingPosts가 갱신이 안되어 값을(7개(자연)) 제대로 받아오지 못하고있음
-    console.log("seq2: matchingPosts", matchingPosts);
 
     postsArr = [];
 
@@ -62,18 +60,16 @@ const PostCategory = ({
         const result = matchingPost.placeKeyword.filter(
           (item) => item === checkedList[n] // 마지막으로 추가된 요소와 비교
         );
-        console.log("seq2: result", result);
+
         // 일치하는 경우 postsArr배열에 추가함
         if (result.length === 1) {
           postsArr.push(matchingPost);
           setIsUnmatched(false);
         }
       }
-      console.log("seq2: postsArr", postsArr);
 
       // 일치하는 게시물이 없는 경우 - 위의 작업 후, 일치하지 않으면 여전히 빈[]임
       if (postsArr.length === 0) {
-        console.log("일치하는 게시물이 없습니다");
         setIsUnmatched(true);
       }
     }
@@ -105,7 +101,6 @@ const PostCategory = ({
       // 1-1. 첫번째 추가 - matchingSeq1 실행
       if (checkedList.length === 1) {
         postsArr = matchingSeq1(postsArr);
-        console.log("seq1: postsArr", postsArr);
       } else if (checkedList.length > 1) {
         // 1-2. 두번째 추가부터 - matchingSeq2 실행
         postsArr = matchingSeq2(checkedList.length - 1, postsArr, temp);

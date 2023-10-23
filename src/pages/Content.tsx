@@ -10,10 +10,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import { getUserData } from "../api/user";
 import Pagination from "../components/UI/Pagination";
-import { setPlaceKeywordReducer } from "../store/checkedListSlice";
+import { setPlaceKeywordReducer } from "../store/placeKeywordSlice";
 import { setSearchedPostsReducer } from "../store/searchedPostsSlice";
-import Slider from "../components/Layout/Banner";
 import PostCategory from "../components/Post/PostCategory";
+import Banner from "../components/Layout/Banner";
 
 const Content = () => {
   const dispatch = useDispatch();
@@ -37,9 +37,7 @@ const Content = () => {
   const checkedList: string[] = useSelector(
     (state: RootState) => state.category.checkedList
   );
-  // const isChecked: boolean = useSelector(
-  //   (state: RootState) => state.category.isChecked
-  // );
+
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(16);
@@ -66,7 +64,7 @@ const Content = () => {
   useEffect(() => {
     getPosts();
     dispatch(setPlaceKeywordReducer([]));
-  }, []); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
+  }, [dispatch]); // []를 주면 처음 한번 실행되는거지만, 여기서는 한번 구독하고 그후에는 Firebase의 데이터로 자동으로 업데이트되는것임.
 
   useEffect(() => {
     if (searchedPosts.length > 0) {
@@ -76,12 +74,11 @@ const Content = () => {
       setMatchingPosts(posts);
       setIsUnmatched(false);
     }
-  }, [posts]);
+  }, [posts, searchedPosts]);
 
   // 유저가 좋아요 버튼을 누르거나 취소했을때 유저 정보를 다시 가져와 좋아요 부분을 변경해준다? -> 추후에 다시 확인해보기
   useEffect(() => {
     if (userInfo) {
-      // console.log("getUserData");
       getUserData(userInfo.uid, setUserData); // 리턴값 -> setUserData(userDocSnap.data());
     }
   }, [likeBtnClicked]);
@@ -95,7 +92,6 @@ const Content = () => {
 
   // 카테고리를 클릭할떼
   useEffect(() => {
-    // getMatchingPosts();
     setCurrentPage(1);
 
     if (checkedList.length > 0) {
@@ -123,7 +119,7 @@ const Content = () => {
 
   return (
     <>
-      <Slider />
+      <Banner />
       <Container>
         <CategoryContainer>
           <AllPostBtn

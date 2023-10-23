@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { styled } from "styled-components";
-import { setPlaceKeywordReducer } from "../../store/checkedListSlice";
+import { setPlaceKeywordReducer } from "../../store/placeKeywordSlice";
 
 const checkBoxList = [
   "자연",
@@ -25,11 +25,6 @@ const CheckBox = ({ checkedListArr }: Props) => {
   const [checkedList, setCheckedList] = useState<string[]>(checkedListArr);
   const [isChecked, setIsChecked] = useState(false);
 
-  // useEffect(() => {
-  //   // 수정하는 페이지에서, 기존값에 체크되있게 하기 위해 기존값을 넣어준다.
-  //   setCheckedList(checkedListArr);
-  // }, []);
-
   // input을 클릭했을때 checkedList라는 useState 배열에 해당 element가 포함되어있지 않다면 추가하고,
   // checkedList 배열에 이미 포함되어 있다면 해당 배열에서 제거하는 함수
   const checkedItemHandler = (value: string, isChecked: boolean) => {
@@ -52,8 +47,6 @@ const CheckBox = ({ checkedListArr }: Props) => {
   useEffect(() => {
     dispatch(setPlaceKeywordReducer(checkedList));
   }, [dispatch, checkedList]);
-
-  // console.log("checkedList", checkedList);
 
   return (
     <Container>

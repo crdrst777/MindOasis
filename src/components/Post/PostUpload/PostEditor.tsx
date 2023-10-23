@@ -1,9 +1,7 @@
 import MapSection from "../../Map/MapSection";
 import { styled } from "styled-components";
 import { useEffect, useRef, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { dbService, storageService } from "../../../fbase";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { dbService } from "../../../fbase";
 import { addDoc, collection } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../store";
@@ -15,6 +13,7 @@ import { usePrompt } from "../../../hooks/useBlocker";
 import { createBrowserHistory } from "history";
 import imageCompression from "browser-image-compression";
 import close from "../../../assets/img/close-icon.png";
+import { uploadImage } from "../../../api/storage";
 
 const PostEditor = () => {
   const history = createBrowserHistory();
@@ -73,15 +72,7 @@ const PostEditor = () => {
     let attachmentUrl: string = "";
 
     if (imageUpload !== null) {
-      const attachmentRef = ref(storageService, `${userInfo.uid}/${uuidv4()}`); // 파일 경로 참조 생성
-      // "https://firebasestorage.googleapis.com/v0/b/mind-oasis-66b9e.appspot.com/o/u1D7yAHTq4fOAXeIThoewbT9vYS2%2F070dbc05-c5be-4117-b944-99d620db1201?alt=media&token=ef68906f-49e7-44da-a42d-146caee97d2f"
-      // ref정보가 data_url(format)으로 uploadPreview(value)에 담겨 upload 되도록 함
-      const response = await uploadString(
-        attachmentRef,
-        uploadPreview,
-        "data_url"
-      ); // 파일 업로드(이 경우는 url)
-      attachmentUrl = await getDownloadURL(response.ref);
+      attachmentUrl = await uploadImage(uploadPreview);
     }
 
     const blankPattern = /^\s+|\s+$/g; //공백만 입력된 경우

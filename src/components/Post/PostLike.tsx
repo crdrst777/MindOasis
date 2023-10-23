@@ -36,14 +36,12 @@ const PostLike = ({ post, postId, userData }: Props) => {
     }
     // userData.myLikes 배열에 값이 이미 있는 경우
     if (userData.myLikes.length > 0) {
-      console.log("userData.myLikes 배열에 값이 이미 있는 경우");
       // 현재 postId와 동일한 userData.myLikes가 있는 경우 그 postId를 담는 배열. 값이 있는지에 따라 추가/삭제 동작 여부를 나눌 수 있다.
       const equalPostId: string[] = userData.myLikes.filter(
         (i) => i === postId
       );
       // 추가 - 현재 postId가 userData.myLikes 에 없는 경우
       if (equalPostId.length === 0) {
-        console.log("현재 postId가 userData.myLikes 에 없는 경우");
         await updateDoc(userDocRef, {
           myLikes: [...userData.myLikes, postId],
         });
@@ -51,7 +49,6 @@ const PostLike = ({ post, postId, userData }: Props) => {
       }
       // 삭제 - 현재 postId가 userData.myLikes 에 이미 있는 경우
       if (equalPostId.length !== 0) {
-        console.log("현재 postId가 userData.myLikes 에 이미 있는 경우");
         const myLikesArr = userData.myLikes.filter(
           (item: string) => item !== postId
         );
@@ -65,9 +62,9 @@ const PostLike = ({ post, postId, userData }: Props) => {
 
   useEffect(() => {
     dispatch(setLikeBtnClickedReducer(isLiked));
-  }, [isLiked]);
+  }, [dispatch, isLiked]);
 
-  // 현재 게시물이 현재 유저가 좋아요했던 게시물이면 setIsLiked(true); -> 모달의 하트를 노란색으로 보여주기 위한
+  // 현재 게시물이 현재 유저가 좋아요했던 게시물이면 setIsLiked(true); -> 모달헤더의 하트를 노란색으로 보여주기 위한
   useEffect(() => {
     if (userData?.myLikes?.length > 0) {
       for (let i of userData.myLikes) {
@@ -78,7 +75,7 @@ const PostLike = ({ post, postId, userData }: Props) => {
     } else {
       setIsLiked(false);
     }
-  }, []);
+  }, [postId, userData.myLikes]);
 
   return (
     <Container>
