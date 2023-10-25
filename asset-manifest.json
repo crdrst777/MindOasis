@@ -1,10 +1,18 @@
 {
   "files": {
-    "main.js": "/mindoasis/static/js/main.625c647c.js",
+    "main.js": "/mindoasis/static/js/main.a7c441fd.js",
+    "static/media/avatar-icon.svg": "/mindoasis/static/media/avatar-icon.95a2d0bb54f5f1b337a325fe3bd1d712.svg",
     "index.html": "/mindoasis/index.html",
-    "main.625c647c.js.map": "/mindoasis/static/js/main.625c647c.js.map"
+    "static/media/edit-icon.svg": "/mindoasis/static/media/edit-icon.edbea28f843312fed47a60f22ecacd4b.svg",
+    "static/media/heart-icon.svg": "/mindoasis/static/media/heart-icon.dba692c50b24f72aeb7ddc69b7c6d5de.svg",
+    "static/media/arrow-icon.svg": "/mindoasis/static/media/arrow-icon.a602424ad7c09e4b17446a6eb32ff9b7.svg",
+    "static/media/search-icon.svg": "/mindoasis/static/media/search-icon.deba20a961f5b4e5f6bee061aa884aad.svg",
+    "static/media/ellipsis-icon.svg": "/mindoasis/static/media/ellipsis-icon.f9da96fdf44930879ccc7eacd7b77cfc.svg",
+    "static/media/left-arrow-icon.svg": "/mindoasis/static/media/left-arrow-icon.0a469157bea314c85faa75792a7f5091.svg",
+    "static/media/right-arrow-icon.svg": "/mindoasis/static/media/right-arrow-icon.52b661ab4c911ed0f0fe1fdc05cf06e9.svg",
+    "main.a7c441fd.js.map": "/mindoasis/static/js/main.a7c441fd.js.map"
   },
   "entrypoints": [
-    "static/js/main.625c647c.js"
+    "static/js/main.a7c441fd.js"
   ]
 }
