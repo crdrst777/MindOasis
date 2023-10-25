@@ -74,8 +74,6 @@ const UpdateProfile = ({ refreshUser }: Props) => {
       photoURL: "",
     };
 
-    console.log("inputData.nickname", inputData.nickname);
-
     await uploadFile(userObj);
 
     // 파일 업로드 o
