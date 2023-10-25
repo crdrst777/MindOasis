@@ -74,6 +74,8 @@ const UpdateProfile = ({ refreshUser }: Props) => {
       photoURL: "",
     };
 
+    console.log("inputData.nickname", inputData.nickname);
+
     await uploadFile(userObj);
 
     // 파일 업로드 o
@@ -97,9 +99,10 @@ const UpdateProfile = ({ refreshUser }: Props) => {
       ...userObj,
     });
 
-    refreshUser();
     setUploadPreview(""); // 파일 미리보기 img src 비워주기
     fileInput.current!.value = "";
+    window.location.reload();
+    // refreshUser();
   };
 
   const onError = (error: any) => {
@@ -236,11 +239,6 @@ const SubmitBtn = styled.button`
   transition: background-color 0.2s ease;
   &:hover {
     background-color: ${(props) => props.theme.colors.darkGray};
-  }
-
-  @media ${(props) => props.theme.mobile} {
-    /* width: 15rem;
-    height: 3rem; */
   }
 `;
 

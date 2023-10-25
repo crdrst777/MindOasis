@@ -188,9 +188,4 @@ const SubmitBtn = styled.button`
   &:hover {
     background-color: ${(props) => props.theme.colors.darkGray};
   }
-
-  @media ${(props) => props.theme.mobile} {
-    /* width: 15rem;
-    height: 3rem; */
-  }
 `;

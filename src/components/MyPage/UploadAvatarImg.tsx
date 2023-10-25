@@ -39,6 +39,7 @@ const UploadAvatarImg = ({
   const onClearUploadPreview = () => {
     setUploadPreview("");
     setImageUpload(null);
+    // refreshUser(); // user를 새로고침
   };
 
   // 프로필 사진 삭제
@@ -59,7 +60,8 @@ const UploadAvatarImg = ({
       } catch (error: any) {
         console.log(error.code);
       }
-      refreshUser(); // user를 새로고침
+      window.location.reload();
+      // refreshUser(); // user를 새로고침
     }
   };
 

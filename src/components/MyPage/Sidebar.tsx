@@ -16,6 +16,8 @@ const linkInfo = [
 const Sidebar = ({ linkTitle }: Props) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
+  console.log("displayName", userInfo.displayName);
+
   return (
     <Container>
       <SidebarHeader>

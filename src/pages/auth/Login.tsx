@@ -89,8 +89,6 @@ const Login = () => {
               가입하기
               <ArrowIcon />
             </Link>
-
-            {/* <SignUpBtn onClick={goToSignUp}>가입하기</SignUpBtn> */}
           </SignUpBlock>
         </LoginContainer>
       </MainContainer>

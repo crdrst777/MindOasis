@@ -121,7 +121,7 @@ const NavDropdownWrapper = styled.div`
   display: none;
   position: fixed;
   left: calc(100% - 17.5rem);
-  bottom: calc(100% - 19.3rem);
+  bottom: calc(100% - 19.2rem);
   z-index: 1;
 
   // 이걸 해줘야 드롭다운박스로 내려오는 동안 박스가 안사라짐.
